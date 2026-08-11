@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Studio · Jake Rayner</title>
+<meta name="description" content="A design studio for independent businesses in the North West. Websites, brand identity and photography from one person. Pay once and own it outright. No subscriptions, no lock-in." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500&display=swap" rel="stylesheet">
+<!-- display faces cycled on the wordmark and hero name, plus Chivo Black Italic for the STUDIO lockup -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Bungee&family=Chivo:ital,wght@1,900&family=Cormorant+Garamond:wght@600&family=Kanit:wght@700&family=Kaushan+Script&family=Lexend+Deca:wght@600&family=Playfair+Display:wght@700&family=Righteous&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,701&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* re-apply the saved vibe before first paint so page loads don't flash the default theme */
+(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t)return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="cursor"></div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="mark magnetic" href="index.html">Jake Rayner<span class="dot"></span></a>
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button class="tt-btn" id="ttDay" type="button" aria-label="Day mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.57 4.57l2.12 2.12M17.31 17.31l2.12 2.12M1.5 12h3M19.5 12h3M4.57 19.43l2.12-2.12M17.31 6.69l2.12-2.12"/></svg></button>
+      <button class="tt-btn" id="ttNight" type="button" aria-label="Night mode" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg></button>
+      <button class="tt-btn" id="ttColour" type="button" aria-label="Colour mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.3 0 2.1-.86 2.1-1.9 0-.55-.22-1-.58-1.4-.35-.4-.57-.85-.57-1.4 0-1.05.9-1.9 2-1.9h2.15A3.9 3.9 0 0 0 21 10.5C21 6.36 16.97 3 12 3z"/><circle cx="7.6" cy="10.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="11.2" cy="7.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.9" cy="8.9" r="1.15" fill="currentColor" stroke="none"/></svg></button>
+      <button class="tt-btn tt-rand" id="ttRand" type="button" aria-label="New random palette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 5v6h-6"/><path d="M4 19v-6h6"/><path d="M20 11a8 8 0 0 0-14-5"/><path d="M4 13a8 8 0 0 0 14 5"/></svg></button>
+    </div>
+    <div class="nav-right">
+      <nav class="nav-links" aria-label="Primary">
+        <a class="lnk" href="index.html">Home</a>
+        <a class="lnk" href="index.html#work">Work</a>
+        <a class="lnk" href="about.html">About</a>
+        <a class="lnk studio-brand" href="freelance.html" aria-current="page">Studio</a>
+      </nav>
+      <button class="menu-btn magnetic" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+        <span class="menu-ico" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="overlay" id="menu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="wrap ov-top">
+    <span class="mark">Jake Rayner<span class="dot"></span></span>
+    <button class="menu-btn" id="menuClose" type="button" aria-label="Close menu">
+      <span class="menu-ico is-x" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+  <nav class="wrap ov-nav" aria-label="Menu">
+    <a class="ov-item" href="index.html"><span class="ov-num">01</span><span class="ov-mask"><span class="ov-txt">Home</span></span></a>
+    <a class="ov-item" href="index.html#work"><span class="ov-num">02</span><span class="ov-mask"><span class="ov-txt">Work</span></span></a>
+    <a class="ov-item" href="about.html"><span class="ov-num">03</span><span class="ov-mask"><span class="ov-txt">About</span></span></a>
+    <a class="ov-item" href="freelance.html" aria-current="page"><span class="ov-num">04</span><span class="ov-mask"><span class="ov-txt studio-brand">Studio</span></span></a>
+  </nav>
+  <div class="wrap ov-foot">
+    <a href="mailto:jake.rayner.96@gmail.com">jake.rayner.96@gmail.com</a>
+    <a href="tel:+447733361372">07733 361372</a>
+    <span>Manchester, UK</span>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="page-hero studio-hero">
+    <div class="wrap">
+      <span class="eyebrow"><span class="studio-brand">Studio</span> · by Jake Rayner</span>
+      <h1 class="line"><span style="animation-delay:.1s">Your whole online presence, sorted.</span></h1>
+      <p class="lead">Website, brand, photography and content, all from one person who actually cares how your business looks. You pay once and it's yours. No subscriptions, no contracts, no agency in the middle.</p>
+      <div class="cta-actions" style="margin-top:34px;">
+        <a class="btn magnetic" href="mailto:jake.rayner.96@gmail.com">Start a project</a>
+        <a class="btn ghost magnetic" href="work/the-loose-lead-co.html">See a live build</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-top:none; padding-top:0;">
+    <div class="wrap">
+      <p class="statement" data-anim="words">One person instead of a site builder subscription, a photographer, a social manager, and you having to join it all up.</p>
+
+      <div class="offer-grid">
+        <div class="offer" data-anim="rise">
+          <div class="num">01 / Web</div>
+          <h3>Websites that convert</h3>
+          <p>Designed, built, hosted and live. No monthly platform fee to manage, and you own the site outright.</p>
+        </div>
+        <div class="offer" data-anim="rise">
+          <div class="num">02 / Brand</div>
+          <h3>Brand identity</h3>
+          <p>A refined or entirely new brand direction, launched alongside your site and photography rather than bolted on afterwards.</p>
+        </div>
+        <div class="offer" data-anim="rise">
+          <div class="num">03 / Photo</div>
+          <h3>Photography</h3>
+          <p>Content to support the website and socials, a standalone shoot, or both. One-off or recurring.</p>
+        </div>
+        <div class="offer" data-anim="rise">
+          <div class="num">04 / Social</div>
+          <h3>Content and social</h3>
+          <p>Posts, captions and images that keep your feed alive and on brand.</p>
+        </div>
+      </div>
+
+      <div class="price-strip">
+        <div class="chip"><b>Pay once,</b> it's yours</div>
+        <div class="chip"><b>No</b> monthly subscriptions</div>
+        <div class="chip"><b>No</b> contracts or lock-in</div>
+        <div class="chip"><b>One</b> person, start to finish</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">How it works</span>
+        <h2 data-anim="rise">Three steps, no jargon.</h2>
+      </div>
+      <div class="values" data-anim="rise">
+        <div class="value"><h4>We talk</h4><p>In person or on the phone. I look at where you are now and what you actually need. Often I'll have already built you something to look at.</p></div>
+        <div class="value"><h4>I build it</h4><p>Site, brand, photography, whatever the job is. You see it before anything goes live, and we adjust until it's right.</p></div>
+        <div class="value"><h4>It's yours</h4><p>You pay once and own it outright. Need a change later, that's a one-off, not a subscription you forgot you signed up for.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Proof</span>
+        <h2 data-anim="rise">Recent work.</h2>
+      </div>
+
+      <div class="work-feature" data-anim="rise">
+        <div class="wf-txt">
+          <span class="wf-tag">Website · Booking · Photography</span>
+          <h3>The Loose Lead Co.</h3>
+          <p>Full site build for a dog walking and pet care business covering Staffordshire and Cheshire. Services, booking enquiry, reviews and FAQs, plus the Zoomies pet photography offer built into the same site.</p>
+          <div class="wf-links">
+            <a class="wf-link magnetic" href="https://thelooselead.com" target="_blank" rel="noopener">View live site →</a>
+            <a class="wf-link magnetic" href="work/the-loose-lead-co.html">Read the case study →</a>
+          </div>
+        </div>
+        <!-- PLACEHOLDER IMAGE: assets/images/work-looselead.jpg -->
+        <div class="ph wf-img">Image / screenshot<br>thelooselead.com</div>
+      </div>
+
+      <div class="gallery-row" aria-hidden="true">
+        <!-- PLACEHOLDER IMAGES: assets/images/gallery-1.jpg ... gallery-4.jpg -->
+        <div class="ph">Image</div>
+        <div class="ph">Image</div>
+        <div class="ph">Image</div>
+        <div class="ph">Image</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <span class="eyebrow">Contact</span>
+      <h2 class="cta-h" data-anim="rise">Tell me about your business.</h2>
+      <p class="cta-body">Tell me what you do and where you're at. I'll tell you what I'd do to make it look sharper, and what it would cost. No hard sell.</p>
+      <div class="cta-actions">
+        <a class="btn magnetic" href="https://wa.me/447733361372" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn ghost magnetic" href="mailto:jake.rayner.96@gmail.com">Email</a>
+      </div>
+      <p class="cta-meta">jake.rayner.96@gmail.com · 07733 361372 · Manchester</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>Jake Rayner, Product Design &amp; Studio</span>
+    <span>Manchester, UK</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

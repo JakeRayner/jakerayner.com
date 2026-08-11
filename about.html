@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About · Jake Rayner</title>
+<meta name="description" content="Jake Rayner, UX, UI and Product Design Lead in Manchester. Ten years designing and leading digital products used by millions across automotive, retail, finance and betting." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500&display=swap" rel="stylesheet">
+<!-- display faces cycled on the wordmark and hero name, plus Chivo Black Italic for the STUDIO lockup -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Bungee&family=Chivo:ital,wght@1,900&family=Cormorant+Garamond:wght@600&family=Kanit:wght@700&family=Kaushan+Script&family=Lexend+Deca:wght@600&family=Playfair+Display:wght@700&family=Righteous&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,701&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* re-apply the saved vibe before first paint so page loads don't flash the default theme */
+(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t)return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="cursor"></div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="mark magnetic" href="index.html">Jake Rayner<span class="dot"></span></a>
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button class="tt-btn" id="ttDay" type="button" aria-label="Day mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.57 4.57l2.12 2.12M17.31 17.31l2.12 2.12M1.5 12h3M19.5 12h3M4.57 19.43l2.12-2.12M17.31 6.69l2.12-2.12"/></svg></button>
+      <button class="tt-btn" id="ttNight" type="button" aria-label="Night mode" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg></button>
+      <button class="tt-btn" id="ttColour" type="button" aria-label="Colour mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.3 0 2.1-.86 2.1-1.9 0-.55-.22-1-.58-1.4-.35-.4-.57-.85-.57-1.4 0-1.05.9-1.9 2-1.9h2.15A3.9 3.9 0 0 0 21 10.5C21 6.36 16.97 3 12 3z"/><circle cx="7.6" cy="10.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="11.2" cy="7.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.9" cy="8.9" r="1.15" fill="currentColor" stroke="none"/></svg></button>
+      <button class="tt-btn tt-rand" id="ttRand" type="button" aria-label="New random palette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 5v6h-6"/><path d="M4 19v-6h6"/><path d="M20 11a8 8 0 0 0-14-5"/><path d="M4 13a8 8 0 0 0 14 5"/></svg></button>
+    </div>
+    <div class="nav-right">
+      <nav class="nav-links" aria-label="Primary">
+        <a class="lnk" href="index.html">Home</a>
+        <a class="lnk" href="index.html#work">Work</a>
+        <a class="lnk" href="about.html" aria-current="page">About</a>
+        <a class="lnk studio-brand" href="freelance.html">Studio</a>
+      </nav>
+      <button class="menu-btn magnetic" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+        <span class="menu-ico" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="overlay" id="menu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="wrap ov-top">
+    <span class="mark">Jake Rayner<span class="dot"></span></span>
+    <button class="menu-btn" id="menuClose" type="button" aria-label="Close menu">
+      <span class="menu-ico is-x" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+  <nav class="wrap ov-nav" aria-label="Menu">
+    <a class="ov-item" href="index.html"><span class="ov-num">01</span><span class="ov-mask"><span class="ov-txt">Home</span></span></a>
+    <a class="ov-item" href="index.html#work"><span class="ov-num">02</span><span class="ov-mask"><span class="ov-txt">Work</span></span></a>
+    <a class="ov-item" href="about.html" aria-current="page"><span class="ov-num">03</span><span class="ov-mask"><span class="ov-txt">About</span></span></a>
+    <a class="ov-item" href="freelance.html"><span class="ov-num">04</span><span class="ov-mask"><span class="ov-txt studio-brand">Studio</span></span></a>
+  </nav>
+  <div class="wrap ov-foot">
+    <a href="mailto:jake.rayner.96@gmail.com">jake.rayner.96@gmail.com</a>
+    <a href="tel:+447733361372">07733 361372</a>
+    <span>Manchester, UK</span>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">About</span>
+      <h1 class="line"><span style="animation-delay:.1s">Ten years designing products used by millions.</span></h1>
+    </div>
+  </section>
+
+  <section style="border-top:none; padding-top:0;">
+    <div class="wrap">
+      <div class="about-grid">
+        <div>
+          <p class="lead">I'm a UX, UI and Product Design Lead based in Manchester. Over the past ten years I've designed and delivered digital products for globally recognised organisations across automotive, retail, finance and betting, working on everything from in-car infotainment to mobile banking to retail at scale.</p>
+          <p class="lead">I lead teams and I stay hands-on. In practice that means setting design direction, building the systems and standards a team works to, and raising UX maturity in organisations that haven't had it before. It also means being in the file, in the research session, and increasingly in the code.</p>
+          <p class="lead">Outside work I'm a musician, photographer and videographer, and a car enthusiast, which explains a fair amount of my career.</p>
+          <div class="cta-actions" style="margin-top:34px;">
+            <a class="btn magnetic" href="assets/cv/CV_2025_LATEST.pdf" target="_blank">Download CV</a>
+            <a class="btn ghost magnetic" href="mailto:jake.rayner.96@gmail.com">Get in touch</a>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">How I work</span>
+        <h2 data-anim="rise">Culture, craft, and getting it shipped.</h2>
+      </div>
+      <div class="values" data-anim="rise">
+        <div class="value"><h4>Positive culture, outstanding outcomes</h4><p>A trusting, respectful culture has a direct effect on what a design team produces. I mentor, listen, and build that deliberately, because it shows up in the work.</p></div>
+        <div class="value"><h4>Keep it simple, make it happen</h4><p>The best UX is invisible. Simple, intuitive, and it works. Reducing complexity while meeting the needs of both the user and the business.</p></div>
+        <div class="value"><h4>Research, design, validate</h4><p>Discovery research and journey mapping through to pixel perfect UI and high-fidelity prototyping. Tested, not assumed.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Tools</span>
+        <h2 data-anim="rise">Tools and stack.</h2>
+      </div>
+      <div class="values" data-anim="rise">
+        <div class="value"><h4>Design</h4><p>Figma, including variables, tokens and MCP write access · Prototyping · Design systems architecture · Research and validation tooling</p></div>
+        <div class="value"><h4>Build</h4><p>VS Code · Claude Code · HTML, CSS and JavaScript · GSAP · Git and GitHub Pages</p></div>
+      </div>
+      <p class="lead" style="margin-top:34px;">I build and ship production sites myself. This one included: hand built, no page builder, versioned in Git. Being able to prototype in code and take work the last mile keeps design in the room for the decisions that matter.</p>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <span class="eyebrow">Contact</span>
+      <h2 class="cta-h" data-anim="rise">Get in touch</h2>
+      <div class="cta-actions">
+        <a class="btn magnetic" href="mailto:jake.rayner.96@gmail.com">Email</a>
+        <a class="btn ghost magnetic" href="https://wa.me/447733361372" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <p class="cta-links"><a href="assets/cv/CV_2025_LATEST.pdf" target="_blank">Download CV</a></p>
+      <p class="cta-meta">jake.rayner.96@gmail.com · 07733 361372 · Manchester</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>Jake Rayner, Product Design &amp; Studio</span>
+    <span>Manchester, UK</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

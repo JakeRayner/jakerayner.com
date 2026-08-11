@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#131311"/>
+  <!-- serif J, echoing the Literata wordmark, with the brand square full stop -->
+  <text x="14" y="47" font-family="Literata, Georgia, 'Times New Roman', serif"
+        font-size="46" font-weight="500" fill="#edeae1">J</text>
+  <rect x="41" y="39" width="8" height="8" fill="#edeae1"/>
+</svg>
