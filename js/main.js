@@ -1008,34 +1008,36 @@
       var parts = p.querySelectorAll('p').length ? p.querySelectorAll('p') : [p];
       parts.forEach(splitWords);
       var section = p.closest('section') || p;
-      /* Pinning only holds up if the whole section fits on screen: a taller
-         one would sit with its bottom off screen for the length of the pin,
-         so that case keeps the words running in the flow instead. Measured
-         on refresh, so a font swap or a rotate re-picks the right one.
-         anticipatePin is deliberately left off here: it starts the pin a
-         beat early, which is what read as a jump against the smooth scroll. */
-      var words = p.querySelectorAll('.w');
-      function trigger() {
-        return section.offsetHeight <= window.innerHeight
-          ? { trigger: section, start: 'center center', end: '+=150%', pin: true, scrub: true, invalidateOnRefresh: true }
-          : { trigger: section, start: 'top 70%', end: 'bottom 55%', scrub: true, invalidateOnRefresh: true };
-      }
-      var fill = gsap.fromTo(words, { opacity: 0.16 }, {
+
+      /* The section pins and the scroll fills the words in. What has to fit
+         on screen is the paragraph block, not the whole section: the section
+         also carries its own padding and the two links under it, which can
+         sit off screen for the length of the pin at no cost. When the block
+         fits it is centred; when it does not (a small phone, or big text) its
+         top is anchored to the top of the screen instead, so the reading
+         starts in the right place either way.
+
+         start is a function so ScrollTrigger re-runs it on every refresh,
+         which covers a rotate, a font swap and a desktop resize without a
+         resize listener of our own. That matters on a phone, where the
+         viewport height changes every time the browser toolbar slides away:
+         clientHeight is what the page actually gets, a good deal less than
+         the screen. anticipatePin is deliberately left off, it starts the
+         pin a beat early and that read as a jump against the smooth scroll. */
+      gsap.fromTo(p.querySelectorAll('.w'), { opacity: 0.16 }, {
         opacity: 1, duration: 0.01, stagger: 1, ease: 'none',
-        scrollTrigger: trigger()
-      });
-      /* if the fit changes across a breakpoint, swap the trigger for the
-         other one rather than leaving a pin on a section that outgrew it */
-      var pinned = section.offsetHeight <= window.innerHeight;
-      window.addEventListener('resize', function () {
-        var fits = section.offsetHeight <= window.innerHeight;
-        if (fits === pinned) return;
-        pinned = fits;
-        fill.scrollTrigger.kill(true);
-        fill = gsap.fromTo(words, { opacity: 0.16 }, {
-          opacity: 1, duration: 0.01, stagger: 1, ease: 'none',
-          scrollTrigger: trigger()
-        });
+        scrollTrigger: {
+          trigger: p,
+          start: function () {
+            return p.offsetHeight <= document.documentElement.clientHeight * 0.95
+              ? 'center center'
+              : 'top top';
+          },
+          end: '+=150%',
+          pin: section,
+          scrub: true,
+          invalidateOnRefresh: true
+        }
       });
     });
 
