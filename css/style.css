@@ -485,13 +485,15 @@ section{padding:110px 0; position:relative;}
 .col-item:hover .col-name{transition-delay:.05s;} .col-item:hover .col-meta{transition-delay:.1s;}
 /* title card: the same logo and line of meta as the hover caption, shown
    above a project's images on phones (and on any touch screen where there
-   is no hover), so every project reads title card then its photos */
+   is no hover), so every project reads title card then its photos. No box:
+   it sits straight on the page background, flush left with the photos
+   below it, and the grid gap does the spacing */
 .col-title{display:none; color:inherit; text-decoration:none;}
 @media (hover:none), (max-width:760px){
   .col-cap{display:none;}
   .col-title{
     display:flex; flex-direction:column; align-items:flex-start; gap:8px;
-    grid-column:span 12; padding:22px 22px 24px; background:var(--glass);
+    grid-column:span 12; padding:0;
   }
   .col-title .col-logo{background:var(--ink); height:26px; transform:none;}
   .col-title .col-logo + .col-name{display:none;}
