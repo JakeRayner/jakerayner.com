@@ -16,7 +16,15 @@
   var hasLenis = typeof window.Lenis !== 'undefined';
   var lenis = null;
 
-  if (hasGsap && hasST) gsap.registerPlugin(ScrollTrigger);
+  if (hasGsap && hasST) {
+    gsap.registerPlugin(ScrollTrigger);
+    /* A phone's address bar sliding in and out fires resize. Left alone,
+       ScrollTrigger treats each one as a real resize and refreshes every
+       trigger mid-scroll, which recomputes and re-pins the studio pitch
+       under your thumb: that is the jump. Ignore those; a rotate still
+       refreshes because the width changes. */
+    ScrollTrigger.config({ ignoreMobileResize: true });
+  }
 
   /* ---------- 1. Theme system ----------
      Day and night are off-white / off-black mono themes. Colour picks a
@@ -1151,11 +1159,8 @@
 
          start is a function so ScrollTrigger re-runs it on every refresh,
          which covers a rotate, a font swap and a desktop resize without a
-         resize listener of our own. That matters on a phone, where the
-         viewport height changes every time the browser toolbar slides away:
-         clientHeight is what the page actually gets, a good deal less than
-         the screen. anticipatePin is deliberately left off, it starts the
-         pin a beat early and that read as a jump against the smooth scroll. */
+         resize listener of our own. clientHeight is what the page actually
+         gets on a phone, a good deal less than the screen. */
       gsap.fromTo(p.querySelectorAll('.w'), { opacity: 0.16 }, {
         opacity: 1, duration: 0.01, stagger: 1, ease: 'none',
         scrollTrigger: {
@@ -1168,7 +1173,12 @@
           end: '+=150%',
           pin: section,
           scrub: true,
-          invalidateOnRefresh: true
+          /* On touch the scroll events arrive late, so without this the
+             section scrolls a frame past its mark before being pinned and
+             snaps back: that reads as a glitch. With a mouse, where events
+             are prompt and Lenis eases the scroll, the same setting made the
+             pin land a beat early instead, so it is touch only. */
+          anticipatePin: finePointer ? 0 : 1
         }
       });
     });
