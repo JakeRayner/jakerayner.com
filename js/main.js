@@ -1196,5 +1196,20 @@
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
     }
+
+    /* Lazy images load as you scroll, and any one that changes the page's
+       height leaves every trigger below it measured against a page that no
+       longer exists: on a phone the studio pin fired thousands of pixels
+       early for exactly this reason. The work tiles now carry width and
+       height so their space is reserved up front; this is the belt and
+       braces for anything else, a refresh once the page has settled after
+       an image lands. Load events do not bubble, so this listens in the
+       capture phase. */
+    var imgRefresh = null;
+    document.addEventListener('load', function (e) {
+      if (!e.target || e.target.tagName !== 'IMG') return;
+      clearTimeout(imgRefresh);
+      imgRefresh = setTimeout(function () { ScrollTrigger.refresh(); }, 120);
+    }, true);
   }
 })();

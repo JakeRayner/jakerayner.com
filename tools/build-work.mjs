@@ -9,6 +9,11 @@
       node tools/build-work.mjs
 
   Images appear in filename order (prefix with 01-, 02- to control it).
+  Every <img> carries its pixel width and height, read from the file, so the
+  tile reserves its space before the (lazy) file arrives. Without that the
+  page grows as images load while you scroll, and anything measured against
+  the page beforehand, the pinned studio pitch above all, lands in the wrong
+  place on a phone.
   Everything between the <!-- work:start --> / <!-- work:end --> and
   <!-- studio:start --> / <!-- studio:end --> markers in index.html is
   regenerated; nothing outside them is touched. Folders with "do not use" in
@@ -127,7 +132,7 @@ function readGroups() {
           /* a cropped image is laid out by the shape it ends up, not the
              shape the file happens to be */
           const ratio = crop ? eval(crop.ratio.replace(/\s/g, '')) : w / h;
-          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop };
+          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, w, h, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop };
         });
       return { folder, key, ...p, images };
     })
@@ -179,7 +184,7 @@ function tile(g, t, idx, total, endAlone) {
   return `          <a class="${cls}" href="${href}" id="${id}"${gate} data-speed="${speed}">
             <div class="col-media">
               <div class="col-img${t.img.crop ? ' is-crop' : ''}"${imgStyle(t.img)}>
-                <img src="${t.img.src}" alt="${esc(alt)}" loading="lazy">
+                <img src="${t.img.src}" width="${t.img.w}" height="${t.img.h}" alt="${esc(alt)}" loading="lazy">
               </div>
             </div>
             <div class="col-cap">${caption(g)}
