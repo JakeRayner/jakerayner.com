@@ -415,10 +415,26 @@ section{padding:110px 0; position:relative;}
    spans set the width and the image sets the height, so the collage's
    rhythm comes from the images themselves */
 .col-media{position:relative; overflow:hidden;}
-/* the tile has its final shape before its file arrives (the img carries
-   width and height); this faint fill is what you see in that gap, so it
-   reads as a tile still loading rather than a hole. The photo covers it. */
-.col-img{background:var(--glass);}
+/* Every tile has a background: --tile-bg, one colour eyedropped from the
+   image (tools/tile-colours.mjs). Behind a transparent image it is what
+   shows through; behind an opaque one it is what you see while the file
+   is still on its way, since the tile already has its final shape (the
+   img carries width and height). Until the image lands a soft shimmer
+   sweeps across, so the space reads as loading rather than as a hole;
+   main.js adds is-loaded when it arrives and the shimmer goes. */
+.col-img{position:relative; background:var(--tile-bg, var(--glass));}
+.col-img::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(105deg, transparent 30%, rgba(255,255,255,.09) 50%, transparent 70%);
+  background-size:220% 100%;
+  animation:tileShimmer 1.6s ease-in-out infinite;
+}
+.col-img.is-loaded::before{display:none;}
+@keyframes tileShimmer{
+  0%{background-position:120% 0; opacity:.6;}
+  50%{opacity:1;}
+  100%{background-position:-120% 0; opacity:.6;}
+}
 .col-img img{
   width:100%; height:auto; display:block;
   /* --zoom (set by tools/build-work.mjs per image) enlarges a shot inside
@@ -956,4 +972,5 @@ footer{
   .tt-rand{transition:none;}
   .scroll-cue i{animation:none; transform:none;}
   .magnetic, .btn, .ov-txt, header.nav, .col-img img, a.case-full{transition:none;}
+  .col-img::before{animation:none;}
 }

@@ -70,6 +70,13 @@ const CROP = {
 };
 const cropFor = f => { for (const k in CROP) if (f.includes(k)) return CROP[k]; return null; };
 
+/* One background colour per image, eyedropped by tools/tile-colours.mjs
+   into colours.json (keyed "Folder/file"). It sits behind a transparent
+   image and is the loading colour behind an opaque one. Missing entries
+   just get no colour, so a new image renders fine before the tool runs. */
+let COLOURS = {};
+try { COLOURS = JSON.parse(readFileSync(join(WORK_DIR, 'colours.json'), 'utf8')); } catch (e) {}
+
 /* Featured images break out of the pairing and sit alone on their own row
    at the given width (8 = centred two thirds, 12 = full width). Matched on
    part of the filename. */
@@ -132,7 +139,7 @@ function readGroups() {
           /* a cropped image is laid out by the shape it ends up, not the
              shape the file happens to be */
           const ratio = crop ? eval(crop.ratio.replace(/\s/g, '')) : w / h;
-          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, w, h, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop };
+          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, w, h, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop, bg: COLOURS[`${folder}/${f}`] || null };
         });
       return { folder, key, ...p, images };
     })
@@ -167,6 +174,7 @@ function layout(images) {
    reads the same ones off the tile so the enlarged shot matches the thumb */
 function imgStyle(img) {
   const bits = [];
+  if (img.bg) bits.push(`--tile-bg:${img.bg}`);
   if (img.zoom) bits.push(`--zoom:${img.zoom}`);
   if (img.crop) bits.push(`--crop-ratio:${img.crop.ratio}`, `--crop-pos:${img.crop.pos}`);
   return bits.length ? ` style="${bits.join('; ')}"` : '';

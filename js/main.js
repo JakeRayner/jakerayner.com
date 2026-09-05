@@ -592,6 +592,19 @@
     });
   })();
 
+  /* ---------- 1b2. Tile loading state ----------
+     Each tile shimmers over its background colour until its image lands
+     (css: .col-img::before). Images already in cache are complete before
+     this runs, so check that first rather than waiting on a load event
+     that has already fired. */
+  Array.prototype.forEach.call(document.querySelectorAll('.col-img'), function (box) {
+    var img = box.querySelector('img');
+    if (!img) { box.classList.add('is-loaded'); return; }
+    var done = function () { box.classList.add('is-loaded'); };
+    if (img.complete && img.naturalWidth) done();
+    else { img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); }
+  });
+
   /* ---------- 1c. Work gallery ----------
      Tapping a work photo opens that project's photos full screen. Swipe or
      arrow between them; the project's logo and its one line of caption sit
@@ -642,7 +655,7 @@
             '<span class="lb-name"></span>' +
             '<span class="lb-meta"></span>' +
           '</div>' +
-          '<button class="lb-go" type="button">View case study</button>' +
+          '<button class="lb-go" type="button">View project</button>' +
         '</div>';
       document.body.appendChild(lb);
       track = lb.querySelector('.lb-track');
@@ -662,6 +675,23 @@
       lb.addEventListener('click', function (e) {
         if (e.target === lb || e.target === track || e.target.classList.contains('lb-stage') || e.target.classList.contains('lb-slide')) close();
       });
+      /* A swipe on the footer, the arrows or the close button pages too.
+         The track itself is left to native scrolling (a touch that starts
+         there is ignored here, or it would page twice); this only covers
+         the parts of the overlay that are not the track. */
+      var swipeX = null, swipeY = null;
+      lb.addEventListener('touchstart', function (e) {
+        if (track.contains(e.target) || e.touches.length !== 1) { swipeX = null; return; }
+        swipeX = e.touches[0].clientX; swipeY = e.touches[0].clientY;
+      }, { passive: true });
+      lb.addEventListener('touchend', function (e) {
+        if (swipeX === null || !e.changedTouches.length) return;
+        var dx = e.changedTouches[0].clientX - swipeX;
+        var dy = e.changedTouches[0].clientY - swipeY;
+        swipeX = null;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
+        go(index + (dx < 0 ? 1 : -1));
+      }, { passive: true });
       /* the track is a scroll-snap carousel, so a swipe is just a scroll:
          read the position back rather than tracking touch points ourselves */
       track.addEventListener('scroll', function () {
@@ -724,6 +754,8 @@
           if (img) {
             img.loading = 'eager';
             img.decoding = 'async';
+            box.classList.toggle('is-loaded', !!(img.complete && img.naturalWidth));
+            if (!img.complete) img.addEventListener('load', function () { box.classList.add('is-loaded'); }, { once: true });
             /* the box keeps the shape of the shot so the photo fills it
                exactly, and a zoomed one is clipped by it just as the tile
                clips it. A crop overrides the ratio with its own. */
