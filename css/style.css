@@ -54,12 +54,20 @@ body{
      they carry the palette hue, on top of the tint already mixed into --bg
      and --bg2 (see rollPalette). Fixed attachment, so they sit still behind
      the scroll rather than sliding with it. */
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  transition:background-color .6s ease, color .6s ease;
+}
+/* The two accent glows live on a fixed layer of their own rather than as
+   background-attachment:fixed on the body. A fixed body background makes a
+   phone repaint the whole page every frame it scrolls, which was a good
+   part of the jitter on Home; a fixed pseudo-element is composited once
+   and just sits there. z-index -1 puts it under the content, above the
+   body's own gradient. */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
   background:
     radial-gradient(1100px 620px at 88% -12%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
-    radial-gradient(900px 700px at 6% 108%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 66%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
-  background-attachment:fixed;
-  transition:background-color .6s ease, color .6s ease;
+    radial-gradient(900px 700px at 6% 108%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 66%);
 }
 ::selection{background:var(--accent); color:var(--accent-ink);}
 a{color:inherit;}
@@ -402,7 +410,11 @@ section{padding:110px 0; position:relative;}
    big gaps fall between projects */
 .col-grid{display:flex; flex-direction:column; gap:clamp(72px,9vw,170px);}
 .col-group{display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(14px,1.6vw,24px); align-items:start;}
-.col-item{position:relative; display:block; color:inherit; text-decoration:none; grid-column:span 12; will-change:transform;}
+.col-item{position:relative; display:block; color:inherit; text-decoration:none; grid-column:span 12;}
+/* the parallax drift is desktop only (see main.js), so the compositing
+   layer it wants is too: 42 promoted tiles of full-size photos is real
+   memory on a phone, for an animation that never runs there */
+@media (min-width:761px){ .col-item{will-change:transform;} }
 .span-4{grid-column:span 4;} .span-5{grid-column:span 5;} .span-7{grid-column:span 7;} .span-8{grid-column:span 8;} .span-12{grid-column:span 12;}
 /* single tiles can sit against the right edge instead of the left */
 .end.span-4{grid-column:9 / 13;} .end.span-5{grid-column:8 / 13;} .end.span-7{grid-column:6 / 13;} .end.span-8{grid-column:5 / 13;}
@@ -662,13 +674,15 @@ html.lb-open, html.lb-open body{overflow:hidden;}
 }
 .gate-veil-err{margin-top:14px !important; margin-bottom:0 !important;}
 .gate-veil-req{margin-top:18px !important; margin-bottom:0 !important;}
-/* the big top-right escape hatch */
+/* the top-right escape hatch: a solid glass square like the gallery's,
+   so it reads as a button on a phone and not as a stray glyph */
 .gate-veil-close{
-  position:absolute; top:22px; right:28px;
-  background:transparent; border:none; cursor:pointer;
-  color:var(--ink); font:inherit; font-size:46px; line-height:1;
-  padding:8px 14px; transition:color .2s ease;
+  position:absolute; top:clamp(12px,2vw,22px); right:clamp(12px,2vw,22px); z-index:2;
+  display:grid; place-items:center; width:44px; height:44px; padding:0;
+  background:var(--glass-strong); border:none; cursor:pointer; color:var(--ink);
+  transition:background-color .2s ease, color .2s ease;
 }
+.gate-veil-close svg{width:20px; height:20px;}
 .gate-veil-close:hover{color:var(--accent);}
 .gate-veil-req a{color:var(--ink); text-decoration:none;}
 .gate-veil-req a:hover{color:var(--accent);}
