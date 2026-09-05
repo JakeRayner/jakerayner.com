@@ -42,6 +42,9 @@
   --tt-size:38px; --tt-gap:4px;
   --pad:clamp(22px,3.2vw,52px);
   --glass:color-mix(in srgb, var(--ink) 6%, transparent);
+  /* the pane: light enough that the page still reads through it. Used by
+     the client logo cells and by a tile waiting for its image. */
+  --glass-soft:color-mix(in srgb, var(--ink) 3.5%, transparent);
   --glass-strong:color-mix(in srgb, var(--ink) 10%, transparent);
   --r:0;
 }
@@ -382,10 +385,11 @@ section{padding:110px 0; position:relative;}
 .client-grid{display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:1px;}
 .client-cell{
   aspect-ratio:1; display:grid; place-items:center;
-  background:var(--glass);
+  background:var(--glass-soft);
+  border-radius:var(--r);
   transition:background-color .3s ease, transform .35s ease;
 }
-.client-cell:hover{background:var(--glass-strong);}
+.client-cell:hover{background:var(--glass);}
 .client-logo{
   display:block; width:64%; height:44%;
   background:var(--ink); opacity:.85;
@@ -427,20 +431,20 @@ section{padding:110px 0; position:relative;}
    spans set the width and the image sets the height, so the collage's
    rhythm comes from the images themselves */
 .col-media{position:relative; overflow:hidden;}
-/* Every tile has a background: --tile-bg, one colour eyedropped from the
-   image (tools/tile-colours.mjs). Behind a transparent image it is what
-   shows through; behind an opaque one it is what you see while the file
-   is still on its way, since the tile already has its final shape (the
-   img carries width and height). Until the image lands a soft shimmer
-   sweeps across, so the space reads as loading rather than as a hole;
-   main.js adds is-loaded when it arrives and the shimmer goes. */
-.col-img{position:relative; background:var(--tile-bg, var(--glass));}
+/* While a tile's image is on its way it shows the same glass as the client
+   logo cells up in the hero: light enough that the page reads through it,
+   so it is a pane rather than a slab. The tile already has its final shape
+   (the img carries width and height), so nothing moves when the file
+   lands; main.js adds is-loaded then and the shimmer stops. Any background
+   an image needs is baked into the file itself, not painted here. */
+.col-img{position:relative; background:var(--glass-soft);}
 .col-img::before{
   content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
-  background:linear-gradient(105deg, transparent 30%, rgba(255,255,255,.09) 50%, transparent 70%);
+  background:linear-gradient(105deg, transparent 30%, color-mix(in srgb, var(--ink) 7%, transparent) 50%, transparent 70%);
   background-size:220% 100%;
   animation:tileShimmer 1.6s ease-in-out infinite;
 }
+.col-img.is-loaded{background:none;}
 .col-img.is-loaded::before{display:none;}
 @keyframes tileShimmer{
   0%{background-position:120% 0; opacity:.6;}
@@ -911,9 +915,15 @@ footer{
 
 /* ---------- iOS-style glass, the only surface treatment ----------
    Light fill + backdrop blur on barely-rounded corners. No outlines, no
-   shadows, no inset edges. */
+   shadows, no inset edges.
+
+   The client logo cells and the loading tiles are deliberately not in this
+   list. They sit over the dot field, and a 16px backdrop blur smears those
+   dots into a flat wash, which is what made the cells look like they filled
+   in once the blur composited. They take the fill alone (--glass-soft), so
+   the page still reads through them, and they cost nothing to scroll. */
 .case-full, .meta, .value, .offer, .stat, .soon, .chip, .case-tags span,
-.client-cell, .work-feature, .btn.ghost, .help-card, .svc, .step{
+.work-feature, .btn.ghost, .help-card, .svc, .step{
   background:var(--glass);
   backdrop-filter:blur(16px) saturate(1.35);
   -webkit-backdrop-filter:blur(16px) saturate(1.35);
@@ -921,7 +931,7 @@ footer{
 }
 .btn{border-radius:var(--r);}
 .tt-btn[aria-pressed="true"]{border-radius:var(--r);}
-a.case-full:hover, .client-cell:hover{background:var(--glass-strong);}
+a.case-full:hover{background:var(--glass-strong);}
 footer{
   background:var(--glass);
   backdrop-filter:blur(16px) saturate(1.35);
