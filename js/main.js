@@ -515,7 +515,7 @@
      standalone gate that protect-work.mjs builds, this veil is the front
      door. */
   (function caseGate() {
-    var tiles = document.querySelectorAll('.gw-item[data-gated]');
+    var tiles = document.querySelectorAll('.col-item[data-gated], .col-title[data-gated]');
     if (!tiles.length || !window.crypto || !crypto.subtle || !window.fetch) return;
 
     var veil = null, input = null, err = null, button = null;
@@ -608,8 +608,12 @@
 
     tiles.forEach(function (tile) {
       tile.addEventListener('click', function (e) {
+        /* the tile's link and the tile itself (image, name) both go to the
+           case study; the tile carries the url in data-href. */
+        var link = e.target.closest ? e.target.closest('a') : null;
+        if (link && !tile.contains(link)) link = null;
         e.preventDefault();
-        var url = tile.getAttribute('href');
+        var url = link ? link.getAttribute('href') : tile.getAttribute('data-href');
         fetchVerifier().then(function (verifier) {
           /* no verifier at all: fail open rather than dead-ending the tile */
           if (!verifier) { location.href = url; return; }
@@ -637,6 +641,33 @@
     document.querySelectorAll('a, button').forEach(function (el) {
       el.addEventListener('mouseenter', function () { cursor.classList.add('big'); });
       el.addEventListener('mouseleave', function () { cursor.classList.remove('big'); });
+    });
+
+    /* Over the studio banner on Home the cursor turns into the STUDIO
+       lockup in an arrow tag, "Visit the Studio". It drops back to the dot
+       over the links inside the banner (Let's talk, Visit the Studio), which
+       keep their own behaviour. */
+    var nodBanner = document.querySelector('[data-studio-link]');
+    if (nodBanner) {
+      var label = document.createElement('span');
+      label.className = 'cur-label';
+      label.textContent = 'Visit the Studio';
+      cursor.appendChild(label);
+      nodBanner.addEventListener('mouseover', function (e) {
+        var onLink = e.target.closest && e.target.closest('a');
+        cursor.classList.toggle('studio', !onLink);
+      });
+      nodBanner.addEventListener('mouseleave', function () { cursor.classList.remove('studio'); });
+    }
+  }
+
+  /* the whole studio banner is a link to the studio page, apart from the
+     real links inside it (which go where they say). Works on touch too. */
+  var nodLink = document.querySelector('[data-studio-link]');
+  if (nodLink) {
+    nodLink.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a')) return;
+      location.href = nodLink.getAttribute('data-studio-link');
     });
   }
 
@@ -911,14 +942,8 @@
       });
     });
 
-    /* The first gallery row (Debenhams) is part of the landing view, so it
-       gets no entrance: it sits fully loaded from the first paint and keeps
-       only the parallax scrub. Rows after it still animate in on scroll. */
-    var firstGw = document.querySelector('.gw-item');
-
     /* masked text rises */
     gsap.utils.toArray('.mask').forEach(function (m) {
-      if (firstGw && firstGw.contains(m)) return;
       var inner = m.querySelector('.mask-in');
       if (!inner) return;
       gsap.fromTo(inner, { yPercent: 120 }, {
@@ -927,40 +952,33 @@
       });
     });
 
-    /* work gallery rows: line draw, media clip reveal, parallax scrub */
-    gsap.utils.toArray('.gw-item').forEach(function (item) {
-      var line = item.querySelector('.gw-line');
-      var media = item.querySelector('.gw-media');
-      var inner = item.querySelector('.gw-media-inner');
-      var num = item.querySelector('.gw-num');
-      var meta = item.querySelector('.gw-meta');
-      var cta = item.querySelector('.gw-cta');
+    /* work collage: each tile clips up into view, then drifts on scroll at
+       its own speed (data-speed, small tiles faster than wide ones) so the
+       rows slide past each other */
+    gsap.utils.toArray('.col-item').forEach(function (item) {
+      var media = item.querySelector('.col-media');
+      var speed = parseFloat(item.getAttribute('data-speed')) || 1;
 
-      if (item !== firstGw) {
-        var tl = gsap.timeline({ scrollTrigger: { trigger: item, start: 'top 82%' } });
-        if (line) tl.fromTo(line, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'power3.inOut' }, 0);
-        if (num) tl.fromTo(num, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.2);
-        if (meta) tl.fromTo(meta, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.3);
-        if (cta) tl.fromTo(cta, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.45);
-        if (media) tl.fromTo(media, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power4.out' }, 0.1);
-        if (inner) tl.fromTo(inner, { scale: 1.18 }, { scale: 1, duration: 1.4, ease: 'power3.out' }, 0.1);
-      }
-
-      if (inner && media) {
-        gsap.fromTo(inner, { yPercent: -6 }, {
-          yPercent: 6, ease: 'none',
-          scrollTrigger: { trigger: media, start: 'top bottom', end: 'bottom top', scrub: true }
+      /* the entrance reveal and the drift are desktop only: in the single
+         column on phones an unrevealed tile reads as a big empty gap, and
+         the drift would open and close the gaps between images as you scroll */
+      if (window.matchMedia('(min-width: 761px)').matches) {
+        gsap.fromTo(media, { clipPath: 'inset(100% 0% 0% 0%)' }, {
+          clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power4.out',
+          scrollTrigger: { trigger: item, start: 'top 88%' }
+        });
+        gsap.fromTo(item, { y: 70 * speed }, {
+          y: -70 * speed, ease: 'none',
+          scrollTrigger: { trigger: item, start: 'top bottom', end: 'bottom top', scrub: true }
         });
       }
     });
 
-    /* paragraphs that light up word by word. The section pins in the middle
-       of the screen while it happens, so the scroll action itself is what
-       fills the words in, then the page releases and continues. Asked for
-       explicitly ("scroll jack"), which is why this one pins while the
-       Lenis lerp rule elsewhere forbids anything that reads like it.
-       Teleprompter style, also explicit: each word snaps on in sequence
-       (the near-zero duration against a whole-unit stagger), no fade. */
+    /* paragraphs that light up word by word as the section scrolls through
+       the viewport. It used to pin while this happened; the pin jumped
+       against the smooth scroll, so it now stays in the flow. Teleprompter
+       style, explicit: each word snaps on in sequence (the near-zero
+       duration against a whole-unit stagger), no fade. */
     gsap.utils.toArray('[data-anim="words"]').forEach(function (p) {
       /* works on a single paragraph, or a container of paragraphs: each
          paragraph's words are split in place, then one pin covers the lot
@@ -989,11 +1007,13 @@
       var parts = p.querySelectorAll('p').length ? p.querySelectorAll('p') : [p];
       parts.forEach(splitWords);
       var section = p.closest('section') || p;
+      /* no pin: the section stays put in the flow and the words light up
+         as it scrolls through the viewport, starting once its top is well
+         on screen and finishing before its bottom leaves the middle */
       gsap.fromTo(p.querySelectorAll('.w'), { opacity: 0.16 }, {
         opacity: 1, duration: 0.01, stagger: 1, ease: 'none',
         scrollTrigger: {
-          trigger: section, start: 'center center', end: '+=150%',
-          pin: true, scrub: true, anticipatePin: 1
+          trigger: section, start: 'top 70%', end: 'bottom 55%', scrub: true
         }
       });
     });
