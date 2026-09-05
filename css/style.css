@@ -415,6 +415,10 @@ section{padding:110px 0; position:relative;}
    spans set the width and the image sets the height, so the collage's
    rhythm comes from the images themselves */
 .col-media{position:relative; overflow:hidden;}
+/* the tile has its final shape before its file arrives (the img carries
+   width and height); this faint fill is what you see in that gap, so it
+   reads as a tile still loading rather than a hole. The photo covers it. */
+.col-img{background:var(--glass);}
 .col-img img{
   width:100%; height:auto; display:block;
   /* --zoom (set by tools/build-work.mjs per image) enlarges a shot inside
