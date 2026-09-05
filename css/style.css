@@ -487,19 +487,23 @@ section{padding:110px 0; position:relative;}
 
 /* ---------- work gallery ----------
    Full screen photos for one project, paged by swipe (the track is a
-   scroll-snap carousel, so a swipe is just a scroll) or by the arrows. The
-   footer carries the project's logo, its line of caption and the button
-   that asks for the case study password. */
+   scroll-snap carousel, so a swipe is just a native scroll) or by the
+   arrows. The footer carries the project's logo, its line of caption and
+   the button that asks for the case study password. No backdrop blur: a
+   blur over the whole page has to be recomposited on every frame of the
+   swipe, which is exactly the stutter a carousel cannot afford on a phone. */
 html.lb-open, html.lb-open body{overflow:hidden;}
 .lb{
   position:fixed; inset:0; z-index:100; display:flex; flex-direction:column;
-  background:color-mix(in srgb, var(--bg) 78%, #000);
-  -webkit-backdrop-filter:blur(26px); backdrop-filter:blur(26px);
+  background:color-mix(in srgb, var(--bg) 94%, #000);
   opacity:0; pointer-events:none; transition:opacity .28s ease;
 }
 .lb.open{opacity:1; pointer-events:auto;}
+/* the stage is the photo area: the track fills it and the arrows sit at
+   its vertical middle, which is where the photo is centred */
+.lb-stage{position:relative; flex:1 1 auto; min-height:0; display:flex;}
 .lb-track{
-  flex:1 1 auto; min-height:0; display:flex;
+  flex:1 1 auto; min-width:0; display:flex;
   overflow-x:auto; overflow-y:hidden; outline:none;
   scroll-snap-type:x mandatory; overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch; scrollbar-width:none;
@@ -508,7 +512,9 @@ html.lb-open, html.lb-open body{overflow:hidden;}
 .lb-slide{
   flex:0 0 100%; height:100%; scroll-snap-align:center; scroll-snap-stop:always;
   display:flex; align-items:center; justify-content:center;
-  padding:clamp(58px,8vh,88px) clamp(14px,5vw,90px) clamp(10px,2vh,22px);
+  /* the same room top and bottom, so the photo really is centred; the
+     close button floats over the corner rather than pushing it down */
+  padding:clamp(56px,7vh,80px) clamp(14px,5vw,90px);
 }
 /* the box takes the shape of the shot, so the photo fills it exactly and a
    zoomed or cropped one is clipped by it just as its tile clips it */
@@ -527,7 +533,6 @@ html.lb-open, html.lb-open body{overflow:hidden;}
   position:absolute; z-index:2; display:grid; place-items:center;
   width:44px; height:44px; padding:0; cursor:pointer;
   background:var(--glass-strong); border:none; color:var(--ink);
-  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
   transition:opacity .2s ease, background-color .2s ease;
 }
 .lb-x svg, .lb-nav svg{width:20px; height:20px;}
@@ -556,17 +561,14 @@ html.lb-open, html.lb-open body{overflow:hidden;}
 }
 .lb-name{font-size:clamp(19px,2vw,28px); font-weight:500; letter-spacing:-.03em; line-height:1.05;}
 .lb-meta{font-size:13px; line-height:1.5; color:var(--ink-dim);}
-.lb-act{display:flex; align-items:center; gap:14px; flex:0 0 auto;}
-.lb-count{font-size:12.5px; color:var(--ink-dim); font-variant-numeric:tabular-nums;}
 .lb-go{
-  background:var(--accent-grad); color:var(--accent-ink); border:none; cursor:pointer;
+  flex:0 0 auto; background:var(--accent-grad); color:var(--accent-ink); border:none; cursor:pointer;
   font:inherit; font-size:14.5px; font-weight:500; padding:13px 22px; white-space:nowrap;
 }
-/* phones: the caption stacks above a full width action row */
+/* phones: the caption stacks above a full width button */
 @media (max-width:640px){
-  .lb-foot{flex-direction:column; align-items:stretch; gap:14px;}
-  .lb-act{justify-content:space-between;}
-  .lb-go{flex:1 1 auto; text-align:center; padding:14px 18px;}
+  .lb-foot{flex-direction:column; align-items:stretch; gap:16px;}
+  .lb-go{width:100%; padding:15px 18px; font-size:15px;}
   .lb-nav{width:38px; height:38px;}
 }
 

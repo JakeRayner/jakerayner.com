@@ -603,7 +603,7 @@
       (groups[key] = groups[key] || []).push(tile);
     });
 
-    var lb, track, foot, logoEl, nameEl, metaEl, countEl, goBtn, prevBtn, nextBtn;
+    var lb, track, foot, logoEl, nameEl, metaEl, goBtn, prevBtn, nextBtn;
     var shots = [], index = 0, url = null, lastFocus = null, scrollTick = null;
 
     function build() {
@@ -616,23 +616,25 @@
         '<button class="lb-x" type="button" aria-label="Close gallery">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>' +
         '</button>' +
-        '<div class="lb-track" tabindex="-1"></div>' +
-        '<button class="lb-nav lb-prev" type="button" aria-label="Previous image">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>' +
-        '</button>' +
-        '<button class="lb-nav lb-next" type="button" aria-label="Next image">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>' +
-        '</button>' +
+        /* the stage holds the track and the arrows, so the arrows centre on
+           the photo (which is centred in the stage) and not on the whole
+           overlay, footer included */
+        '<div class="lb-stage">' +
+          '<div class="lb-track" tabindex="-1"></div>' +
+          '<button class="lb-nav lb-prev" type="button" aria-label="Previous image">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>' +
+          '</button>' +
+          '<button class="lb-nav lb-next" type="button" aria-label="Next image">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>' +
+          '</button>' +
+        '</div>' +
         '<div class="lb-foot">' +
           '<div class="lb-cap">' +
             '<span class="lb-logo" aria-hidden="true"></span>' +
             '<span class="lb-name"></span>' +
             '<span class="lb-meta"></span>' +
           '</div>' +
-          '<div class="lb-act">' +
-            '<span class="lb-count" aria-live="polite"></span>' +
-            '<button class="lb-go" type="button">View project</button>' +
-          '</div>' +
+          '<button class="lb-go" type="button">View case study</button>' +
         '</div>';
       document.body.appendChild(lb);
       track = lb.querySelector('.lb-track');
@@ -640,7 +642,6 @@
       logoEl = lb.querySelector('.lb-logo');
       nameEl = lb.querySelector('.lb-name');
       metaEl = lb.querySelector('.lb-meta');
-      countEl = lb.querySelector('.lb-count');
       goBtn = lb.querySelector('.lb-go');
       prevBtn = lb.querySelector('.lb-prev');
       nextBtn = lb.querySelector('.lb-next');
@@ -651,7 +652,7 @@
       goBtn.addEventListener('click', function () { openCase(url); });
       /* a tap on the backdrop, but not on a photo or a control, closes */
       lb.addEventListener('click', function (e) {
-        if (e.target === lb || e.target === track || e.target.classList.contains('lb-slide')) close();
+        if (e.target === lb || e.target === track || e.target.classList.contains('lb-stage') || e.target.classList.contains('lb-slide')) close();
       });
       /* the track is a scroll-snap carousel, so a swipe is just a scroll:
          read the position back rather than tracking touch points ourselves */
@@ -668,7 +669,6 @@
     }
 
     function paint() {
-      countEl.textContent = (index + 1) + ' / ' + shots.length;
       prevBtn.disabled = index === 0;
       nextBtn.disabled = index === shots.length - 1;
     }
