@@ -627,7 +627,7 @@
     });
 
     var lb, track, foot, logoEl, nameEl, metaEl, goBtn, prevBtn, nextBtn;
-    var shots = [], index = 0, url = null, lastFocus = null, scrollTick = null;
+    var shots = [], index = 0, url = null, lastFocus = null;
 
     function build() {
       lb = document.createElement('div');
@@ -643,7 +643,7 @@
            the photo (which is centred in the stage) and not on the whole
            overlay, footer included */
         '<div class="lb-stage">' +
-          '<div class="lb-track" tabindex="-1"></div>' +
+          '<div class="lb-track" tabindex="-1" data-lenis-prevent></div>' +
           '<button class="lb-nav lb-prev" type="button" aria-label="Previous image">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>' +
           '</button>' +
@@ -677,35 +677,67 @@
       lb.addEventListener('click', function (e) {
         if (e.target === lb || e.target === track || e.target.classList.contains('lb-stage') || e.target.classList.contains('lb-slide')) close();
       });
-      /* A swipe on the footer, the arrows or the close button pages too.
-         The track itself is left to native scrolling (a touch that starts
-         there is ignored here, or it would page twice); this only covers
-         the parts of the overlay that are not the track. */
-      var swipeX = null, swipeY = null;
+      /* The track is moved by transform and the drag is driven here, rather
+         than being a native scroll-snap carousel. Native scrolling looked
+         right on a desktop but would not page on a phone: Lenis listens for
+         touchmove on window with a non-passive listener and, while stopped,
+         which is exactly what the gallery does to lock the page behind it,
+         calls preventDefault on every one, so the gesture never reached the
+         scroller. data-lenis-prevent on the track is the documented way out
+         of that and is set above, but owning the drag outright also settles
+         iOS's own habits inside a fixed overlay. touch-action:pan-y (css)
+         leaves vertical gestures to the browser and hands us the rest.
+
+         A drag anywhere in the overlay pages, footer and arrows included,
+         so there is nowhere in it where a swipe does nothing. */
+      var dragX = 0, dragY = 0, dragAt = 0, dragging = false, decided = false, horizontal = false;
+
+      function place(px, animate) {
+        track.style.transition = animate ? 'transform .42s cubic-bezier(.22,.75,.2,1)' : 'none';
+        track.style.transform = 'translate3d(' + px + 'px,0,0)';
+      }
+      function rest() { return -index * track.clientWidth; }
+
       lb.addEventListener('touchstart', function (e) {
-        if (track.contains(e.target) || e.touches.length !== 1) { swipeX = null; return; }
-        swipeX = e.touches[0].clientX; swipeY = e.touches[0].clientY;
+        if (e.touches.length !== 1 || shots.length < 2) { dragging = false; return; }
+        dragging = true; decided = false; horizontal = false;
+        dragX = e.touches[0].clientX; dragY = e.touches[0].clientY;
+        dragAt = rest();
       }, { passive: true });
-      lb.addEventListener('touchend', function (e) {
-        if (swipeX === null || !e.changedTouches.length) return;
-        var dx = e.changedTouches[0].clientX - swipeX;
-        var dy = e.changedTouches[0].clientY - swipeY;
-        swipeX = null;
-        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.3) return;
-        go(index + (dx < 0 ? 1 : -1));
-      }, { passive: true });
-      /* the track is a scroll-snap carousel, so a swipe is just a scroll:
-         read the position back rather than tracking touch points ourselves */
-      track.addEventListener('scroll', function () {
-        if (scrollTick) return;
-        scrollTick = requestAnimationFrame(function () {
-          scrollTick = null;
-          var w = track.clientWidth;
-          if (!w) return;
-          var at = Math.round(track.scrollLeft / w);
-          if (at !== index && at >= 0 && at < shots.length) { index = at; paint(); }
-        });
-      }, { passive: true });
+
+      lb.addEventListener('touchmove', function (e) {
+        if (!dragging || e.touches.length !== 1) return;
+        var dx = e.touches[0].clientX - dragX;
+        var dy = e.touches[0].clientY - dragY;
+        if (!decided) {
+          if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+          decided = true;
+          horizontal = Math.abs(dx) > Math.abs(dy);
+          if (!horizontal) { dragging = false; return; }
+        }
+        /* the gesture is ours now: stop the page or a parent taking it */
+        if (e.cancelable) e.preventDefault();
+        /* resist at the two ends, so the carousel feels bounded */
+        if ((index === 0 && dx > 0) || (index === shots.length - 1 && dx < 0)) dx *= 0.32;
+        place(dragAt + dx, false);
+      }, { passive: false });
+
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        if (!horizontal || !e.changedTouches || !e.changedTouches.length) { place(rest(), true); return; }
+        var dx = e.changedTouches[0].clientX - dragX;
+        /* a fifth of the width takes you to the next one */
+        if (Math.abs(dx) > track.clientWidth * 0.2) go(index + (dx < 0 ? 1 : -1));
+        else place(rest(), true);
+      }
+      lb.addEventListener('touchend', endDrag, { passive: true });
+      lb.addEventListener('touchcancel', endDrag, { passive: true });
+
+      /* a rotate changes the slide width, so re-seat the current one */
+      window.addEventListener('resize', function () {
+        if (lb.classList.contains('open')) place(rest(), false);
+      });
     }
 
     function paint() {
@@ -714,9 +746,9 @@
     }
 
     function go(to) {
-      if (to < 0 || to >= shots.length) return;
-      index = to;
-      track.scrollTo({ left: track.clientWidth * to, behavior: 'smooth' });
+      index = Math.max(0, Math.min(shots.length - 1, to));
+      track.style.transition = 'transform .42s cubic-bezier(.22,.75,.2,1)';
+      track.style.transform = 'translate3d(' + (-index * track.clientWidth) + 'px,0,0)';
       paint();
     }
 
@@ -779,7 +811,8 @@
       document.addEventListener('keydown', onKey);
       /* jump, do not glide, to the shot that was tapped */
       requestAnimationFrame(function () {
-        track.scrollLeft = track.clientWidth * index;
+        track.style.transition = 'none';
+        track.style.transform = 'translate3d(' + (-index * track.clientWidth) + 'px,0,0)';
         paint();
         track.focus({ preventScroll: true });
       });
