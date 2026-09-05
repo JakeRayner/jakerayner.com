@@ -380,6 +380,10 @@
     return null;
   }
 
+  function tint(base, accent, pct) {
+    return 'color-mix(in srgb, ' + accent + ' ' + pct + '%, ' + base + ')';
+  }
+
   function rollPalette(newFace) {
     try { localStorage.setItem('jr-colour-tried', '1'); } catch (e) {}
     /* never the same palette twice in a row, and never the same hue family
@@ -391,7 +395,16 @@
       pick = PALETTES[Math.floor(Math.random() * PALETTES.length)];
     }
     setTheme(
-      { mode: 'colour', name: pick.name, hue: pick.hue, bg: MONO.night.bg, bg2: MONO.night.bg2, ink: MONO.night.ink, accent: pick.accent, accent2: pick.accent2, accentInk: pick.accentInk },
+      { mode: 'colour', name: pick.name, hue: pick.hue,
+        /* Colour mode is night's black and white everywhere else, which left
+           it reading as plain night mode with a coloured button. The two
+           background stops now carry a whisper of the accent, under a tenth
+           of it, so the page is still black, just not neutral black. Mixed
+           into the stored theme rather than layered on in CSS so the head
+           snippet paints it too, with no flash of untinted black on load. */
+        bg: tint(MONO.night.bg, pick.accent, 6),
+        bg2: tint(MONO.night.bg2, pick.accent, 9),
+        ink: MONO.night.ink, accent: pick.accent, accent2: pick.accent2, accentInk: pick.accentInk },
       newFace ? nextFace() : currentFace()
     );
   }
@@ -430,79 +443,6 @@
     });
   }
 
-  /* ---------- 1c. Colour mode nudge ----------
-     A one-time toast under the header toggle: if a visitor has scrolled a
-     while and never tried colour mode, point them at it. Clicking it fires
-     colour mode there and then. Never shows again once seen, and never at
-     all once colour mode has ever been used (jr-colour-tried, set by
-     rollPalette). Lives inside the fixed header so it hides and returns
-     with it. */
-  (function colourNudge() {
-    var header = document.querySelector('header.nav');
-    if (!header || !ttColour) return;
-    var seen = null, tried = null;
-    try {
-      seen = localStorage.getItem('jr-colour-nudged');
-      tried = localStorage.getItem('jr-colour-tried');
-    } catch (e) {}
-    if (seen || tried) return;
-    if (currentTheme && currentTheme.mode === 'colour') return;
-
-    var toast = null, hideT = null, shown = false;
-
-    function hideToast() {
-      if (toast && toast.classList.contains('show')) {
-        toast.classList.remove('show');
-        toast.classList.add('hide');
-      }
-      header.classList.remove('nav-toast-open');
-      clearTimeout(hideT);
-    }
-
-    function showToast() {
-      if (shown) return;
-      shown = true;
-      try { localStorage.setItem('jr-colour-nudged', '1'); } catch (e) {}
-      toast = document.createElement('div');
-      toast.className = 'nav-toast';
-      toast.setAttribute('role', 'status');
-      toast.innerHTML =
-        '<button class="nav-toast-go" type="button">' +
-          '<span class="nav-toast-hi">Switched to colour mode yet?</span>' +
-          '<span class="nav-toast-sub">Try it, it\'s well cool.</span>' +
-        '</button>' +
-        '<button class="nav-toast-x" type="button" aria-label="Dismiss">×</button>';
-      header.appendChild(toast);
-      toast.querySelector('.nav-toast-go').addEventListener('click', function () {
-        hideToast();
-        ttColour.click();
-      });
-      toast.querySelector('.nav-toast-x').addEventListener('click', hideToast);
-      /* hold the header on screen while the toast is open, or the
-         hide-on-scroll behaviour whisks both away on the very scroll event
-         that triggered the nudge */
-      header.classList.add('nav-toast-open');
-      header.classList.remove('nav-hidden');
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { toast.classList.add('show'); });
-      });
-      hideT = setTimeout(hideToast, 5000);
-    }
-
-    var onScroll = function () {
-      if (window.scrollY > window.innerHeight * 1.2) {
-        window.removeEventListener('scroll', onScroll);
-        showToast();
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    /* any toggle tap means they found the thing, stand down */
-    [ttDay, ttNight, ttColour, ttRand].forEach(function (b) {
-      if (b) b.addEventListener('click', hideToast);
-    });
-  })();
-
   /* ---------- 1b. Case study password veil ----------
      The four group-brand case pages are encrypted in production (tools/
      protect-work.mjs). Clicking a gated tile on Home always opens a
@@ -514,9 +454,19 @@
      opens straight through. Direct links to a protected page hit the
      standalone gate that protect-work.mjs builds, this veil is the front
      door. */
+  /* set by caseGate below, called by the gallery's View project button and
+     by the title cards. Null where the browser has no WebCrypto, in which
+     case openCase just follows the link. */
+  var requestCase = null;
+  function openCase(url) {
+    if (!url) return;
+    if (requestCase) requestCase(url); else location.href = url;
+  }
+
   (function caseGate() {
-    var tiles = document.querySelectorAll('.col-item[data-gated], .col-title[data-gated]');
-    if (!tiles.length || !window.crypto || !crypto.subtle || !window.fetch) return;
+    var titles = document.querySelectorAll('.col-title[data-gated]');
+    var gated = document.querySelectorAll('[data-gated]');
+    if (!gated.length || !window.crypto || !crypto.subtle || !window.fetch) return;
 
     var veil = null, input = null, err = null, button = null;
     var pendingUrl = null, pendingPayload = null;
@@ -606,27 +556,209 @@
       setTimeout(function () { input.focus(); }, 60);
     }
 
+    requestCase = function (url) {
+      fetchVerifier().then(function (verifier) {
+        /* no verifier at all: fail open rather than dead-ending the link */
+        if (!verifier) { location.href = url; return; }
+        var saved = null;
+        try { saved = sessionStorage.getItem('jr-case-pass'); } catch (e2) {}
+        if (saved) {
+          canDecrypt(saved, verifier).then(function (ok) {
+            if (ok) { location.href = url; } else { openVeil(url, verifier); }
+          });
+        } else {
+          openVeil(url, verifier);
+        }
+      });
+    };
+
+    /* The title card above a project on phones still goes straight to the
+       case study. The photo tiles no longer do: tapping one opens the
+       gallery, and the View project button in there is what asks for the
+       password. That wiring lives in the gallery below. */
+    Array.prototype.forEach.call(titles, function (tile) {
+      tile.addEventListener('click', function (e) {
+        e.preventDefault();
+        requestCase(tile.getAttribute('href') || tile.getAttribute('data-href'));
+      });
+    });
+  })();
+
+  /* ---------- 1c. Work gallery ----------
+     Tapping a work photo opens that project's photos full screen. Swipe or
+     arrow between them; the project's logo and its one line of caption sit
+     at the bottom next to a View project button, and that button is what
+     asks for the case study password. The tiles stay real links, so with no
+     JS (or no WebCrypto) a tap still goes to the case study. */
+  (function workGallery() {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('.col-item'));
+    if (!tiles.length) return;
+
+    /* Group by case study url, not by .col-group: a group can hold several
+       projects (the four retail brands share one), and a gallery should only
+       ever page through the project you tapped. */
+    var groups = {};
+    tiles.forEach(function (tile) {
+      var key = tile.getAttribute('href') || tile.getAttribute('data-href') || '#';
+      (groups[key] = groups[key] || []).push(tile);
+    });
+
+    var lb, track, foot, logoEl, nameEl, metaEl, countEl, goBtn, prevBtn, nextBtn;
+    var shots = [], index = 0, url = null, lastFocus = null, scrollTick = null;
+
+    function build() {
+      lb = document.createElement('div');
+      lb.className = 'lb';
+      lb.setAttribute('role', 'dialog');
+      lb.setAttribute('aria-modal', 'true');
+      lb.setAttribute('aria-label', 'Project images');
+      lb.innerHTML =
+        '<button class="lb-x" type="button" aria-label="Close gallery">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>' +
+        '</button>' +
+        '<div class="lb-track" tabindex="-1"></div>' +
+        '<button class="lb-nav lb-prev" type="button" aria-label="Previous image">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>' +
+        '</button>' +
+        '<button class="lb-nav lb-next" type="button" aria-label="Next image">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>' +
+        '</button>' +
+        '<div class="lb-foot">' +
+          '<div class="lb-cap">' +
+            '<span class="lb-logo" aria-hidden="true"></span>' +
+            '<span class="lb-name"></span>' +
+            '<span class="lb-meta"></span>' +
+          '</div>' +
+          '<div class="lb-act">' +
+            '<span class="lb-count" aria-live="polite"></span>' +
+            '<button class="lb-go" type="button">View project</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(lb);
+      track = lb.querySelector('.lb-track');
+      foot = lb.querySelector('.lb-foot');
+      logoEl = lb.querySelector('.lb-logo');
+      nameEl = lb.querySelector('.lb-name');
+      metaEl = lb.querySelector('.lb-meta');
+      countEl = lb.querySelector('.lb-count');
+      goBtn = lb.querySelector('.lb-go');
+      prevBtn = lb.querySelector('.lb-prev');
+      nextBtn = lb.querySelector('.lb-next');
+
+      lb.querySelector('.lb-x').addEventListener('click', close);
+      prevBtn.addEventListener('click', function () { go(index - 1); });
+      nextBtn.addEventListener('click', function () { go(index + 1); });
+      goBtn.addEventListener('click', function () { openCase(url); });
+      /* a tap on the backdrop, but not on a photo or a control, closes */
+      lb.addEventListener('click', function (e) {
+        if (e.target === lb || e.target === track || e.target.classList.contains('lb-slide')) close();
+      });
+      /* the track is a scroll-snap carousel, so a swipe is just a scroll:
+         read the position back rather than tracking touch points ourselves */
+      track.addEventListener('scroll', function () {
+        if (scrollTick) return;
+        scrollTick = requestAnimationFrame(function () {
+          scrollTick = null;
+          var w = track.clientWidth;
+          if (!w) return;
+          var at = Math.round(track.scrollLeft / w);
+          if (at !== index && at >= 0 && at < shots.length) { index = at; paint(); }
+        });
+      }, { passive: true });
+    }
+
+    function paint() {
+      countEl.textContent = (index + 1) + ' / ' + shots.length;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === shots.length - 1;
+    }
+
+    function go(to) {
+      if (to < 0 || to >= shots.length) return;
+      index = to;
+      track.scrollTo({ left: track.clientWidth * to, behavior: 'smooth' });
+      paint();
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    }
+
+    function open(tile) {
+      if (!lb) build();
+      url = tile.getAttribute('href') || tile.getAttribute('data-href');
+      shots = groups[url || '#'] || [tile];
+      index = Math.max(0, shots.indexOf(tile));
+
+      /* the caption is the tile's own hover caption, logo and all: one
+         project per gallery, so it is fixed for as long as this one is open */
+      var cap = tile.querySelector('.col-cap');
+      var logo = cap && cap.querySelector('.col-logo');
+      var name = cap && cap.querySelector('.col-name');
+      var meta = cap && cap.querySelector('.col-meta');
+      logoEl.style.cssText = logo ? logo.getAttribute('style') || '' : '';
+      logoEl.hidden = !logo;
+      nameEl.textContent = name ? name.textContent : '';
+      nameEl.hidden = !!logo;
+      metaEl.textContent = meta ? meta.textContent : '';
+      goBtn.hidden = !url || url === '#';
+
+      track.innerHTML = '';
+      shots.forEach(function (shot) {
+        var slide = document.createElement('div');
+        slide.className = 'lb-slide';
+        var src = shot.querySelector('.col-img');
+        if (src) {
+          var box = src.cloneNode(true);
+          var img = box.querySelector('img');
+          if (img) {
+            img.loading = 'eager';
+            img.decoding = 'async';
+            /* the box keeps the shape of the shot so the photo fills it
+               exactly, and a zoomed one is clipped by it just as the tile
+               clips it. A crop overrides the ratio with its own. */
+            var natural = img.naturalWidth && img.naturalHeight
+              ? img.naturalWidth / img.naturalHeight
+              : shot.offsetWidth / Math.max(1, shot.offsetHeight);
+            box.style.setProperty('--nat-ratio', String(natural));
+          }
+          slide.appendChild(box);
+        }
+        track.appendChild(slide);
+      });
+
+      lastFocus = document.activeElement;
+      lb.classList.toggle('lb-single', shots.length < 2);
+      lb.classList.add('open');
+      document.documentElement.classList.add('lb-open');
+      if (lenis) lenis.stop();
+      document.addEventListener('keydown', onKey);
+      /* jump, do not glide, to the shot that was tapped */
+      requestAnimationFrame(function () {
+        track.scrollLeft = track.clientWidth * index;
+        paint();
+        track.focus({ preventScroll: true });
+      });
+    }
+
+    function close() {
+      if (!lb) return;
+      lb.classList.remove('open');
+      document.documentElement.classList.remove('lb-open');
+      if (lenis) lenis.start();
+      document.removeEventListener('keydown', onKey);
+      track.innerHTML = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
     tiles.forEach(function (tile) {
       tile.addEventListener('click', function (e) {
-        /* the tile's link and the tile itself (image, name) both go to the
-           case study; the tile carries the url in data-href. */
-        var link = e.target.closest ? e.target.closest('a') : null;
-        if (link && !tile.contains(link)) link = null;
+        /* leave modified clicks alone so the link still opens in a new tab */
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
         e.preventDefault();
-        var url = link ? link.getAttribute('href') : tile.getAttribute('data-href');
-        fetchVerifier().then(function (verifier) {
-          /* no verifier at all: fail open rather than dead-ending the tile */
-          if (!verifier) { location.href = url; return; }
-          var saved = null;
-          try { saved = sessionStorage.getItem('jr-case-pass'); } catch (e2) {}
-          if (saved) {
-            canDecrypt(saved, verifier).then(function (ok) {
-              if (ok) { location.href = url; } else { openVeil(url, verifier); }
-            });
-          } else {
-            openVeil(url, verifier);
-          }
-        });
+        open(tile);
       });
     });
   })();
@@ -837,7 +969,7 @@
     window.addEventListener('scroll', function () {
       var y = window.scrollY;
       if (y < 80) { navEl.classList.remove('nav-hidden'); }
-      else if (y > lastY + 4) { if (!navEl.classList.contains('nav-toast-open')) navEl.classList.add('nav-hidden'); }
+      else if (y > lastY + 4) { navEl.classList.add('nav-hidden'); }
       else if (y < lastY - 4) { navEl.classList.remove('nav-hidden'); }
       lastY = y;
     }, { passive: true });

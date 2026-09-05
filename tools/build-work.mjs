@@ -49,8 +49,21 @@ const skipFolder = d => d.startsWith('.') || d.startsWith('_') || /do not use/i.
    inside its tile (edges crop) without the file itself being touched. */
 const ZOOM = {
   // e.g. 'part of a filename': 1.3   (only when Jake asks; images otherwise show whole, at their own aspect)
+  'Mockuuups Smartphone': 1.75,       // The Loose Lead: push in on the handset so its UI reads
 };
 const zoomFor = f => { for (const k in ZOOM) if (f.includes(k)) return ZOOM[k]; return 0; };
+
+/* Re-crops an image to a different shape: `ratio` reshapes the tile and the
+   image covers it, `pos` is the object-position that decides what survives.
+   Use where a shot's subject is off centre or swimming in dead space, which
+   a plain ZOOM cannot fix because it only ever scales about the middle. */
+const CROP = {
+  // The Loose Lead: the laptop sits in the top third of a very tall frame,
+  // with the whole lower half empty table and floor. Crop to landscape and
+  // hold the machine in the middle of it.
+  'TLL Desktop': { ratio: '4 / 3', pos: '50% 22%' },
+};
+const cropFor = f => { for (const k in CROP) if (f.includes(k)) return CROP[k]; return null; };
 
 /* Featured images break out of the pairing and sit alone on their own row
    at the given width (8 = centred two thirds, 12 = full width). Matched on
@@ -110,7 +123,11 @@ function readGroups() {
         .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
         .map(f => {
           const { w, h } = dimensions(join(WORK_DIR, folder, f));
-          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, landscape: w / h > 1.15, zoom: zoomFor(f), feature: featureFor(f) };
+          const crop = cropFor(f);
+          /* a cropped image is laid out by the shape it ends up, not the
+             shape the file happens to be */
+          const ratio = crop ? eval(crop.ratio.replace(/\s/g, '')) : w / h;
+          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop };
         });
       return { folder, key, ...p, images };
     })
@@ -141,6 +158,15 @@ function layout(images) {
   return out;
 }
 
+/* inline custom properties for the per-image zoom and crop; the lightbox
+   reads the same ones off the tile so the enlarged shot matches the thumb */
+function imgStyle(img) {
+  const bits = [];
+  if (img.zoom) bits.push(`--zoom:${img.zoom}`);
+  if (img.crop) bits.push(`--crop-ratio:${img.crop.ratio}`, `--crop-pos:${img.crop.pos}`);
+  return bits.length ? ` style="${bits.join('; ')}"` : '';
+}
+
 function tile(g, t, idx, total, endAlone) {
   // ids follow the case study filename so the hero logo strip's #work-… links land here
   const base = g.href ? g.href.replace(/^.*\//, '').replace(/\.html$/, '') : slug(g.name);
@@ -152,7 +178,7 @@ function tile(g, t, idx, total, endAlone) {
   const href = g.href || '#';
   return `          <a class="${cls}" href="${href}" id="${id}"${gate} data-speed="${speed}">
             <div class="col-media">
-              <div class="col-img"${t.img.zoom ? ` style="--zoom:${t.img.zoom}"` : ''}>
+              <div class="col-img${t.img.crop ? ' is-crop' : ''}"${imgStyle(t.img)}>
                 <img src="${t.img.src}" alt="${esc(alt)}" loading="lazy">
               </div>
             </div>
