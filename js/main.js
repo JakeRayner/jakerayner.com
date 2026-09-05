@@ -974,10 +974,11 @@
       }
     });
 
-    /* paragraphs that light up word by word as the section scrolls through
-       the viewport. It used to pin while this happened; the pin jumped
-       against the smooth scroll, so it now stays in the flow. Teleprompter
-       style, explicit: each word snaps on in sequence (the near-zero
+    /* paragraphs that light up word by word. The section pins in the middle
+       of the screen, the scroll fills the words in, then the page releases
+       and carries on. Asked for explicitly ("scroll jack"), which is why
+       this one pins while the rest of the page just scrolls. Teleprompter
+       style, also explicit: each word snaps on in sequence (the near-zero
        duration against a whole-unit stagger), no fade. */
     gsap.utils.toArray('[data-anim="words"]').forEach(function (p) {
       /* works on a single paragraph, or a container of paragraphs: each
@@ -1007,14 +1008,34 @@
       var parts = p.querySelectorAll('p').length ? p.querySelectorAll('p') : [p];
       parts.forEach(splitWords);
       var section = p.closest('section') || p;
-      /* no pin: the section stays put in the flow and the words light up
-         as it scrolls through the viewport, starting once its top is well
-         on screen and finishing before its bottom leaves the middle */
-      gsap.fromTo(p.querySelectorAll('.w'), { opacity: 0.16 }, {
+      /* Pinning only holds up if the whole section fits on screen: a taller
+         one would sit with its bottom off screen for the length of the pin,
+         so that case keeps the words running in the flow instead. Measured
+         on refresh, so a font swap or a rotate re-picks the right one.
+         anticipatePin is deliberately left off here: it starts the pin a
+         beat early, which is what read as a jump against the smooth scroll. */
+      var words = p.querySelectorAll('.w');
+      function trigger() {
+        return section.offsetHeight <= window.innerHeight
+          ? { trigger: section, start: 'center center', end: '+=150%', pin: true, scrub: true, invalidateOnRefresh: true }
+          : { trigger: section, start: 'top 70%', end: 'bottom 55%', scrub: true, invalidateOnRefresh: true };
+      }
+      var fill = gsap.fromTo(words, { opacity: 0.16 }, {
         opacity: 1, duration: 0.01, stagger: 1, ease: 'none',
-        scrollTrigger: {
-          trigger: section, start: 'top 70%', end: 'bottom 55%', scrub: true
-        }
+        scrollTrigger: trigger()
+      });
+      /* if the fit changes across a breakpoint, swap the trigger for the
+         other one rather than leaving a pin on a section that outgrew it */
+      var pinned = section.offsetHeight <= window.innerHeight;
+      window.addEventListener('resize', function () {
+        var fits = section.offsetHeight <= window.innerHeight;
+        if (fits === pinned) return;
+        pinned = fits;
+        fill.scrollTrigger.kill(true);
+        fill = gsap.fromTo(words, { opacity: 0.16 }, {
+          opacity: 1, duration: 0.01, stagger: 1, ease: 'none',
+          scrollTrigger: trigger()
+        });
       });
     });
 
