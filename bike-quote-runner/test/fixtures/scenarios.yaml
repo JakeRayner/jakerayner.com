@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# The levers you want to sweep. Every combination of these becomes one "run":
+# the same bike, quoted with a different shape of you.
+#
+# Each axis lists the values to try. Axes you leave out stay at the value in
+# profile.yaml -> defaults. `maxRuns` caps the explosion; `priority` decides
+# which axes survive the cap (earlier = more important).
+# ---------------------------------------------------------------------------
+
+axes:
+  addressId: [home, parents]
+
+  # [] = you alone. [dad] = dad added as a named rider. Adding an older, long
+  # licensed rider often DROPS the premium; sometimes it raises it. Worth testing.
+  namedRiders:
+    - []
+    - [dad]
+
+  # Insurers price the gap between quote date and start date. 0 is nearly
+  # always the worst; 20-29 days out is usually the sweet spot.
+  policyStartOffsetDays: [1, 14, 21, 29]
+
+  voluntaryExcess: [150, 250, 500]
+
+  coverType: [comprehensive, tpft]
+
+  annualMileage: [2000, 4000]
+
+  # overnightParking: [garage, driveway, street]   # only where genuinely true
+  # use: [social, social-commuting]
+  # paymentMethod: [annual, monthly]
+
+# Which axes matter most. Axes listed first keep all their values when the
+# cap bites; later axes get trimmed to their default value first.
+priority:
+  - namedRiders
+  - addressId
+  - policyStartOffsetDays
+  - coverType
+  - voluntaryExcess
+  - annualMileage
+
+# Hard cap on runs generated per bike. Each run is a real quote journey you
+# will sit through, so keep this honest about your own patience.
+maxRuns: 12
+
+# Sites to run each scenario against. Order is the order you'll be walked
+# through them. Comment out the ones you don't want.
+sites:
+  - comparethemarket
+  - mcn
+  - bennetts
+  - devitt
+  - lexham

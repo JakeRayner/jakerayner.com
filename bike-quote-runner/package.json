@@ -1,0 +1,32 @@
+{
+  "name": "bike-quote-runner",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Work out which bike you can actually get insured on: resolve a bike from a reg, listing URL or screenshot, autofill UK insurance quote journeys from one answer bank, and compare premiums across bikes and scenarios.",
+  "type": "module",
+  "bin": {
+    "bqr": "./bin/bqr.mjs"
+  },
+  "scripts": {
+    "bqr": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node -e \"console.log('\\nRun: npm run bqr -- init\\n')\"",
+    "test": "tsx test/autofill.test.ts",
+    "probe": "tsx test/probe.ts"
+  },
+  "engines": {
+    "node": ">=20.11"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.124.0",
+    "commander": "^12.1.0",
+    "playwright": "^1.56.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

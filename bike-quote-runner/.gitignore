@@ -1,0 +1,11 @@
+node_modules/
+dist/
+
+# Your real answers and results never get committed.
+config/profile.yaml
+config/scenarios.yaml
+data/
+.browser-profiles/
+*.local.*
+.env
+.DS_Store

@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Get a bike quote</title></head><body>
+<h1>Your bike</h1>
+<div class="q"><label for="regplate">Registration number</label><input id="regplate" name="vehicleRegistration"></div>
+<div class="q"><label for="mk">Make</label><input id="mk" name="make"></div>
+<div class="q"><label for="md">Model</label><input id="md" name="model"></div>
+<div class="q"><label for="cc">Engine size (cc)</label><input id="cc" type="number" name="engineCapacity"></div>
+<div class="q"><label for="yr">Year of manufacture</label><input id="yr" name="yearOfManufacture"></div>
+<div class="q"><label for="val">Estimated value of the bike</label><input id="val" name="bikeValue"></div>
+<div class="q"><span id="modq">Has the bike been modified in any way?</span>
+  <input type="radio" name="modified" id="mod-y" value="Y"><label for="mod-y">Yes</label>
+  <input type="radio" name="modified" id="mod-n" value="N"><label for="mod-n">No</label></div>
+
+<h2>Where it's kept</h2>
+<div class="q"><label for="pc">Postcode</label><input id="pc" name="postcode"></div>
+<div class="q"><label for="hn">House number or name</label><input id="hn" name="houseNumber"></div>
+<div class="q"><label for="ovn">Where is the bike kept overnight?</label>
+  <select id="ovn" name="overnightLocation">
+    <option value="">Please select</option>
+    <option value="G">Locked garage</option>
+    <option value="D">Private driveway</option>
+    <option value="S">On the street</option>
+  </select></div>
+
+<h2>Your cover</h2>
+<div class="q"><label for="cov">Level of cover</label>
+  <select id="cov"><option value="">Please select</option>
+    <option>Comprehensive</option><option>Third party, fire and theft</option><option>Third party only</option></select></div>
+<div class="q"><label for="mil">Estimated annual mileage</label>
+  <select id="mil"><option value="">Please select</option>
+    <option>1,000</option><option>2,000</option><option>3,000</option><option>5,000</option></select></div>
+<div class="q"><label for="vex">Voluntary excess</label>
+  <select id="vex"><option value="">Please select</option>
+    <option>£0</option><option>£150</option><option>£250</option><option>£500</option></select></div>
+<div class="q"><label for="usage">What will you use the bike for?</label>
+  <select id="usage"><option value="">Please select</option>
+    <option>Social, domestic and pleasure</option><option>Social and commuting</option><option>Business use</option></select></div>
+<div class="q"><label for="start">When do you want cover to start?</label><input id="start" type="date" name="policyStart"></div>
+
+<h2>About you</h2>
+<fieldset><legend>Your details</legend>
+<div class="q"><label for="t1">Title</label><select id="t1"><option value="">Select</option><option>Mr</option><option>Mrs</option><option>Miss</option><option>Ms</option></select></div>
+<div class="q"><label for="fn1">First name</label><input id="fn1"></div>
+<div class="q"><label for="ln1">Surname</label><input id="ln1"></div>
+<div class="q"><label for="dob1">Date of birth</label><input id="dob1" placeholder="DD/MM/YYYY"></div>
+<div class="q"><label for="occ1">Occupation</label><input id="occ1"></div>
+<div class="q"><label for="emp1">Employment status</label>
+  <select id="emp1"><option value="">Select</option><option>Employed</option><option>Self employed</option><option>Student</option><option>Retired</option></select></div>
+<div class="q"><label for="lic1">What licence type do you hold?</label>
+  <select id="lic1"><option value="">Select</option><option>Full motorcycle licence</option><option>CBT only</option><option>Provisional</option></select></div>
+<div class="q"><label for="licd1">Date licence obtained</label><input id="licd1" placeholder="DD/MM/YYYY"></div>
+<div class="q"><label for="ncb1">Years no claims bonus</label>
+  <select id="ncb1"><option value="">Select</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4+</option></select></div>
+<div class="q"><span>Have you had any motoring convictions in the last 5 years?</span>
+  <input type="radio" name="conv1" id="c1y"><label for="c1y">Yes</label>
+  <input type="radio" name="conv1" id="c1n"><label for="c1n">No</label></div>
+<div class="q"><label for="em1">Email address</label><input id="em1" type="email"></div>
+<div class="q"><label for="ph1">Mobile number</label><input id="ph1" type="tel"></div>
+</fieldset>
+
+<fieldset><legend>Additional rider</legend>
+<div class="q"><label for="fn2">First name</label><input id="fn2"></div>
+<div class="q"><label for="ln2">Surname</label><input id="ln2"></div>
+<div class="q"><label for="dob2">Date of birth</label><input id="dob2" placeholder="DD/MM/YYYY"></div>
+<div class="q"><label for="occ2">Occupation</label><input id="occ2"></div>
+<div class="q"><label for="rel2">Relationship to you</label><input id="rel2"></div>
+</fieldset>
+<button type="submit">Get quotes</button>
+</body></html>
