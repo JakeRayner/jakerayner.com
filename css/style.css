@@ -193,8 +193,20 @@ h1,h2,h3{font-family:var(--sans); font-weight:500; margin:0; letter-spacing:-.03
 @media (hover:none){ #cursor{display:none;} }
 
 /* site-wide dot texture, fixed behind everything */
-/* sized to the tallest viewport for the same reason as body::before */
-.site-dots{position:fixed; left:0; right:0; top:0; height:100vh; height:100lvh; z-index:-1; pointer-events:none;}
+/* sized to the tallest viewport for the same reason as body::before, and
+   faded out along its bottom edge. The field is a fixed layer, so a phone
+   cuts it off above the browser's toolbar while the page carries on
+   painting behind it: dots to one side of that line, none to the other,
+   which is the hard edge across the bottom of the screen. Fading them to
+   nothing over the last stretch means there is no dot left to cut by the
+   time the line arrives, and the field meets the plain background behind
+   the toolbar without a join. */
+.site-dots{
+  position:fixed; left:0; right:0; top:0; height:100vh; height:100lvh;
+  z-index:-1; pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 150px), transparent);
+  mask-image:linear-gradient(to bottom, #000 calc(100% - 150px), transparent);
+}
 
 /* ---------- header: transparent, hides on scroll down, returns on scroll up ---------- */
 header.nav{
