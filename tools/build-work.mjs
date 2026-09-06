@@ -67,6 +67,10 @@ const CROP = {
   // with the whole lower half empty table and floor. Crop to landscape and
   // hold the machine in the middle of it.
   'TLL Desktop': { ratio: '4 / 3', pos: '50% 22%' },
+  // Bentley: the top third of this one is blurred sky and windscreen above
+  // the dash. Anchoring to the bottom keeps the clock, the vents and the
+  // nav screen and takes the sky off the top.
+  'image 3': { ratio: '15 / 14', pos: '50% 100%' },
 };
 const cropFor = f => { for (const k in CROP) if (f.includes(k)) return CROP[k]; return null; };
 
