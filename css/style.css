@@ -45,6 +45,27 @@
   /* the pane: light enough that the page still reads through it. Used by
      the client logo cells and by a tile waiting for its image. */
   --glass-soft:color-mix(in srgb, var(--ink) 3.5%, transparent);
+  /* The height of the browser's retractable chrome, worked out by the
+     browser rather than measured by us: lvh is the viewport with it gone,
+     svh with it showing, so this is 0 wherever there is none (a desktop)
+     and the bar's own height on any phone, whatever that phone is. */
+  --edge:calc(100lvh - 100svh);
+  /* Fades a fixed layer out as it approaches the bottom edge of the window,
+     reaching nothing by 100svh, the highest that edge can ever sit. A phone
+     cuts a fixed layer off around there while the page keeps painting behind
+     the bar, so by the time any cut arrives there is nothing left to cut.
+     Eased over several stops rather than run straight, because a plain
+     linear fade shows its own starting edge as a faint line. Where --edge is
+     0 every stop lands on the window's bottom edge, so this does nothing
+     at all on a desktop. */
+  --edge-fade:linear-gradient(to bottom,
+    rgba(0,0,0,1)   calc(100svh - 3.2 * var(--edge)),
+    rgba(0,0,0,.88) calc(100svh - 2.6 * var(--edge)),
+    rgba(0,0,0,.66) calc(100svh - 2.0 * var(--edge)),
+    rgba(0,0,0,.40) calc(100svh - 1.4 * var(--edge)),
+    rgba(0,0,0,.18) calc(100svh - 0.85 * var(--edge)),
+    rgba(0,0,0,.05) calc(100svh - 0.35 * var(--edge)),
+    rgba(0,0,0,0)   100svh);
   --glass-strong:color-mix(in srgb, var(--ink) 10%, transparent);
   --r:0;
 }
@@ -80,15 +101,12 @@ body::before{
      nothing before they reach an edge, so no cut can show, wherever a
      browser decides to put one. */
   left:0; right:0; top:0; height:100vh; height:100lvh;
-  /* Radii in percentages, so both glows are done with well before the
-     bottom whatever height the layer ends up: each is transparent by about
-     63% down. Below that the page is only its own gradient, which is
-     painted by the root and runs continuously behind the browser's
-     toolbar, so wherever a phone cuts this layer there is nothing there
-     to cut. */
   background:
-    radial-gradient(110% 40% at 88% 4%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
-    radial-gradient(95% 30% at 6% 44%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 62%);
+    radial-gradient(110% 46% at 88% 2%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 64%),
+    radial-gradient(95% 38% at 6% 58%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 64%);
+  /* same fade as the dot field, so neither layer can leave an edge */
+  -webkit-mask-image:var(--edge-fade);
+  mask-image:var(--edge-fade);
 }
 ::selection{background:var(--accent); color:var(--accent-ink);}
 a{color:inherit;}
@@ -210,12 +228,8 @@ h1,h2,h3{font-family:var(--sans); font-weight:500; margin:0; letter-spacing:-.03
 .site-dots{
   position:fixed; left:0; right:0; top:0; height:100vh; height:100lvh;
   z-index:-1; pointer-events:none;
-  /* A long fade in percentages rather than pixels, so it holds whatever
-     height the layer takes: the field is gone by roughly 72% down, well
-     clear of anywhere a phone cuts it, and the fade is slow enough that
-     its own edge cannot be seen either. */
-  -webkit-mask-image:linear-gradient(to bottom, #000 38%, transparent 72%);
-  mask-image:linear-gradient(to bottom, #000 38%, transparent 72%);
+  -webkit-mask-image:var(--edge-fade);
+  mask-image:var(--edge-fade);
 }
 
 /* ---------- header: transparent, hides on scroll down, returns on scroll up ---------- */
