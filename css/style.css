@@ -80,9 +80,15 @@ body::before{
      nothing before they reach an edge, so no cut can show, wherever a
      browser decides to put one. */
   left:0; right:0; top:0; height:100vh; height:100lvh;
+  /* Radii in percentages, so both glows are done with well before the
+     bottom whatever height the layer ends up: each is transparent by about
+     63% down. Below that the page is only its own gradient, which is
+     painted by the root and runs continuously behind the browser's
+     toolbar, so wherever a phone cuts this layer there is nothing there
+     to cut. */
   background:
-    radial-gradient(1100px 560px at 88% 6%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
-    radial-gradient(820px 460px at 6% 68%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 66%);
+    radial-gradient(110% 40% at 88% 4%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
+    radial-gradient(95% 30% at 6% 44%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 62%);
 }
 ::selection{background:var(--accent); color:var(--accent-ink);}
 a{color:inherit;}
@@ -204,8 +210,12 @@ h1,h2,h3{font-family:var(--sans); font-weight:500; margin:0; letter-spacing:-.03
 .site-dots{
   position:fixed; left:0; right:0; top:0; height:100vh; height:100lvh;
   z-index:-1; pointer-events:none;
-  -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 150px), transparent);
-  mask-image:linear-gradient(to bottom, #000 calc(100% - 150px), transparent);
+  /* A long fade in percentages rather than pixels, so it holds whatever
+     height the layer takes: the field is gone by roughly 72% down, well
+     clear of anywhere a phone cuts it, and the fade is slow enough that
+     its own edge cannot be seen either. */
+  -webkit-mask-image:linear-gradient(to bottom, #000 38%, transparent 72%);
+  mask-image:linear-gradient(to bottom, #000 38%, transparent 72%);
 }
 
 /* ---------- header: transparent, hides on scroll down, returns on scroll up ---------- */
