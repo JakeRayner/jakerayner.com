@@ -67,7 +67,13 @@ body{
    and just sits there. z-index -1 puts it under the content, above the
    body's own gradient. */
 body::before{
-  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  content:""; position:fixed; z-index:-1; pointer-events:none;
+  /* Not inset:0. A fixed layer stops at the visible viewport, so on a phone
+     it ends above the browser's bottom toolbar while the page keeps painting
+     behind it, leaving a strip with no glow and no dots: a visible seam
+     across the bottom of the screen. lvh is the viewport at its tallest,
+     with the toolbar retracted, so the layer always reaches past it. */
+  left:0; right:0; top:0; height:100vh; height:100lvh;
   background:
     radial-gradient(1100px 620px at 88% -12%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
     radial-gradient(900px 700px at 6% 108%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 66%);
@@ -181,7 +187,8 @@ h1,h2,h3{font-family:var(--sans); font-weight:500; margin:0; letter-spacing:-.03
 @media (hover:none){ #cursor{display:none;} }
 
 /* site-wide dot texture, fixed behind everything */
-.site-dots{position:fixed; inset:0; z-index:-1; pointer-events:none;}
+/* sized to the tallest viewport for the same reason as body::before */
+.site-dots{position:fixed; left:0; right:0; top:0; height:100vh; height:100lvh; z-index:-1; pointer-events:none;}
 
 /* ---------- header: transparent, hides on scroll down, returns on scroll up ---------- */
 header.nav{

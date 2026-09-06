@@ -325,6 +325,34 @@
     fontsReady = true;
   }
 
+  /* Keeps <meta name="theme-color"> on the current background, so the
+     browser tints its own chrome to match instead of painting a band of
+     its own colour behind the toolbar. --bg can be a color-mix (colour
+     mode tints it), which the meta will not take, so resolve it to an rgb
+     through a throwaway element rather than passing the raw value. */
+  function syncThemeColor() {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta || !document.body) return;
+    var probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;background:var(--bg)';
+    document.body.appendChild(probe);
+    var colour = getComputedStyle(probe).backgroundColor;
+    probe.parentNode.removeChild(probe);
+    if (!colour) return;
+    /* a color-mix resolves to color(srgb ...), which the meta will not take,
+       so put it through a canvas and read plain channel values back out */
+    if (colour.indexOf('rgb') !== 0) {
+      try {
+        var c = document.createElement('canvas'); c.width = c.height = 1;
+        var cx = c.getContext('2d');
+        cx.fillStyle = colour; cx.fillRect(0, 0, 1, 1);
+        var d = cx.getImageData(0, 0, 1, 1).data;
+        colour = 'rgb(' + d[0] + ', ' + d[1] + ', ' + d[2] + ')';
+      } catch (e) { return; }
+    }
+    meta.setAttribute('content', colour);
+  }
+
   function applyTheme(t) {
     var root = document.documentElement.style;
     setFace(t.face, t.faceWeight, t.faceScale);
@@ -336,6 +364,7 @@
     root.setProperty('--accent-ink', t.accentInk);
     root.setProperty('--line', 'color-mix(in srgb, ' + t.ink + ' 14%, transparent)');
     root.setProperty('--ink-dim', 'color-mix(in srgb, ' + t.ink + ' 62%, transparent)');
+    syncThemeColor();
     currentTheme = t;
     for (var i = 0; i < themeListeners.length; i++) themeListeners[i]();
   }
@@ -907,9 +936,13 @@
     }
 
     function build() {
-      W = window.innerWidth; H = window.innerHeight;
+      /* the element is 100lvh tall (css), which is taller than
+         window.innerHeight while the browser's toolbar is showing; measure
+         it rather than the visible viewport, or the field stops short and
+         leaves an empty strip behind the toolbar */
+      W = canvas.offsetWidth || window.innerWidth;
+      H = canvas.offsetHeight || window.innerHeight;
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       resolveInk();
       dots = [];
