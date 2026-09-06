@@ -1050,10 +1050,19 @@
       });
     }
 
+    /* Rebuild only when the canvas has actually changed size. Every dot's
+       position comes out of Math.random(), so a rebuild scatters the whole
+       field somewhere new: on a phone the browser's bar retracts on the
+       first scroll, which fires resize, and the field visibly jumped. The
+       canvas is 100lvh, so the bar moving does not change its size and
+       there is nothing to redo. */
     var resizeT;
     window.addEventListener('resize', function () {
       clearTimeout(resizeT);
-      resizeT = setTimeout(build, 200);
+      resizeT = setTimeout(function () {
+        if (canvas.offsetWidth === W && canvas.offsetHeight === H) return;
+        build();
+      }, 200);
     });
   })();
 
