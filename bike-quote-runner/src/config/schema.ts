@@ -1,21 +1,31 @@
 import { z } from "zod";
 
+/** Optional number that also accepts an explicit YAML `null`. */
+const optNumber = z.number().nonnegative().nullish().transform((v) => v ?? undefined);
+
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
 
 export const ClaimSchema = z.object({
   date: isoDate,
-  type: z.enum(["theft", "accident", "fire", "vandalism", "windscreen", "other"]),
+  type: z.enum(["theft", "accident", "fire", "vandalism", "windscreen", "other"]).default("other"),
+  /** The wording the form's own dropdown uses, e.g. "Multiple Vehicle - Third party hit rider". */
+  description: z.string().default(""),
   fault: z.boolean().default(false),
-  cost: z.number().nonnegative().optional(),
+  /** Cost of the claim to your own vehicle. */
+  ownVehicleCost: optNumber,
+  thirdPartyCost: optNumber,
+  personalInjury: z.boolean().default(false),
+  /** Whether it happened on your current or most recent motorbike policy. */
+  onCurrentPolicy: z.boolean().default(false),
 });
 
 export const ConvictionSchema = z.object({
   date: isoDate,
   code: z.string(),
   points: z.number().int().nonnegative().default(0),
-  fine: z.number().nonnegative().optional(),
+  fine: optNumber,
   ban: z.boolean().default(false),
-  banMonths: z.number().int().nonnegative().optional(),
+  banMonths: optNumber,
 });
 
 export const RiderSchema = z.object({
@@ -47,10 +57,27 @@ export const RiderSchema = z.object({
   licence: z.object({
     type: z.enum(["full", "full-a2", "full-a1", "cbt", "provisional"]).default("full"),
     number: z.string().default(""),
+    /** Some journeys ask whether you want to hand over the number at all. */
+    provideNumber: z.boolean().default(false),
     dateObtained: isoDate,
     countryOfIssue: z.string().default("UK"),
+    /** Continuous years riding, which is not the same as years since you passed. */
+    ridingExperienceYears: optNumber,
     advancedRiding: z.string().default("none"),
+    bikingOrganisation: z.string().default("none"),
   }),
+  /** A car licence and mirrored car NCB are worth real money on a bike policy. */
+  carLicence: z
+    .object({
+      held: z.boolean().default(false),
+      type: z.string().default("Full UK"),
+      dateObtained: isoDate.optional(),
+      noClaimsBonusYears: z.number().int().nonnegative().default(0),
+      ownsCar: z.boolean().default(false),
+    })
+    .default({}),
+  /** Named riders only: how often they will actually be on it. */
+  usageFrequency: z.enum(["main", "frequent", "occasional", "infrequent"]).default("infrequent"),
   history: z
     .object({
       claims: z.array(ClaimSchema).default([]),
@@ -72,6 +99,8 @@ export const RiderSchema = z.object({
 export const AddressSchema = z.object({
   id: z.string(),
   label: z.string().optional(),
+  /** Flat or apartment, where the address has one above the house number. */
+  subBuilding: z.string().default(""),
   houseNumber: z.string().default(""),
   line1: z.string(),
   line2: z.string().default(""),
@@ -85,12 +114,18 @@ export const AddressSchema = z.object({
   homeowner: z.boolean().default(false),
 });
 
+/**
+ * Security is free text, not an enum, because real journeys ask you to pick the
+ * exact product from a list ("Datatool Stealth", "Honda HISS2 INJ (Thatcham 2)").
+ * Write what the dropdown says; blank means none.
+ */
 export const SecuritySchema = z.object({
-  alarm: z.boolean().default(false),
-  immobiliser: z.enum(["none", "factory", "thatcham-1", "thatcham-2"]).default("factory"),
-  tracker: z.enum(["none", "thatcham-s5", "thatcham-s7"]).default("none"),
+  alarm: z.string().default(""),
+  immobiliser: z.string().default(""),
+  tracker: z.string().default(""),
+  physicalDevice: z.string().default(""),
+  secureMarkings: z.string().default(""),
   chainAndGroundAnchor: z.boolean().default(false),
-  disclock: z.boolean().default(false),
 });
 
 export const DefaultsSchema = z.object({
@@ -106,6 +141,7 @@ export const DefaultsSchema = z.object({
   legalCover: z.boolean().default(false),
   breakdownCover: z.boolean().default(false),
   helmetAndLeathers: z.boolean().default(false),
+  pillionCover: z.boolean().default(false),
   protectedNcb: z.boolean().default(false),
   security: SecuritySchema.default({}),
 });
@@ -153,6 +189,7 @@ export const SCENARIO_AXES = [
   "paymentMethod",
   "overnightParking",
   "protectedNcb",
+  "pillionCover",
 ] as const;
 
 export type AxisName = (typeof SCENARIO_AXES)[number];

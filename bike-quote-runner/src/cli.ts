@@ -180,7 +180,15 @@ program
     log.info("\n" + c.bold(`  ${a.meta.bikeLabel}, ${a.meta.scenarioLabel}`));
     a.people.forEach((p, i) => {
       log.info("\n  " + c.cyan(a.peopleNames[i] + (i === 0 ? " (you)" : " (named rider)")));
-      for (const [k, v] of Object.entries(p)) if (v.value) log.info(`    ${k.padEnd(24)} ${v.value}`);
+      for (const [k, v] of Object.entries(p.fields)) if (v.value) log.info(`    ${k.padEnd(24)} ${v.value}`);
+      p.claims.forEach((claim, ci) => {
+        log.info("    " + c.dim(`claim ${ci + 1}`));
+        for (const [k, v] of Object.entries(claim)) if (v.value) log.info(`      ${k.padEnd(22)} ${v.value}`);
+      });
+      p.convictions.forEach((cv, vi) => {
+        log.info("    " + c.dim(`conviction ${vi + 1}`));
+        for (const [k, v] of Object.entries(cv)) if (v.value) log.info(`      ${k.padEnd(22)} ${v.value}`);
+      });
     });
     log.info("\n  " + c.cyan("Bike & policy"));
     for (const [k, v] of Object.entries(a.shared)) if (v.value) log.info(`    ${k.padEnd(24)} ${v.value}`);

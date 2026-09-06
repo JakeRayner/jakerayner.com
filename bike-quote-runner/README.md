@@ -82,6 +82,23 @@ Fix things later with:
 npm run bqr -- bike edit 2019-yamaha-mt-07 --set value=5200 model="MT-07"
 ```
 
+### The awkward bits it handles
+
+Real journeys ask things a flat list of answers cannot express, so the profile
+models them properly:
+
+- **Claims and convictions repeat.** They are asked one numbered block at a
+  time ("Claim 1", "Claim 2"), and each block gets the right row's date, cause,
+  fault and costs rather than the first one's.
+- **A car licence is its own thing.** Its date, and mirrored car no-claims, are
+  worth real money on a bike policy and are asked separately from your bike
+  licence. Nothing gets crossed over.
+- **Security is a product, not a yes/no.** Journeys want you to pick "Datatool
+  Stealth" or "Honda HISS2 INJ (Thatcham 2)" from a list, so write the exact
+  wording in `security:` and it selects it.
+- **Additional riders get their own section**, and their fields are filled from
+  that rider, not from you.
+
 ## Scenarios: the bit that finds the money
 
 `config/scenarios.yaml` lists the levers you want to sweep. Same bike, same you,
@@ -159,7 +176,8 @@ you and listed in the panel, rather than guessed at from the wording of the
 question next to it.
 
 ```bash
-npm test          # 31 fields across a realistic multi-section form
+npm test          # 101 fields across two realistic journeys, including
+                  # repeating claim blocks and an additional-rider section
 ```
 
 ## Commands

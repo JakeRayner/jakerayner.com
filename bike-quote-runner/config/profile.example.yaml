@@ -7,37 +7,52 @@
 # ---------------------------------------------------------------------------
 
 riders:
-  # The first rider is the proposer / policyholder by default.
+  # The first rider is the proposer / policyholder.
   - id: me
     role: proposer
     title: Mr
-    firstName: Jake
-    lastName: Rayner
+    firstName: Alex
+    lastName: Example
     dateOfBirth: 1996-04-12
     gender: male
     maritalStatus: single          # single | married | cohabiting | divorced | widowed
     email: you@example.com
     phone: "07700900000"
-    ukResidentSince: 2010-09-01    # or your date of birth if always resident
+    ukResidentSince: 1996-04-12    # same as your DOB if you were born here
     homeowner: false
     employment:
       status: employed             # employed | self-employed | student | unemployed | retired
-      occupation: Software Engineer
-      industry: Computing
+      occupation: Illustrator
+      industry: Information Technology
       secondJob: false
     licence:
       type: full                   # full | full-a2 | full-a1 | cbt | provisional
-      number: RAYNE904126JX9AB
-      dateObtained: 2018-06-20     # date you passed / CBT date
+      number: ""
+      provideNumber: false         # some journeys ask whether to hand it over at all
+      dateObtained: 2024-06-20     # date you passed, or your CBT date
       countryOfIssue: UK
-      advancedRiding: none         # none | ipam | rospa | bikesafe | enhanced-rider-scheme
+      ridingExperienceYears: 0     # continuous years riding, not years since you passed
+      advancedRiding: none         # none, or the qualification: IAM, RoSPA, BikeSafe...
+      bikingOrganisation: none     # none, or the club/organisation you belong to
+    # A car licence and mirrored car NCB are worth real money on a bike policy,
+    # and plenty of journeys ask for them.
+    carLicence:
+      held: true
+      type: Full UK
+      dateObtained: 2014-06-30
+      noClaimsBonusYears: 5
+      ownsCar: true
     history:
-      # Every claim / conviction in the last 5 years. Empty lists are fine.
-      claims: []
-      # - date: 2023-02-11
-      #   type: theft              # theft | accident | fire | vandalism | windscreen
-      #   fault: false
-      #   cost: 1800
+      # Every claim in the last 5 years, however small, fault or not.
+      claims:
+        - date: 2024-01-02
+          type: other              # theft | accident | fire | vandalism | windscreen | other
+          description: Other       # the wording the form's own dropdown uses
+          fault: true
+          ownVehicleCost: 1500
+          thirdPartyCost: null
+          personalInjury: false
+          onCurrentPolicy: false
       convictions: []
       # - date: 2022-08-01
       #   code: SP30
@@ -46,36 +61,43 @@ riders:
       #   ban: false
       nonMotoringConvictions: false
       medicalConditionsNotifiable: false
-      insuranceRefused: false      # ever declined/cancelled/special terms
+      insuranceRefused: false      # ever declined, cancelled or given special terms
     noClaimsBonus:
-      years: 2
+      years: 0
       protected: false
-      source: motorcycle           # motorcycle | car | none  (mirrored NCB from a car policy)
+      source: none                 # motorcycle | car | none
 
   - id: dad
     role: named-rider
     title: Mr
-    firstName: Dad
-    lastName: Rayner
-    dateOfBirth: 1965-01-01
+    firstName: Pat
+    lastName: Example
+    dateOfBirth: 1962-09-23
     gender: male
     maritalStatus: married
     relationshipToProposer: parent
-    email: dad@example.com
-    phone: "07700900001"
-    ukResidentSince: 1965-01-01
+    usageFrequency: infrequent     # main | frequent | occasional | infrequent
+    ukResidentSince: 1962-09-23
     homeowner: true
     employment:
-      status: employed
-      occupation: Engineer
-      industry: Manufacturing
+      status: retired
+      occupation: Retired
+      industry: ""
       secondJob: false
     licence:
       type: full
-      number: RAYNE601019JX9AB
-      dateObtained: 1985-03-14
+      number: ""
+      provideNumber: false
+      dateObtained: 1981-01-31
       countryOfIssue: UK
       advancedRiding: none
+      bikingOrganisation: none
+    carLicence:
+      held: true
+      type: Full UK
+      dateObtained: 1981-06-01
+      noClaimsBonusYears: 9
+      ownsCar: true
     history:
       claims: []
       convictions: []
@@ -88,25 +110,27 @@ riders:
       source: motorcycle
 
 # ---------------------------------------------------------------------------
-# Addresses you could legitimately garage the bike at. Each one is a lever:
-# postcode is usually the single biggest factor in a motorcycle premium.
-# Only list addresses where the bike would genuinely be kept.
+# Addresses the bike could genuinely be kept at. Postcode is usually the single
+# biggest factor in a motorcycle premium, so a second honest address here is
+# the most valuable lever in the whole file.
 # ---------------------------------------------------------------------------
 addresses:
   - id: home
     label: My flat
-    houseNumber: "12"
+    subBuilding: Apartment 18      # flat or apartment, where there is one
+    houseNumber: "2"
     line1: Example Street
     line2: ""
-    town: Bristol
-    county: Bristol
-    postcode: BS1 4ST
+    town: Manchester
+    county: Greater Manchester
+    postcode: M4 7BB
     residentSince: 2022-03-01
-    overnightParking: street       # garage | driveway | secure-car-park | street | locked-compound
+    overnightParking: locked-compound  # garage | driveway | secure-car-park | street | locked-compound | carport
     homeowner: false
 
   - id: parents
     label: Parents' house
+    subBuilding: ""
     houseNumber: "4"
     line1: Example Lane
     line2: ""
@@ -118,36 +142,37 @@ addresses:
     homeowner: true
 
 # ---------------------------------------------------------------------------
-# Defaults applied to every quote unless a scenario overrides them.
+# Applied to every quote unless a scenario overrides them.
 # ---------------------------------------------------------------------------
 defaults:
   addressId: home
   namedRiders: []                  # rider ids besides the proposer, e.g. [dad]
   coverType: comprehensive         # comprehensive | tpft | tpo
-  annualMileage: 3000
-  voluntaryExcess: 250
+  annualMileage: 4000
+  voluntaryExcess: 300
   use: social                      # social | social-commuting | business
-  paymentMethod: annual            # annual | monthly
+  paymentMethod: monthly           # annual | monthly
   policyStartOffsetDays: 21        # quoting ~3 weeks ahead is usually cheapest
-  ownerAndKeeper: true             # you are the registered keeper AND owner
+  ownerAndKeeper: true
   legalCover: false
   breakdownCover: false
   helmetAndLeathers: false
+  pillionCover: true
   protectedNcb: false
+  # Journeys ask you to pick the exact product from a list, so write what their
+  # dropdown says. Blank means none fitted.
   security:
-    alarm: false
-    immobiliser: factory           # none | factory | thatcham-1 | thatcham-2
-    tracker: none                  # none | thatcham-s5 | thatcham-s7
-    chainAndGroundAnchor: true
-    disclock: true
+    alarm: ""
+    immobiliser: Honda HISS2 INJ (Thatcham 2)
+    tracker: Datatool Stealth
+    physicalDevice: Oxford Boss Disc Lock
+    secureMarkings: Datatag
+    chainAndGroundAnchor: false
 
 # ---------------------------------------------------------------------------
-# Optional. Only used to auto-resolve bikes from a reg / listing / screenshot.
-# Both are optional; without them you can still add bikes manually.
+# Optional. Prefer environment variables (DVLA_API_KEY / ANTHROPIC_API_KEY).
 #   DVLA VES key:   https://developer-portal.driver-vehicle-licensing.api.gov.uk
 #   Anthropic key:  https://console.anthropic.com
-# Prefer environment variables (DVLA_API_KEY / ANTHROPIC_API_KEY) over putting
-# keys in this file.
 # ---------------------------------------------------------------------------
 apiKeys:
   dvla: ""

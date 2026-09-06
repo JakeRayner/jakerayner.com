@@ -17,6 +17,12 @@ export interface Bike {
   mileage?: number;
   modifications: string[];
   imported?: boolean;
+  /** "Is it an official UK model?" - the inverse of an import, asked separately. */
+  officialUkModel?: boolean;
+  /** False when you are quoting a bike you have not bought yet. */
+  purchased?: boolean;
+  purchaseDate?: string;
+  ownedBikeBefore?: boolean;
   notes?: string;
   /** Set when a source could not fill a field the quote journeys will ask for. */
   gaps: string[];

@@ -26,18 +26,35 @@ riders:
       industry: Computing
       secondJob: false
     licence:
-      type: full                   # full | full-a2 | full-a1 | cbt | provisional
+      type: full
       number: RAYNE904126JX9AB
-      dateObtained: 2018-06-20     # date you passed / CBT date
+      provideNumber: false
+      dateObtained: 2018-06-20
       countryOfIssue: UK
-      advancedRiding: none         # none | ipam | rospa | bikesafe | enhanced-rider-scheme
+      ridingExperienceYears: 5
+      advancedRiding: none
+      bikingOrganisation: none
+    carLicence:
+      held: true
+      type: Full UK
+      dateObtained: 2014-06-30
+      noClaimsBonusYears: 5
+      ownsCar: true
     history:
-      # Every claim / conviction in the last 5 years. Empty lists are fine.
-      claims: []
-      # - date: 2023-02-11
-      #   type: theft              # theft | accident | fire | vandalism | windscreen
-      #   fault: false
-      #   cost: 1800
+      claims:
+        - date: 2024-01-02
+          type: other
+          description: Other
+          fault: true
+          ownVehicleCost: 1500
+          personalInjury: false
+          onCurrentPolicy: false
+        - date: 2025-05-31
+          type: accident
+          description: Multiple Vehicle - Third party hit rider
+          fault: false
+          personalInjury: true
+          onCurrentPolicy: false
       convictions: []
       # - date: 2022-08-01
       #   code: SP30
@@ -61,6 +78,7 @@ riders:
     gender: male
     maritalStatus: married
     relationshipToProposer: parent
+    usageFrequency: infrequent
     email: dad@example.com
     phone: "07700900001"
     ukResidentSince: 1965-01-01
@@ -133,13 +151,15 @@ defaults:
   legalCover: false
   breakdownCover: false
   helmetAndLeathers: false
+  pillionCover: true
   protectedNcb: false
   security:
-    alarm: false
-    immobiliser: factory           # none | factory | thatcham-1 | thatcham-2
-    tracker: none                  # none | thatcham-s5 | thatcham-s7
+    alarm: ""
+    immobiliser: Honda HISS2 INJ (Thatcham 2)
+    tracker: Datatool Stealth
+    physicalDevice: Oxford Boss Disc Lock
+    secureMarkings: Datatag
     chainAndGroundAnchor: true
-    disclock: true
 
 # ---------------------------------------------------------------------------
 # Optional. Only used to auto-resolve bikes from a reg / listing / screenshot.

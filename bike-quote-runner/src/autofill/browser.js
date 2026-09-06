@@ -165,7 +165,8 @@
 
   function push2(arr, s) { if (s && s.trim()) arr.push(s.trim()); }
 
-  const PROPOSER_HEADINGS = /(your|my) details|about you|main (rider|driver)|policyholder|proposer|rider 1|driver 1/i;
+  // "rider 1" deliberately requires a boundary: "Additional rider 1" is not you.
+  const PROPOSER_HEADINGS = /(your|my) details|about you|main (rider|driver)|policyholder|proposer|(^|[^a-z])(rider|driver) 1/i;
 
   /**
    * Which rider is this part of the form about? 0 = you.
@@ -187,8 +188,8 @@
       for (let i = names.length - 1; i >= 1; i--) {
         if (names[i] && t.indexOf(names[i]) !== -1) return i;
       }
-      if (PROPOSER_HEADINGS.test(t)) return 0;
-      if (names[0] && t.indexOf(names[0]) !== -1) return 0;
+      // Additional-rider wording is checked before proposer wording: a heading
+      // reading "Additional rider 1" contains both, and it is not you.
       for (const m of payload.markers) {
         if (t.indexOf(m) !== -1) {
           const numbered = t.match(/(?:rider|driver)\s*([2-9])/);
@@ -196,14 +197,40 @@
           return Math.min(1, payload.answers.people.length - 1);
         }
       }
+      if (PROPOSER_HEADINGS.test(t)) return 0;
+      if (names[0] && t.indexOf(names[0]) !== -1) return 0;
     }
     return 0;
   }
 
-  function lookup(key, scope, personIndex) {
+  const REPEAT_HEADING = /(claim|incident|accident|conviction|offence|offense)\s*(?:no\.?\s*)?([1-9])/i;
+
+  /**
+   * Which repeated row this field belongs to: "Claim 1" vs "Claim 2".
+   *
+   * Journeys ask for each claim and conviction in its own titled block, so a
+   * single set of answers per person is not enough; without this the second
+   * claim gets the first claim's date.
+   */
+  function repeatIndexFor(el) {
+    let node = el.parentElement;
+    for (let depth = 0; node && depth < 9; depth++, node = node.parentElement) {
+      const heading = node.querySelector("legend,h1,h2,h3,h4,h5,h6,[class*=heading],[class*=Heading],[class*=title],[class*=Title]");
+      if (!heading || heading.contains(el)) continue;
+      const m = textOf(heading, 120).match(REPEAT_HEADING);
+      if (m && m[2]) return parseInt(m[2], 10) - 1;
+    }
+    return 0;
+  }
+
+  function lookup(key, scope, personIndex, repeatIndex) {
     if (scope === "shared") return payload.answers.shared[key];
     const person = payload.answers.people[personIndex] || payload.answers.people[0];
-    return person ? person[key] : undefined;
+    if (!person) return undefined;
+    const i = repeatIndex || 0;
+    if (scope === "claim") return person.claims[i] ? person.claims[i][key] : undefined;
+    if (scope === "conviction") return person.convictions[i] ? person.convictions[i][key] : undefined;
+    return person.fields[key];
   }
 
   /**
@@ -216,16 +243,19 @@
    * birth into "relationship to you", which is worse than an empty box: you
    * would not think to check it.
    */
-  function bestQuestion(candidates, selfHints, ambient, personIndex) {
+  function bestQuestion(candidates, selfHints, ambient, personIndex, repeatIndex) {
     const cands = (candidates || []).map(norm).filter(Boolean);
     const hints = (selfHints || []).map(norm).filter(Boolean);
     const amb = norm(ambient || "");
-    const joined = cands.concat(hints).join(" | ") + " | " + amb;
     const identified = cands.length > 0 || hints.length > 0;
+    // Disqualifiers read the same evidence that identifies the field. Letting
+    // them see ambient text means a neighbouring "Flat number" label vetoes
+    // this field's own "House number".
+    const vetoText = identified ? cands.concat(hints).join(" | ") : amb;
     let best = null;
 
     for (const q of compiled) {
-      if (q.neg.some((r) => r.test(joined))) continue;
+      if (q.neg.some((r) => r.test(vetoText))) continue;
       let score = 0;
       for (const r of q.res) {
         for (const cand of cands) {
@@ -241,7 +271,7 @@
         if (!identified && amb && r.test(amb)) score = Math.max(score, 4 + q.weight);
       }
       if (score === 0) continue;
-      const a = lookup(q.key, q.scope, personIndex);
+      const a = lookup(q.key, q.scope, personIndex, repeatIndex);
       if (!a || a.value === "" || a.value === "undefined") continue;
       if (!best || score > best.score) best = { key: q.key, scope: q.scope, score: score };
     }
@@ -372,13 +402,15 @@
       const primary = lbl.primary;
       const context = lbl.context;
       const personIndex = personIndexFor(el);
-      const q = bestQuestion(lbl.candidates, lbl.selfHints, lbl.ambient, personIndex);
+      const repeatIndex = repeatIndexFor(el);
+      const q = bestQuestion(lbl.candidates, lbl.selfHints, lbl.ambient, personIndex, repeatIndex);
       if (!q) continue;
-      const answer = lookup(q.key, q.scope, personIndex);
+      const answer = lookup(q.key, q.scope, personIndex, repeatIndex);
       if (!answer) continue;
 
       const shownLabel = (primary || context.split(" | ")[0] || "").slice(0, 90);
-      const tag = q.scope === "person" && personIndex > 0 ? ` [${payload.answers.peopleNames[personIndex]}]` : "";
+      let tag = q.scope === "person" && personIndex > 0 ? ` [${payload.answers.peopleNames[personIndex]}]` : "";
+      if ((q.scope === "claim" || q.scope === "conviction") && repeatIndex > 0) tag += ` [#${repeatIndex + 1}]`;
 
       try {
         if (t.kind === "input") {
@@ -537,7 +569,15 @@
     lines.push("== " + payload.answers.meta.bikeLabel + " / " + payload.answers.meta.scenarioLabel + " ==");
     payload.answers.people.forEach((p, i) => {
       lines.push("-- " + payload.answers.peopleNames[i] + (i === 0 ? " (you)" : " (named rider)"));
-      Object.keys(p).forEach((k) => { if (p[k].value) lines.push("  " + k + ": " + p[k].value); });
+      Object.keys(p.fields).forEach((k) => { if (p.fields[k].value) lines.push("  " + k + ": " + p.fields[k].value); });
+      p.claims.forEach((cl, ci) => {
+        lines.push("  -- claim " + (ci + 1));
+        Object.keys(cl).forEach((k) => { if (cl[k].value) lines.push("    " + k + ": " + cl[k].value); });
+      });
+      p.convictions.forEach((cv, vi) => {
+        lines.push("  -- conviction " + (vi + 1));
+        Object.keys(cv).forEach((k) => { if (cv[k].value) lines.push("    " + k + ": " + cv[k].value); });
+      });
     });
     lines.push("-- bike & policy");
     Object.keys(payload.answers.shared).forEach((k) => {
@@ -593,6 +633,7 @@
     groupLabel: groupLabel,
     bestQuestion: bestQuestion,
     personIndexFor: personIndexFor,
+    repeatIndexFor: repeatIndexFor,
     lookup: lookup,
     collectTargets: collectTargets,
   };

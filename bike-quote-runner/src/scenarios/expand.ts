@@ -17,6 +17,7 @@ export interface Scenario {
   /** Overrides the address's own overnightParking when the axis is swept. */
   overnightParking?: string;
   protectedNcb: boolean;
+  pillionCover: boolean;
 }
 
 export interface Plan {
@@ -38,6 +39,7 @@ const AXIS_ORDER = [
   "use",
   "paymentMethod",
   "protectedNcb",
+  "pillionCover",
 ] as const;
 
 function baseScenario(profile: Profile): Omit<Scenario, "id" | "label"> {
@@ -52,6 +54,7 @@ function baseScenario(profile: Profile): Omit<Scenario, "id" | "label"> {
     use: d.use,
     paymentMethod: d.paymentMethod,
     protectedNcb: d.protectedNcb,
+    pillionCover: d.pillionCover,
   };
 }
 
@@ -65,6 +68,7 @@ function shortValue(axis: string, v: unknown): string {
   if (axis === "annualMileage") return `${Number(v) / 1000}k mi`;
   if (axis === "coverType") return String(v) === "comprehensive" ? "comp" : String(v);
   if (axis === "protectedNcb") return v ? "ncb-prot" : "ncb-open";
+  if (axis === "pillionCover") return v ? "pillion" : "no-pillion";
   return String(v);
 }
 

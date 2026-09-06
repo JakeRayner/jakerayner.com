@@ -66,6 +66,7 @@ const AXES = [
   "paymentMethod",
   "overnightParking",
   "protectedNcb",
+  "pillionCover",
 ];
 
 function axisValue(scenario: Record<string, unknown>, axis: string): string | undefined {
@@ -146,4 +147,5 @@ export const AXIS_LABELS: Record<string, string> = {
   paymentMethod: "Payment method",
   overnightParking: "Overnight parking",
   protectedNcb: "Protected NCB",
+  pillionCover: "Pillion cover",
 };

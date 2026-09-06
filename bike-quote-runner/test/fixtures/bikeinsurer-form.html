@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Bike quote</title></head><body>
+<!-- Question wording lifted from a real The Bike Insurer journey, so the
+     question bank is tested against what a live site actually asks. -->
+<h1>Your bike quote</h1>
+
+<fieldset><legend>About you</legend>
+<div><label for="ti">Title</label><select id="ti"><option value="">Select</option><option>Mr</option><option>Mrs</option><option>Miss</option></select></div>
+<div><label for="fn">First name</label><input id="fn"></div>
+<div><label for="sn">Surname</label><input id="sn"></div>
+<div><label for="em">Email address</label><input id="em" type="email"></div>
+<div><label for="mob">Mobile number</label><input id="mob" type="tel"></div>
+<div><label for="dob">Date of birth</label><input id="dob" placeholder="DD/MM/YYYY"></div>
+<div><label for="ms">What is your marital status?</label><select id="ms"><option value="">Select</option><option>Single</option><option>Married</option><option>Divorced</option></select></div>
+<div><label for="flat">Flat number</label><input id="flat"></div>
+<div><label for="hno">House number</label><input id="hno"></div>
+<div><label for="pcode">Postcode</label><input id="pcode"></div>
+<div><label for="ho">Are you a homeowner?</label><select id="ho"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="ukres">Have you been a UK resident since birth?</label><select id="ukres"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+</fieldset>
+
+<fieldset><legend>Rider details</legend>
+<div><label for="emp">What is your employment status?</label><select id="emp"><option value="">Select</option><option>Employed</option><option>Self employed</option><option>Retired</option><option>Student</option></select></div>
+<div><label for="occ">What is your occupation?</label><input id="occ"></div>
+<div><label for="ind">What industry do you work in?</label><input id="ind"></div>
+<div><label for="sj">Do you have a second job?</label><select id="sj"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="blt">What type of motorbike licence do you have?</label><select id="blt"><option value="">Select</option><option>Full UK</option><option>CBT</option><option>Provisional</option></select></div>
+<div><label for="bld">What date did you obtain your motorbike licence?</label><input id="bld" placeholder="DD/MM/YYYY"></div>
+<div><label for="exp">How many continuous years riding experience do you have?</label><input id="exp" type="number"></div>
+<div><label for="pln">Do you want to provide your driving licence number?</label><select id="pln"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="adv">Do you have any advanced riding qualifications?</label><select id="adv"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="org">Are you a member of a biking organisation?</label><select id="org"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="med">Do you have any DVLA reportable medical conditions or disabilities?</label><select id="med"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="decl">Have you ever had insurance declined, cancelled or special terms imposed?</label><select id="decl"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="nmc">Do you have any unspent non-motoring convictions?</label><select id="nmc"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+
+<div class="claim"><h3>Claim 1</h3>
+  <div><label for="c1d">What date did this incident occur?</label><input id="c1d" placeholder="DD/MM/YYYY"></div>
+  <div><label for="c1c">What was the cause or description?</label><input id="c1c"></div>
+  <div><label for="c1f">Were you found to be at fault?</label><select id="c1f"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+  <div><label for="c1v">What was the approximate cost of the claim to your vehicle?</label><input id="c1v"></div>
+  <div><label for="c1i">Did you or anyone else suffer personal injury?</label><select id="c1i"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+  <div><label for="c1p">Did this claim occur on your current or most recent motorbike insurance policy?</label><select id="c1p"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+</div>
+<div class="claim"><h3>Claim 2</h3>
+  <div><label for="c2d">What date did this incident occur?</label><input id="c2d" placeholder="DD/MM/YYYY"></div>
+  <div><label for="c2c">What was the cause or description?</label><input id="c2c"></div>
+  <div><label for="c2f">Were you found to be at fault?</label><select id="c2f"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+  <div><label for="c2i">Did you or anyone else suffer personal injury?</label><select id="c2i"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+  <div><label for="c2p">Did this claim occur on your current or most recent motorbike insurance policy?</label><select id="c2p"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+</div>
+</fieldset>
+
+<fieldset><legend>Additional rider 1</legend>
+<div><label for="a1f">First name</label><input id="a1f"></div>
+<div><label for="a1s">Surname</label><input id="a1s"></div>
+<div><label for="a1d">Date of birth</label><input id="a1d" placeholder="DD/MM/YYYY"></div>
+<div><label for="a1l">What type of motorbike licence do they have?</label><select id="a1l"><option value="">Select</option><option>Full UK</option><option>CBT</option></select></div>
+<div><label for="a1o">What date did they obtain their motorbike licence?</label><input id="a1o" placeholder="DD/MM/YYYY"></div>
+<div><label for="a1m">What is their marital status?</label><select id="a1m"><option value="">Select</option><option>Single</option><option>Married</option></select></div>
+<div><label for="a1e">What is their employment status?</label><select id="a1e"><option value="">Select</option><option>Employed</option><option>Retired</option></select></div>
+<div><label for="a1r">What is their relationship to you?</label><select id="a1r"><option value="">Select</option><option>Parent</option><option>Spouse</option><option>Sibling</option></select></div>
+<div><label for="a1u">How frequently will they be using the bike?</label><select id="a1u"><option value="">Select</option><option>Main rider</option><option>Frequent</option><option>Infrequent</option></select></div>
+</fieldset>
+
+<fieldset><legend>Policy details</legend>
+<div><label for="ps">When would you like the policy to start?</label><input id="ps" type="date"></div>
+<div><label for="pc">What type of policy cover do you require?</label><select id="pc"><option value="">Select</option><option>Comprehensive</option><option>Third party, fire and theft</option><option>Third party only</option></select></div>
+<div><label for="bncb">How many years motorbike no claims bonus do you have?</label><select id="bncb"><option value="">Select</option><option>0 year</option><option>1 year</option><option>2 years</option></select></div>
+<div><label for="vex">How much voluntary excess would you like to add?</label><select id="vex"><option value="">Select</option><option>£0</option><option>£150</option><option>£250</option><option>£500</option></select></div>
+<div><label for="clt">What type of car driving licence do you have?</label><select id="clt"><option value="">Select</option><option>Full UK</option><option>Provisional</option><option>None</option></select></div>
+<div><label for="cld">What date did you obtain your car licence?</label><input id="cld" placeholder="DD/MM/YYYY"></div>
+<div><label for="cncb">How many years car no claims bonus do you have?</label><select id="cncb"><option value="">Select</option><option>0 years</option><option>3 years</option><option>5 years</option></select></div>
+<div><label for="oc">Do you own a car?</label><select id="oc"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="use">How will you use your motorbike?</label><select id="use"><option value="">Select</option><option>Social Only (SD&amp;P)</option><option>Social and commuting</option><option>Business</option></select></div>
+<div><label for="mil">How many miles does the bike do a year?</label><select id="mil"><option value="">Select</option><option>Up to 2000</option><option>Up to 3000</option><option>Up to 6000</option></select></div>
+<div><label for="pay">How would you prefer to pay for your policy?</label><select id="pay"><option value="">Select</option><option>Annually</option><option>Monthly</option></select></div>
+</fieldset>
+
+<fieldset><legend>Vehicle details</legend>
+<div><label for="veh">What is your vehicle?</label><input id="veh"></div>
+<div><label for="vval">What is your motorbike value?</label><input id="vval"></div>
+<div><label for="ukm">Is it an official UK model?</label><select id="ukm"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="store">How is the motorbike stored overnight?</label><select id="store"><option value="">Select</option><option>Locked garage</option><option>Locked compound</option><option>On the street</option></select></div>
+<div><label for="athome">Is your bike kept at your home address overnight?</label><select id="athome"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="keeper">Are you the registered keeper and legal owner?</label><select id="keeper"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="gps">Does the motorbike have a GPS tracker?</label><select id="gps"><option value="">Select</option><option>None</option><option>Datatool Stealth</option><option>Monimoto</option></select></div>
+<div><label for="immo">Does the motorbike have an alarm or immobiliser?</label><select id="immo"><option value="">Select</option><option>None</option><option>Honda HISS2 INJ (Thatcham 2)</option><option>Datatool Evo</option></select></div>
+<div><label for="phys">Does the bike have a physical security device?</label><select id="phys"><option value="">Select</option><option>None</option><option>Oxford Boss Disc Lock</option><option>Almax Chain</option></select></div>
+<div><label for="mark">Does the bike have any secure markings?</label><select id="mark"><option value="">Select</option><option>None</option><option>Datatag</option><option>Smartwater</option></select></div>
+<div><label for="pill">Would you like to add pillion cover to your policy?</label><select id="pill"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="purch">When did you purchase the motorbike?</label><select id="purch"><option value="">Select</option><option>Not purchased yet</option><option>Within the last month</option></select></div>
+<div><label for="owned">Have you owned a motorbike before this one?</label><select id="owned"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+<div><label for="extras">Do you want your quotes to include any optional extras?</label><select id="extras"><option value="">Select</option><option>Decide later</option><option>Yes</option></select></div>
+</fieldset>
+<button type="submit">Get quotes</button>
+</body></html>

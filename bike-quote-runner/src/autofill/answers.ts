@@ -13,11 +13,20 @@ export interface Answer {
   kind: AnswerKind;
 }
 
+export type Fields = Record<string, Answer>;
+
+export interface PersonAnswers {
+  fields: Fields;
+  /** One entry per claim, in the order the form will ask for them. */
+  claims: Fields[];
+  convictions: Fields[];
+}
+
 export interface AnswerSet {
   /** Index 0 is the proposer; 1..n are the named riders for this scenario. */
-  people: Record<string, Answer>[];
+  people: PersonAnswers[];
   peopleNames: string[];
-  shared: Record<string, Answer>;
+  shared: Fields;
   meta: {
     bikeId: string;
     bikeLabel: string;
@@ -37,7 +46,18 @@ const text = (v: string, alt?: string[]): Answer => ({ value: v, alt, kind: "tex
 const num = (v: number | string, alt?: string[]): Answer => ({ value: String(v), alt, kind: "number" });
 const choice = (v: string, alt: string[]): Answer => ({ value: v, alt, kind: "choice" });
 
-function dateParts(prefix: string, isoDate: string): Record<string, Answer> {
+/**
+ * A named security product, or "None".
+ *
+ * Forms list these as dropdowns of exact product names, so the value doubles as
+ * both the answer to "does it have one" and the option to pick.
+ */
+const product = (v: string): Answer =>
+  v.trim()
+    ? { value: v.trim(), alt: [v.trim().toLowerCase(), "yes"], kind: "choice" }
+    : { value: "None", alt: ["none", "no", "not fitted", "none fitted"], kind: "choice" };
+
+function dateParts(prefix: string, isoDate: string): Fields {
   const [y, m, d] = isoDate.split("-") as [string, string, string];
   return {
     [prefix]: { value: ukDate(isoDate), alt: [isoDate, `${d}-${m}-${y}`, `${d}${m}${y}`], kind: "date" },
@@ -48,7 +68,7 @@ function dateParts(prefix: string, isoDate: string): Record<string, Answer> {
 }
 
 const LICENCE_LABELS: Record<string, string[]> = {
-  full: ["full motorcycle licence", "full uk motorcycle", "full bike licence", "full", "full licence"],
+  full: ["full uk", "full motorcycle licence", "full uk motorcycle", "full bike licence", "full", "full licence"],
   "full-a2": ["full a2", "a2 licence", "full motorcycle licence (a2)", "a2"],
   "full-a1": ["full a1", "a1 licence", "a1"],
   cbt: ["cbt", "compulsory basic training", "provisional with cbt", "cbt only"],
@@ -59,7 +79,7 @@ const PARKING_LABELS: Record<string, string[]> = {
   garage: ["garage", "locked garage", "private locked garage", "in a garage"],
   driveway: ["driveway", "drive", "private drive", "on a driveway", "private property"],
   "secure-car-park": ["secure car park", "locked car park", "private car park", "car park"],
-  "locked-compound": ["locked compound", "compound", "secure compound"],
+  "locked-compound": ["locked compound", "compound", "secure compound", "locked communal area"],
   carport: ["carport", "car port"],
   street: ["street", "on the street", "public road", "roadside", "kerbside", "on road"],
 };
@@ -71,7 +91,7 @@ const COVER_LABELS: Record<string, string[]> = {
 };
 
 const USE_LABELS: Record<string, string[]> = {
-  social: ["social domestic and pleasure", "social, domestic and pleasure", "sdp", "social only", "social"],
+  social: ["social only (sd&p)", "social only", "social domestic and pleasure", "social, domestic and pleasure", "sdp", "social"],
   "social-commuting": [
     "social domestic pleasure and commuting",
     "social and commuting",
@@ -91,17 +111,43 @@ const EMPLOYMENT_LABELS: Record<string, string[]> = {
   houseperson: ["houseperson", "homemaker", "house person"],
 };
 
-const IMMOBILISER_LABELS: Record<string, string[]> = {
-  none: ["none", "no immobiliser", "not fitted"],
-  factory: ["factory fitted", "manufacturer fitted", "standard", "factory"],
-  "thatcham-1": ["thatcham category 1", "thatcham 1", "category 1"],
-  "thatcham-2": ["thatcham category 2", "thatcham 2", "category 2"],
+const FREQUENCY_LABELS: Record<string, string[]> = {
+  main: ["main rider", "main user", "most often", "main"],
+  frequent: ["frequent", "frequently", "often", "regularly"],
+  occasional: ["occasional", "occasionally", "sometimes"],
+  infrequent: ["infrequent", "infrequently", "rarely", "seldom"],
 };
 
-function personAnswers(r: Rider, opts: { isProposer: boolean; startDate: string }): Record<string, Answer> {
+function claimAnswers(claim: Rider["history"]["claims"][number]): Fields {
+  return {
+    ...dateParts("claimDate", claim.date),
+    claimType: text(claim.description || claim.type, [claim.type, claim.description].filter(Boolean)),
+    claimDescription: text(claim.description || claim.type),
+    claimFault: yes(claim.fault),
+    claimOwnCost: num(claim.ownVehicleCost ?? ""),
+    claimThirdPartyCost: num(claim.thirdPartyCost ?? ""),
+    claimPersonalInjury: yes(claim.personalInjury),
+    claimOnCurrentPolicy: yes(claim.onCurrentPolicy),
+  };
+}
+
+function convictionAnswers(cv: Rider["history"]["convictions"][number]): Fields {
+  return {
+    ...dateParts("convictionDate", cv.date),
+    convictionCode: text(cv.code),
+    convictionPoints: num(cv.points),
+    convictionFine: num(cv.fine ?? ""),
+    convictionBan: yes(cv.ban),
+    convictionBanMonths: num(cv.banMonths ?? ""),
+  };
+}
+
+function personFields(r: Rider, opts: { isProposer: boolean; startDate: string }): Fields {
   const claims = r.history.claims;
   const convictions = r.history.convictions;
-  const out: Record<string, Answer> = {
+  const lic = r.licence;
+
+  const out: Fields = {
     title: choice(r.title, [r.title.toLowerCase(), r.title.replace(".", "")]),
     firstName: text(r.firstName),
     lastName: text(r.lastName),
@@ -117,12 +163,17 @@ function personAnswers(r: Rider, opts: { isProposer: boolean; startDate: string 
     industry: text(r.employment.industry),
     secondJob: yes(r.employment.secondJob),
     homeowner: yes(r.homeowner),
-    licenceType: choice(r.licence.type, LICENCE_LABELS[r.licence.type] ?? [r.licence.type]),
-    licenceNumber: text(r.licence.number),
-    ...dateParts("licenceDate", r.licence.dateObtained),
-    licenceYearsHeld: num(yearsSince(r.licence.dateObtained, new Date(startDateSafe(opts.startDate)))),
-    licenceCountry: choice(r.licence.countryOfIssue, ["uk", "united kingdom", "gb", "great britain"]),
-    advancedRiding: text(r.licence.advancedRiding),
+
+    licenceType: choice(lic.type, LICENCE_LABELS[lic.type] ?? [lic.type]),
+    licenceNumber: text(lic.number),
+    provideLicenceNumber: yes(lic.provideNumber),
+    ...dateParts("licenceDate", lic.dateObtained),
+    licenceYearsHeld: num(yearsSince(lic.dateObtained, new Date(startDateSafe(opts.startDate)))),
+    licenceCountry: choice(lic.countryOfIssue, ["uk", "united kingdom", "gb", "great britain"]),
+    ridingExperienceYears: num(lic.ridingExperienceYears ?? yearsSince(lic.dateObtained)),
+    advancedRiding: lic.advancedRiding && lic.advancedRiding !== "none" ? text(lic.advancedRiding) : yes(false),
+    bikingOrganisation: lic.bikingOrganisation && lic.bikingOrganisation !== "none" ? text(lic.bikingOrganisation) : yes(false),
+
     hasClaims: yes(claims.length > 0),
     claimsCount: num(claims.length),
     hasConvictions: yes(convictions.length > 0),
@@ -131,10 +182,25 @@ function personAnswers(r: Rider, opts: { isProposer: boolean; startDate: string 
     nonMotoringConvictions: yes(r.history.nonMotoringConvictions),
     medicalConditions: yes(r.history.medicalConditionsNotifiable),
     insuranceRefused: yes(r.history.insuranceRefused),
-    ncbYears: num(r.noClaimsBonus.years),
+
+    ncbYears: num(r.noClaimsBonus.years, [`${r.noClaimsBonus.years} year`, `${r.noClaimsBonus.years} years`]),
     ncbProtected: yes(r.noClaimsBonus.protected),
     relationship: text(opts.isProposer ? "self" : r.relationshipToProposer ?? "other"),
+    usageFrequency: choice(r.usageFrequency, FREQUENCY_LABELS[r.usageFrequency] ?? [r.usageFrequency]),
   };
+
+  const car = r.carLicence;
+  out.hasCarLicence = yes(car.held);
+  out.ownsCar = yes(car.ownsCar);
+  if (car.held) {
+    out.carLicenceType = text(car.type, ["full uk", "full", car.type.toLowerCase()]);
+    out.carNcbYears = num(car.noClaimsBonusYears, [`${car.noClaimsBonusYears} years`]);
+    if (car.dateObtained) {
+      Object.assign(out, dateParts("carLicenceDate", car.dateObtained));
+      out.carLicenceYearsHeld = num(yearsSince(car.dateObtained));
+    }
+  }
+
   if (r.ukResidentSince) {
     Object.assign(out, dateParts("ukResidentSince", r.ukResidentSince));
     out.ukResidentYears = num(yearsSince(r.ukResidentSince));
@@ -145,6 +211,14 @@ function personAnswers(r: Rider, opts: { isProposer: boolean; startDate: string 
 
 function startDateSafe(s: string): string {
   return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : iso(new Date());
+}
+
+function personAnswers(r: Rider, opts: { isProposer: boolean; startDate: string }): PersonAnswers {
+  return {
+    fields: personFields(r, opts),
+    claims: r.history.claims.map(claimAnswers),
+    convictions: r.history.convictions.map(convictionAnswers),
+  };
 }
 
 export function buildAnswers(profile: Profile, bike: Bike, scenario: Scenario): AnswerSet {
@@ -161,12 +235,16 @@ export function buildAnswers(profile: Profile, bike: Bike, scenario: Scenario): 
   ];
 
   const bikeValue = bike.value ?? bike.askingPrice;
+  const streetLine = [addr.subBuilding, addr.houseNumber, addr.line1].filter(Boolean).join(", ");
 
-  const shared: Record<string, Answer> = {
+  const shared: Fields = {
     registration: text((bike.registration ?? "").toUpperCase()),
     make: text(bike.make),
     model: text(bike.model),
     makeModel: text(`${bike.make} ${bike.model}`),
+    vehicleDescription: text(
+      [bike.year, bike.make, bike.model, bike.engineCc ? `${bike.engineCc}cc` : ""].filter(Boolean).join(" ")
+    ),
     yearOfManufacture: num(bike.year ?? ""),
     engineCc: num(bike.engineCc ?? ""),
     vehicleValue: num(bikeValue ?? ""),
@@ -175,9 +253,15 @@ export function buildAnswers(profile: Profile, bike: Bike, scenario: Scenario): 
     modified: yes(bike.modifications.length > 0),
     modificationsList: text(bike.modifications.join(", ") || "None"),
     imported: yes(Boolean(bike.imported)),
+    officialUkModel: yes(bike.officialUkModel ?? !bike.imported),
+    purchased: bike.purchased === false
+      ? { value: "Not purchased yet", alt: ["not purchased yet", "i have not bought it yet", "not yet purchased", "no"], kind: "choice" }
+      : yes(true),
+    ownedBikeBefore: yes(Boolean(bike.ownedBikeBefore)),
 
+    subBuilding: text(addr.subBuilding),
     houseNumber: text(addr.houseNumber),
-    addressLine1: text([addr.houseNumber, addr.line1].filter(Boolean).join(" ")),
+    addressLine1: text(streetLine),
     addressLine2: text(addr.line2),
     town: text(addr.town),
     county: text(addr.county),
@@ -188,13 +272,13 @@ export function buildAnswers(profile: Profile, bike: Bike, scenario: Scenario): 
     keptAtHomeAddress: yes(true),
 
     coverType: choice(scenario.coverType, COVER_LABELS[scenario.coverType] ?? [scenario.coverType]),
-    annualMileage: num(scenario.annualMileage),
+    annualMileage: num(scenario.annualMileage, [`up to ${scenario.annualMileage}`, `${scenario.annualMileage} miles`]),
     voluntaryExcess: num(scenario.voluntaryExcess, [`£${scenario.voluntaryExcess}`]),
     vehicleUse: choice(scenario.use, USE_LABELS[scenario.use] ?? [scenario.use]),
     paymentMethod: choice(
       scenario.paymentMethod,
       scenario.paymentMethod === "annual"
-        ? ["annual", "in full", "one payment", "pay annually", "yearly"]
+        ? ["annual", "annually", "in full", "one payment", "pay annually", "yearly"]
         : ["monthly", "instalments", "pay monthly", "direct debit"]
     ),
     ...dateParts("policyStartDate", startDate),
@@ -203,16 +287,19 @@ export function buildAnswers(profile: Profile, bike: Bike, scenario: Scenario): 
     registeredKeeper: choice("proposer", ["proposer", "me", "policyholder", "myself", "yourself"]),
     isOwnerAndKeeper: yes(profile.defaults.ownerAndKeeper),
 
-    alarm: yes(sec.alarm),
-    immobiliser: choice(sec.immobiliser, IMMOBILISER_LABELS[sec.immobiliser] ?? [sec.immobiliser]),
-    tracker: choice(sec.tracker, sec.tracker === "none" ? ["none", "not fitted"] : [sec.tracker, "thatcham approved tracker"]),
+    alarm: product(sec.alarm),
+    immobiliser: product(sec.immobiliser),
+    tracker: product(sec.tracker),
+    physicalSecurityDevice: product(sec.physicalDevice),
+    secureMarkings: product(sec.secureMarkings),
     chainAndGroundAnchor: yes(sec.chainAndGroundAnchor),
-    discLock: yes(sec.disclock),
 
     legalCover: yes(profile.defaults.legalCover),
     breakdownCover: yes(profile.defaults.breakdownCover),
     helmetAndLeathers: yes(profile.defaults.helmetAndLeathers),
+    pillionCover: yes(scenario.pillionCover ?? profile.defaults.pillionCover),
     protectedNcb: yes(scenario.protectedNcb),
+    optionalExtras: { value: "Decide later", alt: ["decide later", "none", "no thanks"], kind: "choice" },
 
     numberOfRiders: num(people.length),
     additionalRiders: yes(others.length > 0),
