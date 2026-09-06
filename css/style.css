@@ -70,13 +70,19 @@ body::before{
   content:""; position:fixed; z-index:-1; pointer-events:none;
   /* Not inset:0. A fixed layer stops at the visible viewport, so on a phone
      it ends above the browser's bottom toolbar while the page keeps painting
-     behind it, leaving a strip with no glow and no dots: a visible seam
-     across the bottom of the screen. lvh is the viewport at its tallest,
-     with the toolbar retracted, so the layer always reaches past it. */
+     behind it. lvh, the viewport at its tallest with the toolbar retracted,
+     reaches past it where it is supported.
+
+     The layer's edges are the real hazard though, whatever its height: the
+     lower glow used to sit at 108%, centred below the layer, so it was at
+     its brightest exactly where the layer was cut and the seam across the
+     bottom of the screen was as hard as it could be. Both glows now fade to
+     nothing before they reach an edge, so no cut can show, wherever a
+     browser decides to put one. */
   left:0; right:0; top:0; height:100vh; height:100lvh;
   background:
-    radial-gradient(1100px 620px at 88% -12%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
-    radial-gradient(900px 700px at 6% 108%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 66%);
+    radial-gradient(1100px 560px at 88% 6%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 62%),
+    radial-gradient(820px 460px at 6% 68%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 66%);
 }
 ::selection{background:var(--accent); color:var(--accent-ink);}
 a{color:inherit;}
