@@ -59,7 +59,23 @@ body{
   background:var(--skin);color:var(--ink);
 }
 .panel[hidden]{display:none}
+.shot{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.shot img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  opacity:.92;filter:saturate(.9) contrast(1.02);
+}
+.shot::before{
+  content:"";position:absolute;inset:0;
+  background:var(--skin);opacity:.6;mix-blend-mode:multiply;
+}
+.shot::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(100deg,rgba(9,4,6,.82) 0%,rgba(9,4,6,.46) 50%,rgba(9,4,6,.12) 100%),
+    linear-gradient(to bottom,rgba(9,4,6,.34) 0%,rgba(9,4,6,0) 30%,rgba(9,4,6,.7) 100%);
+}
 .pad{
+  position:relative;z-index:1;
   width:100%;max-height:100%;overflow-y:auto;scrollbar-width:none;
   padding:calc(env(safe-area-inset-top,0px) + 58px) 30px calc(env(safe-area-inset-bottom,0px) + 96px);
 }
@@ -438,7 +454,8 @@ h2{
   var STOPS = [
     { clock:"Morning", when:"First thing",
       title:"Presents,<br>then breakfast", short:"Presents and breakfast",
-      lede:"At the flat, with nowhere to be." },
+      lede:"At the flat, with nowhere to be.",
+      photo:"https://www.forkknifeswoon.com/wp-content/uploads/2012/12/easy-vanilla-honey-french-toast-fork-knife-swoon-01.jpg" },
 
     { clock:"09:00", when:"Before you go", kind:"pass",
       title:"One more<br>thing", short:"Your Dubrovnik Pass", shortLocked:"One more thing",
@@ -446,11 +463,13 @@ h2{
 
     { clock:"09:30", when:"From about 9:30",
       title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
-      lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e." },
+      lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e.",
+      photo:"https://www.lostindubrovnik.com/wp-content/uploads/2022/09/Lost-in-Dubrovnik-Shopping-Kawa-04.jpg" },
 
     { clock:"11:00", when:"Late morning",
       title:"The<br>City Walls", short:"The City Walls",
-      lede:"The whole loop. Two kilometres above the rooftops and the sea." },
+      lede:"The whole loop. Two kilometres above the rooftops and the sea.",
+      photo:"https://walkindubrovnik.com/wp-content/uploads/2022/03/dubrovnik-city-walls.jpg" },
 
     { clock:"13:00", when:"From about 1pm", kind:"wheel",
       title:"The afternoon<br>is yours", short:"The afternoon is yours",
@@ -645,12 +664,17 @@ h2{
         (i === STOPS.length - 1 ? "Finish" : "Next") +
       '</button></div>';
 
-    s.innerHTML = '<div class="pad"><div class="inner">' +
+    s.innerHTML =
+      (stop.photo ? '<div class="shot"><img src="' + stop.photo + '" alt="" referrerpolicy="no-referrer"></div>' : '') +
+      '<div class="pad"><div class="inner">' +
       '<p class="when rise">' + stop.when + '</p>' +
       '<h2 class="rise d1">' + stop.title + '</h2>' +
       '<p class="lede rise d2">' + stop.lede + '</p>' +
       extra + nextRow +
       '</div></div>';
+
+    var shot = s.querySelector(".shot img");
+    if(shot) shot.addEventListener("error", function(){ shot.parentNode.remove(); });
 
     deck.insertBefore(s, outro);
     return s;
