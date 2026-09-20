@@ -109,6 +109,7 @@ h2{
 .btn.solid{background:var(--accent);color:#1C0910;font-weight:500}
 .btn.ghost{background:none;color:var(--dim);padding-left:0}
 .next{margin:26px 0 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.next.mid{justify-content:center;margin-top:14px}
 
 /* ---------- the present ---------- */
 .giftwrap{margin:22px 0 0;display:flex;flex-direction:column;align-items:center}
@@ -187,17 +188,14 @@ h2{
 
 /* ---------- wheel ---------- */
 .wheelwrap{
-  position:relative;width:min(82vw,296px);margin:18px auto 0;
+  position:relative;width:min(94vw,348px);padding:26px;margin:0 auto;
   touch-action:none;cursor:grab;
 }
 .wheelwrap:active{cursor:grabbing}
-.wheelwrap::before{           /* a generous grab area around the rim */
-  content:"";position:absolute;inset:-26px;border-radius:50%;
-}
 .wheelspin{width:100%;transition:transform 3.6s cubic-bezier(.15,.85,.25,1)}
 .wheelspin svg{display:block;width:100%;height:auto}
 .ptr{
-  position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  position:absolute;top:22px;left:50%;transform:translateX(-50%);
   width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;
   border-top:17px solid var(--accent);z-index:3;pointer-events:none;
 }
@@ -232,18 +230,18 @@ h2{
 .meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0%;transition:width 1s linear}
 .gate .lede{margin:0 auto;max-width:26ch}
 .unlock-at{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:20px 0 0}
-.pw{display:flex;gap:8px;justify-content:center;align-items:center;margin:30px 0 0}
-.pw input{
-  width:112px;font:inherit;font-size:16px;letter-spacing:.14em;text-align:center;color:var(--ink);
-  background:none;border:0;border-bottom:1px solid var(--rule);padding:8px 4px;
-  -webkit-appearance:none;border-radius:0;
+.pw{display:flex;flex-direction:column;align-items:center;gap:11px;margin:30px 0 0}
+.pwdots{display:flex;gap:7px;height:7px}
+.pwdots i{width:7px;height:7px;border-radius:50%;background:rgba(245,234,229,.18);transition:background .2s ease}
+.pwdots i.on{background:var(--accent)}
+.pwkeys{display:flex;gap:3px;justify-content:center}
+.pwkeys button{
+  width:27px;height:27px;border-radius:50%;border:0;padding:0;
+  font:inherit;font-size:12px;line-height:1;color:var(--dim);
+  background:rgba(245,234,229,.07);cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:background .15s ease,color .15s ease;
 }
-.pw input::placeholder{color:#6A5550;letter-spacing:.18em;font-size:11px;text-transform:uppercase}
-.pw input:focus{outline:none;border-bottom-color:var(--accent)}
-.pw button{
-  font:inherit;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);background:none;border:0;padding:8px 4px;cursor:pointer;
-}
+.pwkeys button:active{background:rgba(245,234,229,.2);color:var(--ink)}
 .pw.no{animation:no .4s ease}
 @keyframes no{
   10%,90%{transform:translateX(-3px)} 30%,70%{transform:translateX(5px)} 50%{transform:translateX(-5px)}
@@ -707,11 +705,12 @@ h2{
         '<p class="cdnote" data-cdnote>until the sun goes down</p>';
     }
 
-    var nextRow = '<div class="next rise d4"' + (stop.kind === "pass" ? ' data-nextrow hidden' : '') + '>' +
-      (stop.kind === "wheel" ? '<button type="button" class="btn" data-places>See everything</button>' : '') +
-      '<button type="button" class="btn' + (stop.kind === "wheel" ? "" : " solid") + '" data-next>' +
-        (i === STOPS.length - 1 ? "Finish" : "Next") +
-      '</button></div>';
+    var nextRow = stop.kind === "wheel"
+      ? '<div class="next rise d4 mid"><button type="button" class="btn" data-places>See everything</button></div>'
+      : '<div class="next rise d4"' + (stop.kind === "pass" ? ' data-nextrow hidden' : '') + '>' +
+        '<button type="button" class="btn solid" data-next>' +
+          (i === STOPS.length - 1 ? "Finish" : "Next") +
+        '</button></div>';
 
     s.innerHTML =
       (stop.photo ? '<div class="shot"><img src="' + stop.photo + '" alt="" referrerpolicy="no-referrer"></div>' : '') +
@@ -739,28 +738,43 @@ h2{
       '<div class="meter"><i id="meterFill"></i></div>' +
       '<p class="lede">Enjoy this bit first. The next part opens on its own.</p>' +
       '<p class="unlock-at" id="unlockAt"></p>' +
-      '<form class="pw" id="pwForm" autocomplete="off">' +
-        '<input type="text" id="pwInput" inputmode="numeric" placeholder="Password" ' +
-          'aria-label="Password" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="8">' +
-        '<button type="submit">Go</button>' +
-      '</form>' +
+      '<div class="pw" id="pwForm">' +
+        '<div class="pwdots" id="pwDots"><i></i><i></i></div>' +
+        '<div class="pwkeys" id="pwKeys"></div>' +
+      '</div>' +
     '</div></div>';
   deck.insertBefore(gate, outro);
   var pwForm = gate.querySelector("#pwForm");
-  var pwInput = gate.querySelector("#pwInput");
-  pwForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    if(pwInput.value.trim() === "32"){
-      pwInput.value = "";
-      pwInput.blur();
-      state.nextAt = Date.now();
-      if(catchUp()) renderAll(true);
-      tick();
-    }else{
-      pwInput.value = "";
-      pwForm.classList.remove("no"); void pwForm.offsetWidth; pwForm.classList.add("no");
+  var pwDots = gate.querySelector("#pwDots");
+  var pwKeys = gate.querySelector("#pwKeys");
+  var pwEntry = "";
+
+  function pwPaint(){
+    for(var i=0;i<pwDots.children.length;i++){
+      pwDots.children[i].className = i < pwEntry.length ? "on" : "";
     }
-  });
+  }
+  for(var k=0;k<10;k++){
+    (function(d){
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = String(d);
+      b.addEventListener("click", function(){
+        pwEntry += String(d);
+        pwPaint();
+        if(pwEntry.length < 2) return;
+        if(pwEntry === "32"){
+          pwEntry = ""; pwPaint();
+          state.nextAt = Date.now();
+          if(catchUp()) renderAll(true);
+          tick();
+        }else{
+          pwEntry = ""; pwPaint();
+          pwForm.classList.remove("no"); void pwForm.offsetWidth; pwForm.classList.add("no");
+        }
+      });
+      pwKeys.appendChild(b);
+    })(k);
+  }
 
   var clockEl = gate.querySelector("#clock");
   var meterFill = gate.querySelector("#meterFill");
@@ -985,6 +999,14 @@ h2{
     }
     wrap.addEventListener("pointerup", release);
     wrap.addEventListener("pointercancel", release);
+
+    /* touch-action alone is not enough inside a snapping scroller, so the
+       wheel eats the touch outright and nothing underneath sees it */
+    wrap.addEventListener("touchstart", function(e){ e.stopPropagation(); }, {passive:true});
+    wrap.addEventListener("touchmove", function(e){
+      e.preventDefault(); e.stopPropagation();
+    }, {passive:false});
+    wrap.addEventListener("touchend", function(e){ e.stopPropagation(); }, {passive:true});
 
     draw(sample());
     showIdle();
