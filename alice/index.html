@@ -4,32 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Happy Birthday Alice</title>
-<meta name="description" content="Monday 21 September, one part at a time.">
-<meta name="theme-color" content="#6E1522">
+<meta name="description" content="Monday 21 September.">
+<meta name="theme-color" content="#1B0810">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="Happy Birthday Alice">
 <meta property="og:description" content="Monday 21 September. Open me first thing.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  color-scheme:light;
+  color-scheme:dark;
   --display:"Fraunces","Iowan Old Style",Georgia,serif;
   --sans:"Inter","Helvetica Neue",Arial,sans-serif;
-
-  /* light, the default */
-  --bg:#F7F2EB;
-  --ink:#1F1613;
-  --dim:#6E5C53;
-  --rule:rgba(31,22,19,.16);
-  --accent:#8E1F2F;
-  --fill:rgba(31,22,19,.035);
-
-  --barink:#1F1613;
-  --barbg:rgba(247,242,235,.82);
-  --track:rgba(31,22,19,.12);
+  --ink:#F5EAE5;
+  --dim:#A38D87;
+  --rule:rgba(245,234,229,.15);
+  --accent:#E2B591;
+  --skin:radial-gradient(135% 85% at 50% -8%,#4A1220 0%,#250A11 44%,#0E0508 100%);
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
@@ -40,7 +33,7 @@ body{
   font-size:16.5px;
   line-height:1.65;
   color:var(--ink);
-  background:#100D0C;
+  background:#0E0508;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
@@ -65,144 +58,58 @@ body{
   flex-direction:column;
   justify-content:center;
   overflow:hidden;
-  background:var(--bg);
+  background:var(--skin);
   color:var(--ink);
 }
 .panel[hidden]{display:none}
 .pad{
-  width:100%;max-height:100%;overflow-y:auto;
-  scrollbar-width:none;
-  padding:calc(env(safe-area-inset-top,0px) + 56px) 28px calc(env(safe-area-inset-bottom,0px) + 96px);
+  width:100%;max-height:100%;overflow-y:auto;scrollbar-width:none;
+  padding:calc(env(safe-area-inset-top,0px) + 60px) 30px calc(env(safe-area-inset-bottom,0px) + 100px);
 }
 .pad::-webkit-scrollbar{display:none}
-.inner{width:100%;max-width:470px;margin:0 auto}
-
-/* three tones only */
-.t-cover,.t-close{
-  --ink:#F6EDE7;--dim:rgba(246,237,231,.72);
-  --rule:rgba(246,237,231,.26);--accent:#E8C9A8;--fill:rgba(255,255,255,.05);
-  --barink:#F6EDE7;--barbg:rgba(255,236,230,.12);--track:rgba(246,237,231,.2);
-  background:radial-gradient(125% 85% at 76% 8%,#7E1A29 0%,#6C1422 44%,#4C0C17 100%);
-}
-.t-close{background:radial-gradient(125% 92% at 22% 94%,#7E1A29 0%,#651320 46%,#460A13 100%)}
-.t-day{
-  --ink:#1F1613;--dim:#6E5C53;--rule:rgba(31,22,19,.16);
-  --accent:#8E1F2F;--fill:rgba(31,22,19,.035);
-  --barink:#1F1613;--barbg:rgba(31,22,19,.07);--track:rgba(31,22,19,.12);
-  background:linear-gradient(168deg,#FCF8F2 0%,#F6F0E6 54%,#EDE2D3 100%);
-}
-.t-day.alt{background:linear-gradient(168deg,#FAF4EC 0%,#F2EADF 50%,#E8DACA 100%)}
-.t-night{
-  --ink:#F2EAE1;--dim:#9E8F84;--rule:rgba(242,234,225,.17);
-  --accent:#C9A176;--fill:rgba(255,255,255,.035);
-  --barink:#F2EAE1;--barbg:rgba(242,234,225,.11);--track:rgba(242,234,225,.16);
-  background:linear-gradient(170deg,#241E19 0%,#191411 56%,#110E0C 100%);
-}
-.t-ember{
-  --ink:#F4E9DD;--dim:#A69384;--rule:rgba(244,233,221,.17);
-  --accent:#D79A6A;--fill:rgba(255,255,255,.035);
-  --barink:#F4E9DD;--barbg:rgba(244,233,221,.11);--track:rgba(244,233,221,.16);
-  background:radial-gradient(135% 72% at 50% 112%,#6B3524 0%,#33201D 38%,#1A1416 68%,#0F0D10 100%);
-}
-.t-sea{
-  --ink:#EDE7DE;--dim:#8E8B8C;--rule:rgba(237,231,222,.16);
-  --accent:#C9A176;--fill:rgba(255,255,255,.035);
-  --barink:#EDE7DE;--barbg:rgba(237,231,222,.1);--track:rgba(237,231,222,.15);
-  background:radial-gradient(125% 80% at 50% -8%,#1E2839 0%,#141B27 46%,#0A0D13 100%);
-}
-.t-gate{
-  --ink:#EFE6DE;--dim:#8E8077;--rule:rgba(239,230,222,.16);
-  --accent:#B98B63;--fill:rgba(255,255,255,.03);
-  --barink:#EFE6DE;--barbg:rgba(239,230,222,.1);--track:rgba(239,230,222,.14);
-  background:radial-gradient(115% 68% at 50% 20%,#241D19 0%,#17120F 52%,#0D0B0A 100%);
-}
+.inner{width:100%;max-width:460px;margin:0 auto}
 
 /* ---------- type ---------- */
-.eyebrow{
-  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
-  color:var(--dim);margin:0 0 20px;
+.eyebrow,.when{
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;margin:0 0 22px;
 }
-.when{
-  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
-  color:var(--accent);margin:0 0 16px;
-}
+.eyebrow{color:var(--dim)}
+.when{color:var(--accent)}
 h1{
   font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:clamp(50px,15vw,104px);line-height:.94;letter-spacing:-.025em;margin:0;
+  font-size:clamp(52px,15.5vw,106px);line-height:.94;letter-spacing:-.025em;margin:0;
 }
 h1 em{font-style:italic;font-weight:300}
 h2{
-  font-family:var(--display);font-optical-sizing:auto;font-weight:400;
-  font-size:clamp(31px,8vw,46px);line-height:1.12;letter-spacing:-.018em;margin:0;
+  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:clamp(36px,10vw,58px);line-height:1.08;letter-spacing:-.022em;margin:0;
 }
-.lede{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:33ch}
-.sig{font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(20px,5.4vw,27px);line-height:1.4;margin:0}
+.lede{font-size:17px;color:var(--dim);margin:20px 0 0;max-width:30ch}
+.sig{font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(21px,5.6vw,28px);line-height:1.4;margin:0}
 
-/* ---------- hairline rows ---------- */
-.rows{margin:26px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
-.rows li{border-bottom:1px solid var(--rule);padding:11px 0;font-size:14.5px;line-height:1.5;color:var(--dim)}
-.rows b{font-weight:500;color:var(--ink)}
-
-.label{
-  font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;
-  color:var(--dim);margin:22px 0 0;
+/* ---------- inline button ---------- */
+.more{
+  margin:30px 0 0;font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink);background:rgba(245,234,229,.1);border:0;border-radius:999px;
+  padding:14px 24px;cursor:pointer;-webkit-tap-highlight-color:transparent;
 }
-
-/* ---------- options ---------- */
-.opts{margin:12px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
-.optrow{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--rule)}
-.opt{
-  flex:1;min-width:0;text-align:left;font:inherit;font-size:16px;color:var(--ink);
-  background:none;border:0;padding:11px 0;cursor:pointer;
-  display:flex;align-items:flex-start;gap:14px;
-  -webkit-tap-highlight-color:transparent;
-}
-.opt .tick{
-  flex:none;width:15px;height:15px;border-radius:50%;border:1px solid var(--rule);
-  margin-top:5px;transition:background .2s ease,border-color .2s ease,box-shadow .2s ease;
-}
-.opt[aria-pressed="true"] .tick{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 2.5px var(--bg)}
-.opt[aria-pressed="true"] .txt{color:var(--accent)}
-.opt .txt{transition:color .2s ease}
-.opt .hintxt{display:block;font-size:13.5px;color:var(--dim);margin-top:1px}
-.opt:focus-visible,.maplink:focus-visible{outline:1px solid var(--accent);outline-offset:4px}
-.maplink{
-  flex:none;text-decoration:none;color:var(--dim);
-  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;padding:11px 0 11px 12px;
-}
-.maplink:hover{color:var(--accent)}
-
-/* ---------- map ---------- */
-.mapwrap{margin:16px 0 0;border:1px solid var(--rule);background:var(--fill);position:relative}
-.maplabel{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:22px 0 0}
-.maplabel .label{margin:0}
-.maplabel a{
-  color:var(--accent);text-decoration:none;
-  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
-}
-.mapph{
-  position:absolute;top:0;left:0;right:0;height:150px;display:grid;place-items:center;
-  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
-}
-.mapwrap iframe{position:relative;display:block;width:100%;height:150px;border:0;filter:saturate(.88)}
+.more:active{transform:scale(.98)}
 
 /* ---------- gate ---------- */
 .gate .inner{text-align:center}
 .clock{
   font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:clamp(56px,17vw,92px);line-height:1;letter-spacing:-.03em;
-  font-variant-numeric:tabular-nums;margin:26px 0 22px;display:block;
+  font-size:clamp(58px,18vw,96px);line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;margin:28px 0 24px;display:block;
 }
-.meter{height:1px;background:var(--track);position:relative;margin:0 0 18px}
+.meter{height:1px;background:rgba(245,234,229,.16);position:relative;margin:0 0 20px}
 .meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0%;transition:width 1s linear}
-.gate .lede{margin-left:auto;margin-right:auto;max-width:30ch}
-.unlock-at{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:18px 0 0}
+.gate .lede{margin:0 auto;max-width:26ch}
+.unlock-at{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:20px 0 0}
 
-/* ---------- progress ---------- */
-.prog{position:fixed;top:0;left:0;right:0;height:2px;background:var(--track);z-index:40;transition:background .6s ease}
-.prog i{display:block;height:100%;width:0%;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1),background .6s ease}
-
-/* ---------- fixed bar ---------- */
+/* ---------- fixed chrome ---------- */
+.prog{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(245,234,229,.14);z-index:40}
+.prog i{display:block;height:100%;width:0%;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1)}
 .bar{
   position:fixed;left:0;right:0;z-index:30;
   bottom:calc(env(safe-area-inset-bottom,0px) + 18px);
@@ -211,65 +118,96 @@ h2{
 .bar button{
   pointer-events:auto;
   font:inherit;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;
-  color:var(--barink);background:var(--barbg);border:0;border-radius:999px;
+  color:var(--ink);background:rgba(245,234,229,.11);border:0;border-radius:999px;
   padding:12px 20px;cursor:pointer;
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  transition:color .6s ease,background .6s ease;-webkit-tap-highlight-color:transparent;
+  -webkit-tap-highlight-color:transparent;
 }
 .bar button:active{transform:scale(.97)}
-
 .hint{
-  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 74px);
+  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);
   text-align:center;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);
 }
 
 /* ---------- sheets ---------- */
 .sheet{
   position:fixed;inset:0;z-index:60;overflow-y:auto;
-  background:#15120F;color:#F2EAE1;
-  padding:calc(env(safe-area-inset-top,0px) + 24px) 28px calc(env(safe-area-inset-bottom,0px) + 44px);
+  background:#130609;color:var(--ink);
+  padding:calc(env(safe-area-inset-top,0px) + 26px) 0 calc(env(safe-area-inset-bottom,0px) + 48px);
   animation:fade .3s ease both;
 }
 .sheet[hidden]{display:none}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.sheet .box{max-width:470px;margin:0 auto}
+.box{max-width:460px;margin:0 auto;padding:0 30px}
 .sheet h3{
-  font-family:var(--display);font-optical-sizing:auto;font-weight:400;
-  font-size:clamp(27px,7vw,38px);line-height:1.14;margin:0 0 8px;letter-spacing:-.018em;
+  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:clamp(30px,8vw,42px);line-height:1.1;margin:0 0 26px;letter-spacing:-.022em;
   padding-right:48px;
 }
-.sheet .sub{color:#9E8F84;font-size:15px;margin:0 0 30px;max-width:34ch}
 .closex{
   position:sticky;top:0;float:right;margin:-2px -6px 0 0;
   width:38px;height:38px;border-radius:50%;font:inherit;font-size:17px;line-height:1;
-  color:#F2EAE1;background:rgba(242,234,225,.12);border:0;
+  color:var(--ink);background:rgba(245,234,229,.12);border:0;
   cursor:pointer;display:grid;place-items:center;z-index:2;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
 
-/* itinerary */
-.tl{list-style:none;margin:0;padding:0;border-top:1px solid rgba(242,234,225,.15)}
-.tl li{display:flex;gap:18px;align-items:baseline;padding:15px 0;border-bottom:1px solid rgba(242,234,225,.15)}
-.tl .t{flex:none;width:78px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9E8F84;font-weight:500}
-.tl .n{font-family:var(--display);font-optical-sizing:auto;font-size:19px;line-height:1.3;font-weight:400}
-.tl .locked{color:#6E6259;font-family:var(--display);font-style:italic;font-weight:300;font-size:18px}
-.tl li.is-next .t{color:#C9A176}
-.tl .soon{display:block;font-size:10.5px;letter-spacing:.1em;color:#C9A176;font-weight:400;margin-top:4px;text-transform:none}
+/* the whole day */
+.tl{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.tl li{display:flex;gap:18px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--rule)}
+.tl .t{flex:none;width:76px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:500}
+.tl .n{font-family:var(--display);font-optical-sizing:auto;font-size:20px;line-height:1.3;font-weight:300}
+.tl .locked{color:#6A5550;font-family:var(--display);font-style:italic;font-weight:300;font-size:19px}
+.tl li.is-next .t{color:var(--accent)}
+
+/* places */
+.cat{
+  font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;
+  color:var(--dim);margin:0 0 12px;padding:0 30px;
+}
+.cat:not(:first-of-type){margin-top:30px}
+.rail{
+  display:flex;gap:11px;overflow-x:auto;scroll-snap-type:x proximity;
+  padding:0 30px 2px;scroll-padding-left:30px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.rail::-webkit-scrollbar{display:none}
+.place{
+  flex:none;width:136px;scroll-snap-align:start;text-decoration:none;color:var(--ink);
+  -webkit-tap-highlight-color:transparent;
+}
+.place:active{transform:scale(.985)}
+.shot{
+  display:block;position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:4px;
+  background:linear-gradient(155deg,rgba(226,181,145,.26) 0%,rgba(226,181,145,.09) 55%,rgba(245,234,229,.04) 100%);
+  box-shadow:inset 0 0 0 1px rgba(245,234,229,.13);
+}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.shot::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(14,5,8,.9) 0%,rgba(14,5,8,.36) 44%,rgba(14,5,8,0) 74%);
+}
+.place .nm{
+  position:absolute;left:11px;right:10px;bottom:10px;z-index:2;
+  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:15.5px;line-height:1.18;letter-spacing:-.012em;
+}
+.place .tag{
+  position:absolute;left:11px;top:10px;right:10px;z-index:2;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+}
 
 /* passes */
-.pass{background:#FFFFFF;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px}
-.pass img{width:100%;max-width:220px;height:auto;image-rendering:pixelated;margin:0 auto;display:block}
+.pass{background:#fff;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px}
+.pass img{width:100%;max-width:210px;height:auto;image-rendering:pixelated;margin:0 auto;display:block}
 .pass .who{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#8E1F2F;margin:0 0 16px}
-.pass .meta{font-size:11.5px;letter-spacing:.06em;color:rgba(31,22,19,.55);margin:16px 0 0}
-.terms h4{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#9E8F84;margin:34px 0 0}
-.terms ul{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid rgba(242,234,225,.15)}
-.terms li{font-size:14.5px;line-height:1.5;color:#B5A79D;padding:11px 0;border-bottom:1px solid rgba(242,234,225,.15)}
-.terms b{color:#F2EAE1;font-weight:500}
-.fine{font-size:12px;color:#6E6259;margin:26px 0 0;letter-spacing:.04em}
+.covers{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--rule)}
+.covers li{font-size:15px;color:var(--dim);padding:13px 0;border-bottom:1px solid var(--rule)}
+.covers b{color:var(--ink);font-weight:500}
 
 /* ---------- motion ---------- */
 .rise{animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
-.d1{animation-delay:.07s}.d2{animation-delay:.16s}.d3{animation-delay:.26s}.d4{animation-delay:.36s}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
   .rise,.sheet{animation:none}
@@ -292,22 +230,20 @@ h2{
 
 <main id="deck">
 
-  <section class="panel t-cover">
+  <section class="panel">
     <div class="pad"><div class="inner">
       <p class="eyebrow rise">Dubrovnik &middot; Monday 21 September</p>
       <h1 class="rise d1">Happy<br>birthday<br><em>Alice</em></h1>
-      <p class="lede rise d2">Today is already planned. You do not need to think about a single thing.</p>
-      <p class="lede rise d3">It comes to you one part at a time, half an hour apart. Keep this open and come back to it.</p>
+      <p class="lede rise d2">Today is planned. It comes to you one part at a time.</p>
     </div></div>
     <p class="hint">Scroll</p>
   </section>
 
-  <section class="panel t-close" id="outro" hidden>
+  <section class="panel" id="outro" hidden>
     <div class="pad"><div class="inner">
-      <p class="eyebrow">That is the whole day</p>
-      <h2>Every bit of it<br>is yours.</h2>
-      <p class="lede">Nothing is fixed. If you would rather stay longer somewhere, skip something, or sit still and do none of it, we will.</p>
-      <p class="sig" style="margin-top:34px">Happy birthday, beautiful.<br>All my love, Jake.</p>
+      <p class="eyebrow">That is the day</p>
+      <h2>All of it<br>is yours.</h2>
+      <p class="sig" style="margin-top:36px">Happy birthday, beautiful.<br>All my love, Jake.</p>
     </div></div>
   </section>
 
@@ -322,49 +258,37 @@ h2{
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
     <h3 id="dayTitle">The whole day</h3>
-    <p class="sub" id="daySub"></p>
     <ul class="tl" id="dayList"></ul>
-    <p class="fine">Times are a guide, not a schedule. Everything moves if you want it to.</p>
   </div>
+</section>
+
+<section class="sheet" id="placeSheet" hidden aria-labelledby="placeTitle">
+  <div class="box"><button type="button" class="closex" data-close aria-label="Close">&times;</button>
+    <h3 id="placeTitle">The Old Town</h3></div>
+  <div id="placeBody"></div>
 </section>
 
 <section class="sheet" id="passSheet" hidden aria-labelledby="passTitle">
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
-    <h3 id="passTitle">Our Dubrovnik Passes</h3>
-    <p class="sub">One each, seven days. Turn your brightness up and show the code.</p>
+    <h3 id="passTitle">Our passes</h3>
 
     <div class="pass">
       <p class="who">Pass one</p>
       <img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one" width="200" height="200">
-      <p class="meta">7 Day Pass &middot; Summer 2026</p>
     </div>
     <div class="pass">
       <p class="who">Pass two</p>
       <img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two" width="200" height="200">
-      <p class="meta">7 Day Pass &middot; Summer 2026</p>
     </div>
 
-    <div class="terms">
-      <h4>What they cover</h4>
-      <ul>
-        <li><b>Every city bus, all week.</b> Show the QR to the driver on the first ride and he hands you a printed ticket. Keep it, that ticket covers every ride after that and cannot be reissued.</li>
-        <li><b>City Walls and Fort Lovrijenac</b>, on one scan at the entrance. Nothing to book.</li>
-        <li><b>Rector's Palace</b>, the Maritime, Ethnographic, Natural History and Modern Art museums, the Franciscan Monastery museum, Fort Revelin and House Bukovac in Cavtat.</li>
-        <li><b>30% off the Lokrum ferry</b>, and off Mljet National Park.</li>
-        <li><b>A discount on the Ston Walls</b> for the 26th.</li>
-        <li>50% off the Summer Festival and &#268;ilipi Folklore, 10% off Lin&#273;o, 9% off the Symphony Orchestra.</li>
-      </ul>
-
-      <h4>Worth knowing</h4>
-      <ul>
-        <li>The <b>first scan starts the seven days</b>. That will be the City Walls this morning, so they run right through to the 27th.</li>
-        <li><b>One visit per place.</b> Each site on the list can be used once.</li>
-        <li>Show the pass before you go in. Staff may check it is valid.</li>
-        <li>The <b>cable car is not included</b>. That is &euro;30 return each, paid at the lower station.</li>
-      </ul>
-      <p class="fine">Issued by Grad Dubrovnik. Each pass is your receipt.</p>
-    </div>
+    <ul class="covers">
+      <li><b>Every city bus</b>, all week</li>
+      <li><b>The City Walls</b> and Fort Lovrijenac</li>
+      <li><b>Rector's Palace</b> and the museums</li>
+      <li><b>30% off</b> the Lokrum ferry</li>
+      <li>The first scan starts the seven days</li>
+    </ul>
   </div>
 </section>
 
@@ -380,131 +304,73 @@ h2{
   "use strict";
 
   var GAP = 30 * 60 * 1000;
-  var KEY = "alice-birthday-2026-v2";
+  var KEY = "alice-birthday-2026-v3";
   var MAPS = "https://www.google.com/maps/search/?api=1&query=";
-  var EMBED = "https://maps.google.com/maps?q=Dubrovnik+Old+Town&z=15&hl=en&output=embed";
 
   var STOPS = [
-    {
-      theme:"t-day", when:"First thing", clock:"Morning",
-      title:"Presents,<br>then breakfast",
-      short:"Presents and breakfast",
-      lede:"Presents at the table and breakfast after, at the flat, with absolutely nowhere to be. The day starts when you say it does.",
-      optsLabel:"However you fancy it",
-      opts:[
-        {t:"Breakfast out on the terrace"},
-        {t:"Straight back to bed with it"},
-        {t:"Outside while it is still cool"}
-      ]
-    },
-    {
-      theme:"t-day alt", when:"From about 9:30", clock:"09:30",
-      title:"Into the<br>Old Town",
-      short:"Into the Old Town",
-      lede:"Down to Gru&#382;, the bus in, then the whole length of the Old Town on foot, with a coffee waiting at the far end of it.",
-      notes:[
-        "Drive to <b>Gru&#382; Port Parking</b>, about &euro;15 for the day.",
-        "Bus <b>1A or 1B</b> to Pile Gate. Free with the pass, show the QR and the driver gives you a ticket.",
-        "Walk the length of the Stradun and out through <b>Plo&#269;e Gate</b>.",
-        "Coffee at <b>Life According to Kawa</b>, just outside the gate on Hvarska 2."
-      ],
-      optsLabel:"On the way",
-      opts:[
-        {t:"Take the Stradun slowly", h:"It is the best street in Europe"},
-        {t:"Coffee at Kawa", h:"Hvarska 2, just past the gate", q:"Life According to Kawa, Dubrovnik"}
-      ]
-    },
-    {
-      theme:"t-day", when:"Late morning", clock:"11:00",
-      title:"The City Walls",
-      short:"The City Walls",
-      lede:"Two kilometres around the top of the city. The sea on one side, every rooftop in Dubrovnik on the other.",
-      notes:[
-        "In at <b>Plo&#269;e Gate</b>, quieter than Pile. Scan the pass at the entrance, nothing to book.",
-        "Allow <b>an hour and a half to two hours</b> for the full loop.",
-        "<b>Water and sun cream.</b> There is very little shade up there.",
-        "The same ticket covers <b>Fort Lovrijenac</b> if you want it later."
-      ],
-      optsLabel:"On the way round",
-      opts:[
-        {t:"Stop at the cafe on the wall"},
-        {t:"Every single photo you want"},
-        {t:"Min&#269;eta Tower at the top"}
-      ]
-    },
-    {
-      theme:"t-day alt", when:"From about 1pm", clock:"13:00",
-      title:"The afternoon<br>is yours",
-      short:"The afternoon is yours",
-      lede:"Nothing is booked. Lunch, the shops, a museum if you fancy, or none of it.",
-      map:true,
-      optsLabel:"Anything you like",
-      opts:[
-        {t:"A long lunch inside the walls", h:"Lucin Kantun or Konoba Nava", q:"Lucin Kantun, Dubrovnik"},
-        {t:"Terra Croatica", h:"Od Pu&#269;a 17", q:"Terra Croatica, Od Puca 17, Dubrovnik"},
-        {t:"Rector's Palace", h:"Free with the pass", q:"Rector's Palace, Dubrovnik"},
-        {t:"War Photo Limited", h:"20% off with the pass", q:"War Photo Limited, Dubrovnik"},
-        {t:"Wander, with no plan at all"}
-      ]
-    },
-    {
-      theme:"t-night", when:"From about 4:30", clock:"16:30",
-      title:"Home to<br>get changed",
-      short:"Home to get changed",
-      lede:"Bus back to Gru&#382;, drive home to Lozica, and an hour with your feet up before the best part of the day.",
-      notes:[
-        "Uber back into town at about <b>6pm</b>, straight to the cable car."
-      ],
-      optsLabel:"Your kind of getting ready",
-      opts:[
-        {t:"A cold glass while you do your hair"},
-        {t:"Ten minutes by the pool first"},
-        {t:"Music on, no rush at all"}
-      ]
-    },
-    {
-      theme:"t-ember", when:"Cable car 6:30", clock:"18:30",
-      title:"Sunset on Sr&#273;",
-      short:"Sunset on Sr&#273;",
-      lede:"Four minutes up, then the city, the walls and the islands laid out underneath you.",
-      notes:[
-        "Lower station on <b>Petra Kre&#353;imira IV 10a</b>, opposite the fire station.",
-        "<b>&euro;30 return</b> each, not covered by the pass. Cash or card there, or online for a &euro;2 fee.",
-        "Runs until <b>11pm</b>, and pauses in strong wind, so we will watch the forecast.",
-        "<b>Sunset is about 7:15.</b> We will be up early to get a spot on the terrace."
-      ],
-      optsLabel:"At the top",
-      opts:[
-        {t:"A Hugo Spritz at Panorama", h:"On the terrace, looking down at all of it", q:"Panorama Restaurant and Bar, Dubrovnik"},
-        {t:"Stay until the city lights come on"},
-        {t:"One photo of you I will keep forever"}
-      ]
-    },
-    {
-      theme:"t-sea", when:"Table at 9:30", clock:"21:30",
-      title:"Dinner<br>at Nautika",
-      short:"Dinner at Nautika",
-      lede:"A table looking straight out at the sea, right by Pile Gate. The best one I could get you.",
-      notes:[
-        "Cable car down, then <b>ten minutes on the flat</b> along the pavement outside the walls. No Bu&#382;a steps in those shoes.",
-        "Table at <b>9:30</b>, and an Uber home to Lozica whenever we are ready."
-      ],
-      optsLabel:"How we end it",
-      opts:[
-        {t:"Champagne to start"},
-        {t:"The tasting menu, all of it"},
-        {t:"One more drink somewhere after"}
-      ]
-    }
+    { clock:"Morning",  when:"First thing",
+      title:"Presents,<br>then breakfast", short:"Presents and breakfast",
+      lede:"At the flat, with nowhere to be." },
+
+    { clock:"09:30", when:"From about 9:30",
+      title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
+      lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e." },
+
+    { clock:"11:00", when:"Late morning",
+      title:"The<br>City Walls", short:"The City Walls",
+      lede:"The whole loop. Two kilometres above the rooftops and the sea." },
+
+    { clock:"13:00", when:"From about 1pm",
+      title:"The afternoon<br>is yours", short:"The afternoon is yours",
+      lede:"Nothing booked. Eat, drink, swim, or none of it.",
+      places:true },
+
+    { clock:"16:30", when:"From about 4:30",
+      title:"Home to<br>get changed", short:"Home to get changed",
+      lede:"Back to Lozica, feet up, and a cold glass while you get ready." },
+
+    { clock:"18:30", when:"Cable car 6:30",
+      title:"Sunset<br>on Sr&#273;", short:"Sunset on Sr&#273;",
+      lede:"Up the mountain for a Hugo on the terrace, and the sun going down at about 7:15." },
+
+    { clock:"21:30", when:"Table at 9:30",
+      title:"Dinner<br>at Nautika", short:"Dinner at Nautika",
+      lede:"A table looking straight out at the sea, by Pile Gate." }
+  ];
+
+  var PLACES = [
+    { cat:"Eat", items:[
+      { n:"Lucin Kantun",  img:"lucin-kantun",  q:"Lucin Kantun, Dubrovnik" },
+      { n:"Konoba Nava",   img:"konoba-nava",   q:"Konoba Nava, Dubrovnik" },
+      { n:"Peppino's",     img:"peppinos",      q:"Peppino's Gelato, Dubrovnik" }
+    ]},
+    { cat:"Drink", items:[
+      { n:"Bu&#382;a",          img:"buza",           q:"Buza Bar, Dubrovnik" },
+      { n:"D'vino",             img:"dvino",          q:"D'vino Wine Bar, Dubrovnik" },
+      { n:"Gradska Kavana",     img:"gradska-kavana", q:"Gradska Kavana, Dubrovnik" }
+    ]},
+    { cat:"See", items:[
+      { n:"Rector's Palace",    img:"rectors-palace", q:"Rector's Palace, Dubrovnik", tag:"Free with the pass" },
+      { n:"War Photo Limited",  img:"war-photo",      q:"War Photo Limited, Dubrovnik", tag:"20% off" },
+      { n:"Fort Lovrijenac",    img:"lovrijenac",     q:"Fort Lovrijenac, Dubrovnik", tag:"Free with the pass" },
+      { n:"Franciscan Monastery", img:"franciscan",   q:"Franciscan Monastery, Dubrovnik", tag:"Free with the pass" }
+    ]},
+    { cat:"Shop", items:[
+      { n:"Terra Croatica",     img:"terra-croatica", q:"Terra Croatica, Od Puca 17, Dubrovnik" },
+      { n:"The Stradun",        img:"stradun",        q:"Stradun, Dubrovnik" }
+    ]},
+    { cat:"Swim", items:[
+      { n:"Banje Beach",        img:"banje",          q:"Banje Beach, Dubrovnik" },
+      { n:"Lokrum",             img:"lokrum",         q:"Lokrum, Dubrovnik", tag:"30% off the ferry" }
+    ]}
   ];
 
   var deck = document.getElementById("deck");
   var outro = document.getElementById("outro");
-  var prog = document.getElementById("prog");
-  var progFill = prog.firstElementChild;
+  var progFill = document.getElementById("prog").firstElementChild;
 
   /* ---------- state ---------- */
-  var state = { revealed:1, nextAt:Date.now() + GAP, picks:{} };
+  var state = { revealed:1, nextAt:Date.now() + GAP };
   var hadSaved = false;
   try{
     var raw = localStorage.getItem(KEY);
@@ -514,7 +380,6 @@ h2{
       if(p && typeof p.revealed === "number"){
         state.revealed = Math.min(Math.max(p.revealed,1), STOPS.length);
         state.nextAt = typeof p.nextAt === "number" ? p.nextAt : Date.now() + GAP;
-        state.picks = p.picks && typeof p.picks === "object" ? p.picks : {};
       }
     }
   }catch(e){}
@@ -523,87 +388,31 @@ h2{
   function two(n){ return (n<10?"0":"") + n; }
   function hhmm(ts){ var d = new Date(ts); return two(d.getHours()) + ":" + two(d.getMinutes()); }
 
-  /* ---------- build ---------- */
+  /* ---------- panels ---------- */
   var sections = STOPS.map(function(stop, i){
     var s = document.createElement("section");
-    s.className = "panel " + stop.theme;
+    s.className = "panel";
     s.id = "stop-" + i;
     s.hidden = true;
-
-    var html = '<div class="pad"><div class="inner">' +
+    s.innerHTML = '<div class="pad"><div class="inner">' +
       '<p class="when rise">' + stop.when + '</p>' +
       '<h2 class="rise d1">' + stop.title + '</h2>' +
-      '<p class="lede rise d2">' + stop.lede + '</p>';
-
-    if(stop.notes){
-      html += '<ul class="rows rise d3">';
-      stop.notes.forEach(function(n){ html += '<li>' + n + '</li>'; });
-      html += '</ul>';
-    }
-    if(stop.map){
-      html += '<div class="mapwrap rise d3">' +
-        '<span class="mapph">Dubrovnik Old Town</span>' +
-        '<iframe src="' + EMBED + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
-        'title="Map of Dubrovnik Old Town"></iframe>' +
-        '</div>';
-    }
-    html += (stop.map
-        ? '<div class="maplabel rise d3"><p class="label">' + stop.optsLabel + '</p>' +
-          '<a href="' + MAPS + encodeURIComponent("Dubrovnik Old Town") + '" target="_blank" rel="noopener">Open in Maps</a></div>'
-        : '<p class="label rise d3">' + stop.optsLabel + '</p>') +
-            '<ul class="opts rise d4"></ul></div></div>';
-    s.innerHTML = html;
-
-    var ul = s.querySelector(".opts");
-    stop.opts.forEach(function(opt, j){
-      var key = i + ":" + j;
-      var li = document.createElement("li");
-      li.className = "optrow";
-
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "opt";
-      b.setAttribute("aria-pressed", state.picks[key] ? "true" : "false");
-
-      var tick = document.createElement("span");
-      tick.className = "tick";
-      var txt = document.createElement("span");
-      txt.className = "txt";
-      txt.innerHTML = opt.t + (opt.h ? '<span class="hintxt">' + opt.h + '</span>' : "");
-
-      b.appendChild(tick); b.appendChild(txt);
-      b.addEventListener("click", function(){
-        var on = b.getAttribute("aria-pressed") === "true";
-        b.setAttribute("aria-pressed", on ? "false" : "true");
-        if(on){ delete state.picks[key]; } else { state.picks[key] = 1; }
-        save();
-      });
-      li.appendChild(b);
-
-      if(opt.q){
-        var a = document.createElement("a");
-        a.className = "maplink";
-        a.href = MAPS + encodeURIComponent(opt.q);
-        a.target = "_blank"; a.rel = "noopener";
-        a.textContent = "Map";
-        li.appendChild(a);
-      }
-      ul.appendChild(li);
-    });
-
+      '<p class="lede rise d2">' + stop.lede + '</p>' +
+      (stop.places ? '<button type="button" class="more rise d3" id="placeBtn">Everywhere to go</button>' : '') +
+      '</div></div>';
     deck.insertBefore(s, outro);
     return s;
   });
 
   /* ---------- gate ---------- */
   var gate = document.createElement("section");
-  gate.className = "panel t-gate gate";
+  gate.className = "panel gate";
   gate.innerHTML =
     '<div class="pad"><div class="inner">' +
       '<p class="eyebrow">Not quite yet</p>' +
       '<span class="clock" id="clock">30:00</span>' +
       '<div class="meter"><i id="meterFill"></i></div>' +
-      '<p class="lede">Go and enjoy this bit first. The next part opens on its own, and you can close this and come back.</p>' +
+      '<p class="lede">Enjoy this bit first. The next part opens on its own.</p>' +
       '<p class="unlock-at" id="unlockAt"></p>' +
     '</div></div>';
   deck.insertBefore(gate, outro);
@@ -612,17 +421,55 @@ h2{
   var meterFill = gate.querySelector("#meterFill");
   var unlockEl = gate.querySelector("#unlockAt");
 
+  /* ---------- places sheet ---------- */
+  (function buildPlaces(){
+    var body = document.getElementById("placeBody");
+    PLACES.forEach(function(group){
+      var h = document.createElement("p");
+      h.className = "cat";
+      h.textContent = group.cat;
+      body.appendChild(h);
+
+      var rail = document.createElement("div");
+      rail.className = "rail";
+      group.items.forEach(function(it){
+        var a = document.createElement("a");
+        a.className = "place";
+        a.href = MAPS + encodeURIComponent(it.q);
+        a.target = "_blank"; a.rel = "noopener";
+
+        var shot = document.createElement("span");
+        shot.className = "shot";
+        var img = document.createElement("img");
+        img.src = "img/" + it.img + ".jpg";
+        img.alt = "";
+        img.loading = "lazy";
+        img.addEventListener("error", function(){ img.remove(); });
+        shot.appendChild(img);
+
+        var nm = document.createElement("span");
+        nm.className = "nm";
+        nm.innerHTML = it.n;
+        shot.appendChild(nm);
+
+        if(it.tag){
+          var tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = it.tag;
+          shot.appendChild(tag);
+        }
+        a.appendChild(shot);
+        rail.appendChild(a);
+      });
+      body.appendChild(rail);
+    });
+  })();
+
   /* ---------- reveal ---------- */
   function placeGate(){
     var next = sections[state.revealed];
-    if(next){
-      gate.hidden = false;
-      deck.insertBefore(gate, next);
-      outro.hidden = true;
-    }else{
-      gate.hidden = true;
-      outro.hidden = false;
-    }
+    if(next){ gate.hidden = false; deck.insertBefore(gate, next); outro.hidden = true; }
+    else{ gate.hidden = true; outro.hidden = false; }
   }
 
   function renderAll(scrollToNew){
@@ -661,10 +508,7 @@ h2{
   }
 
   /* ---------- the whole day ---------- */
-  var WORDS = ["none","One","Two","Three","Four","Five","Six","Seven"];
   var dayList = document.getElementById("dayList");
-  var daySub = document.getElementById("daySub");
-
   function paintDay(){
     dayList.innerHTML = "";
     STOPS.forEach(function(stop, i){
@@ -672,29 +516,16 @@ h2{
       var t = document.createElement("span");
       t.className = "t";
       t.innerHTML = stop.clock;
-
       var n = document.createElement("span");
-      if(i < state.revealed){
-        n.className = "n";
-        n.innerHTML = stop.short;
-      }else{
+      if(i < state.revealed){ n.className = "n"; n.innerHTML = stop.short; }
+      else{
         n.className = "locked";
         n.textContent = "Still to come";
-        if(i === state.revealed){
-          li.className = "is-next";
-          var soon = document.createElement("span");
-          soon.className = "soon";
-          soon.textContent = "opens " + hhmm(state.nextAt);
-          t.appendChild(soon);
-        }
+        if(i === state.revealed) li.className = "is-next";
       }
       li.appendChild(t); li.appendChild(n);
       dayList.appendChild(li);
     });
-    var leftCount = STOPS.length - state.revealed;
-    daySub.textContent = leftCount === 0
-      ? "All seven parts are open. Nothing left hiding."
-      : "Seven parts to today. " + WORDS[leftCount] + (leftCount === 1 ? " is" : " are") + " still wrapped up.";
   }
 
   /* ---------- sheets ---------- */
@@ -710,45 +541,39 @@ h2{
   document.getElementById("passBtn").addEventListener("click", function(){
     show(document.getElementById("passSheet"));
   });
+  deck.addEventListener("click", function(e){
+    if(e.target && e.target.id === "placeBtn") show(document.getElementById("placeSheet"));
+  });
   document.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click", hide); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") hide(); });
 
-  /* a panel taller than the screen scrolls inside itself, so once it reaches
-     the end the next swipe has to move the deck on */
+  /* ---------- a card taller than the screen hands the scroll on ---------- */
   function chain(section){
     var pad = section.querySelector(".pad");
     if(!pad) return;
     var startY = 0, startTop = 0, lastMove = 0;
-
     function overflows(){ return pad.scrollHeight - pad.clientHeight > 4; }
     function atEnd(){ return pad.scrollTop + pad.clientHeight >= pad.scrollHeight - 3; }
     function atStart(){ return pad.scrollTop <= 3; }
-
     function go(dir){
       var now = Date.now();
       if(now - lastMove < 800) return;
       lastMove = now;
       var vis = [];
-      for(var i=0;i<deck.children.length;i++){
-        if(!deck.children[i].hidden) vis.push(deck.children[i]);
-      }
+      for(var i=0;i<deck.children.length;i++){ if(!deck.children[i].hidden) vis.push(deck.children[i]); }
       var target = vis[vis.indexOf(section) + dir];
       if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
     }
-
     pad.addEventListener("touchstart", function(e){
-      startY = e.touches[0].clientY;
-      startTop = deck.scrollTop;
+      startY = e.touches[0].clientY; startTop = deck.scrollTop;
     }, {passive:true});
-
     pad.addEventListener("touchend", function(e){
       if(!overflows()) return;
-      if(Math.abs(deck.scrollTop - startTop) > 6) return;   // the browser already moved us
+      if(Math.abs(deck.scrollTop - startTop) > 6) return;
       var dy = e.changedTouches[0].clientY - startY;
       if(dy < -45 && atEnd()) go(1);
       else if(dy > 45 && atStart()) go(-1);
     }, {passive:true});
-
     pad.addEventListener("wheel", function(e){
       if(!overflows()) return;
       if(e.deltaY > 0 && atEnd()) go(1);
@@ -757,7 +582,6 @@ h2{
   }
   document.querySelectorAll(".panel").forEach(chain);
 
-  /* a card she has scrolled through presents from the top again next time */
   if("IntersectionObserver" in window){
     var rewind = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
@@ -768,22 +592,6 @@ h2{
       });
     }, {root:deck, threshold:0});
     document.querySelectorAll(".panel").forEach(function(el){ rewind.observe(el); });
-  }
-
-  /* ---------- carry the panel's tone into the fixed ui ---------- */
-  if("IntersectionObserver" in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if(en.isIntersecting && en.intersectionRatio > 0.4){
-          var cs = getComputedStyle(en.target);
-          ["--barink","--barbg","--track","--accent"].forEach(function(v){
-            var val = cs.getPropertyValue(v).trim();
-            if(val) document.documentElement.style.setProperty(v, val);
-          });
-        }
-      });
-    }, {root:deck, threshold:[0.41]});
-    document.querySelectorAll(".panel").forEach(function(el){ io.observe(el); });
   }
 
   /* ---------- go ---------- */
@@ -800,13 +608,10 @@ h2{
   var skip = document.getElementById("skipBtn");
   var reset = document.getElementById("resetBtn");
   if(skip) skip.addEventListener("click", function(){
-    state.nextAt = Date.now();
-    if(catchUp()) renderAll(true);
-    tick();
+    state.nextAt = Date.now(); if(catchUp()) renderAll(true); tick();
   });
   if(reset) reset.addEventListener("click", function(){
-    try{ localStorage.removeItem(KEY); }catch(e){}
-    location.reload();
+    try{ localStorage.removeItem(KEY); }catch(e){} location.reload();
   });
   /* END TEST ONLY */
 })();
