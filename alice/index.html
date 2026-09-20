@@ -4,28 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Happy Birthday Alice</title>
-<meta name="description" content="Your birthday, one piece at a time.">
-<meta name="theme-color" content="#A30F2A">
+<meta name="description" content="Monday 21 September, one part at a time.">
+<meta name="theme-color" content="#6E1522">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="Happy Birthday Alice">
-<meta property="og:description" content="Your birthday, one piece at a time. Open me first thing.">
+<meta property="og:description" content="Monday 21 September. Open me first thing.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme:light;
   --display:"Fraunces","Iowan Old Style",Georgia,serif;
   --sans:"Inter","Helvetica Neue",Arial,sans-serif;
-  --ink:#2B0910;
-  --dim:rgba(43,9,16,.68);
-  --line:rgba(43,9,16,.22);
-  --accent:#A30F2A;
-  --chip:rgba(255,255,255,.35);
-  --uiink:#FFF0EE;
-  --uichip:rgba(255,255,255,.14);
-  --uiline:rgba(255,255,255,.3);
+
+  /* light, the default */
+  --bg:#F7F2EB;
+  --ink:#1F1613;
+  --dim:#6E5C53;
+  --rule:rgba(31,22,19,.16);
+  --accent:#8E1F2F;
+  --fill:rgba(31,22,19,.035);
+
+  --barink:#1F1613;
+  --barbg:rgba(247,242,235,.82);
+  --barline:rgba(31,22,19,.2);
+  --track:rgba(31,22,19,.12);
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
@@ -33,15 +38,15 @@ body{
   margin:0;
   font-family:var(--sans);
   font-weight:300;
-  font-size:17px;
-  line-height:1.6;
+  font-size:16.5px;
+  line-height:1.65;
   color:var(--ink);
-  background:#120A0D;
+  background:#100D0C;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
 
-/* ---------- deck + panels ---------- */
+/* ---------- deck ---------- */
 #deck{
   height:100svh;
   overflow-y:auto;
@@ -57,341 +62,291 @@ body{
   display:flex;
   flex-direction:column;
   justify-content:center;
-  padding:calc(env(safe-area-inset-top,0px) + 64px) 24px calc(env(safe-area-inset-bottom,0px) + 112px);
-  overflow:hidden;
+  padding:calc(env(safe-area-inset-top,0px) + 56px) 28px calc(env(safe-area-inset-bottom,0px) + 96px);
+  background:var(--bg);
   color:var(--ink);
 }
 .panel[hidden]{display:none}
-.inner{width:100%;max-width:560px;margin:0 auto;position:relative;z-index:2}
+.inner{width:100%;max-width:470px;margin:0 auto}
 
-/* themes */
-.t-open{--ink:#FFF0EE;--dim:rgba(255,240,238,.78);--line:rgba(255,240,238,.34);--accent:#FFD9D2;--chip:rgba(255,255,255,.12);
-  background:radial-gradient(120% 80% at 80% 8%,#C41834 0%,#A30F2A 42%,#6B0A1E 100%)}
-.t-dawn{--ink:#4A2317;--dim:rgba(74,35,23,.72);--line:rgba(74,35,23,.24);--accent:#B94A2C;--chip:rgba(255,255,255,.4);
-  background:linear-gradient(168deg,#FFF6EC 0%,#FFE2CC 46%,#F8B79B 100%)}
-.t-stone{--ink:#4A2E1C;--dim:rgba(74,46,28,.72);--line:rgba(74,46,28,.22);--accent:#A8552B;--chip:rgba(255,255,255,.42);
-  background:linear-gradient(168deg,#FDF4E8 0%,#F0D6B4 48%,#DFAE82 100%)}
-.t-sea{--ink:#06283B;--dim:rgba(6,40,59,.72);--line:rgba(6,40,59,.2);--accent:#0C6B93;--chip:rgba(255,255,255,.46);
-  background:linear-gradient(168deg,#EAF7FC 0%,#C8E8F4 40%,#7FC6DE 100%)}
-.t-sunset{--ink:#3B0F26;--dim:rgba(59,15,38,.74);--line:rgba(59,15,38,.24);--accent:#8E1B44;--chip:rgba(255,255,255,.34);
-  background:linear-gradient(170deg,#FFE0A8 0%,#FBA372 42%,#E06A7C 74%,#B34A7E 100%)}
-.t-dusk{--ink:#F6EEFF;--dim:rgba(246,238,255,.76);--line:rgba(246,238,255,.3);--accent:#EBCBFF;--chip:rgba(255,255,255,.12);
-  background:linear-gradient(170deg,#7B64A0 0%,#4E3C72 48%,#2A2247 100%)}
-.t-night{--ink:#F6EADC;--dim:rgba(246,234,220,.76);--line:rgba(246,234,220,.28);--accent:#E7BE84;--chip:rgba(255,255,255,.1);
-  background:linear-gradient(170deg,#1B2E4C 0%,#132238 48%,#0A1220 100%)}
-.t-gate{--ink:#F3E4E2;--dim:rgba(243,228,226,.7);--line:rgba(243,228,226,.24);--accent:#F0A9A2;--chip:rgba(255,255,255,.08);
-  background:radial-gradient(110% 70% at 50% 18%,#2A171C 0%,#1A0F13 55%,#100A0C 100%)}
-.t-close{--ink:#FFF0EE;--dim:rgba(255,240,238,.78);--line:rgba(255,240,238,.32);--accent:#FFD9D2;--chip:rgba(255,255,255,.12);
-  background:radial-gradient(120% 90% at 20% 90%,#C41834 0%,#A30F2A 44%,#5E0819 100%)}
-
-.ring{position:absolute;border:1px solid var(--line);border-radius:50%;opacity:.5;pointer-events:none;z-index:1}
-.ring.a{width:78vw;max-width:540px;aspect-ratio:1;right:-26vw;top:-10vh}
-.ring.b{width:52vw;max-width:360px;aspect-ratio:1;left:-20vw;bottom:-8vh}
+/* three tones only */
+.t-cover,.t-close{
+  --bg:#6E1522;--ink:#F6EDE7;--dim:rgba(246,237,231,.72);
+  --rule:rgba(246,237,231,.26);--accent:#E8C9A8;--fill:rgba(255,255,255,.05);
+  --barink:#F6EDE7;--barbg:rgba(60,10,18,.6);--barline:rgba(246,237,231,.3);--track:rgba(246,237,231,.2);
+}
+.t-close{--bg:#5E111C}
+.t-day{
+  --bg:#F7F2EB;--ink:#1F1613;--dim:#6E5C53;--rule:rgba(31,22,19,.16);
+  --accent:#8E1F2F;--fill:rgba(31,22,19,.035);
+  --barink:#1F1613;--barbg:rgba(247,242,235,.82);--barline:rgba(31,22,19,.2);--track:rgba(31,22,19,.12);
+}
+.t-day.alt{--bg:#F1EAE1}
+.t-night{
+  --bg:#15120F;--ink:#F2EAE1;--dim:#9E8F84;--rule:rgba(242,234,225,.17);
+  --accent:#C9A176;--fill:rgba(255,255,255,.035);
+  --barink:#F2EAE1;--barbg:rgba(21,18,15,.7);--barline:rgba(242,234,225,.22);--track:rgba(242,234,225,.16);
+}
+.t-night.deep{--bg:#0D0F14}
+.t-gate{
+  --bg:#141110;--ink:#EFE6DE;--dim:#8E8077;--rule:rgba(239,230,222,.16);
+  --accent:#B98B63;--fill:rgba(255,255,255,.03);
+  --barink:#EFE6DE;--barbg:rgba(20,17,16,.7);--barline:rgba(239,230,222,.2);--track:rgba(239,230,222,.14);
+}
 
 /* ---------- type ---------- */
 .eyebrow{
-  font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--dim);margin:0 0 18px;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  color:var(--dim);margin:0 0 20px;
+}
+.when{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  color:var(--accent);margin:0 0 16px;
 }
 h1{
-  font-family:var(--display);font-optical-sizing:auto;font-weight:400;
-  font-size:clamp(54px,16vw,112px);line-height:.92;letter-spacing:-.02em;margin:0;
+  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:clamp(50px,15vw,104px);line-height:.94;letter-spacing:-.025em;margin:0;
 }
+h1 em{font-style:italic;font-weight:300}
 h2{
-  font-family:var(--display);font-optical-sizing:auto;font-weight:500;
-  font-size:clamp(32px,8.6vw,52px);line-height:1.06;letter-spacing:-.015em;margin:0;
+  font-family:var(--display);font-optical-sizing:auto;font-weight:400;
+  font-size:clamp(31px,8vw,46px);line-height:1.12;letter-spacing:-.018em;margin:0;
 }
-.lede{font-size:17px;color:var(--dim);margin:12px 0 0;max-width:34ch}
-.when{
-  display:inline-flex;align-items:center;gap:9px;margin:0 0 14px;
-  font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--ink);
-}
-.when::before{content:"";width:26px;height:1px;background:currentColor;opacity:.6}
-.sig{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(21px,5.6vw,29px);line-height:1.3;margin:0}
+.lede{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:33ch}
+.sig{font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(20px,5.4vw,27px);line-height:1.4;margin:0}
 
-/* practical notes */
-.notes{margin:20px 0 0;padding:0;list-style:none;font-size:14.5px;line-height:1.5;color:var(--dim)}
-.notes li{position:relative;padding:0 0 0 18px;margin:0 0 5px}
-.notes li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.55}
-.notes b{font-weight:500;color:var(--ink)}
+/* ---------- hairline rows ---------- */
+.rows{margin:26px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
+.rows li{border-bottom:1px solid var(--rule);padding:11px 0;font-size:14.5px;line-height:1.5;color:var(--dim)}
+.rows b{font-weight:500;color:var(--ink)}
+
+.label{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;
+  color:var(--dim);margin:28px 0 0;
+}
 
 /* ---------- options ---------- */
-.opts{margin:20px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.opts.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:16px}
-.opts-label{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:20px 0 11px;font-weight:500}
-.optrow{display:flex;gap:8px;align-items:stretch;min-width:0}
-.opts.grid .optrow{display:block;position:relative}
+.opts{margin:12px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
+.optrow{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--rule)}
 .opt{
-  flex:1;min-width:0;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
-  background:var(--chip);border:1px solid var(--line);border-radius:14px;
-  padding:12px 15px;display:flex;align-items:center;gap:12px;
-  transition:background .22s ease,border-color .22s ease,transform .12s ease;
+  flex:1;min-width:0;text-align:left;font:inherit;font-size:16px;color:var(--ink);
+  background:none;border:0;padding:14px 0;cursor:pointer;
+  display:flex;align-items:flex-start;gap:14px;
   -webkit-tap-highlight-color:transparent;
 }
-.opts.grid .opt{width:100%;height:100%;padding:12px 30px 12px 12px;font-size:14.5px;line-height:1.35;align-items:flex-start;gap:9px;border-radius:13px}
-.opt:active{transform:scale(.985)}
 .opt .tick{
-  flex:none;width:21px;height:21px;border-radius:50%;border:1px solid var(--line);
-  display:grid;place-items:center;font-size:11px;line-height:1;color:transparent;transition:.22s ease;
+  flex:none;width:15px;height:15px;border-radius:50%;border:1px solid var(--rule);
+  margin-top:5px;transition:background .2s ease,border-color .2s ease,box-shadow .2s ease;
 }
-.opts.grid .opt .tick{width:20px;height:20px;font-size:11px;font-weight:500;color:var(--ink);opacity:.75;margin-top:1px}
-.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent)}
-.t-dawn .opt[aria-pressed="true"],.t-sea .opt[aria-pressed="true"],
-.t-stone .opt[aria-pressed="true"],.t-sunset .opt[aria-pressed="true"]{color:#FFF6F2}
-.t-open .opt[aria-pressed="true"],.t-dusk .opt[aria-pressed="true"],
-.t-night .opt[aria-pressed="true"],.t-close .opt[aria-pressed="true"]{color:#1A0D11}
-.opt[aria-pressed="true"] .tick{border-color:currentColor;color:currentColor;opacity:1}
-.opt .hintxt{display:block;font-size:12.5px;opacity:.72;margin-top:2px}
-.opt:focus-visible,.maplink:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.opt[aria-pressed="true"] .tick{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 2.5px var(--bg)}
+.opt[aria-pressed="true"] .txt{color:var(--accent)}
+.opt .txt{transition:color .2s ease}
+.opt .hintxt{display:block;font-size:13.5px;color:var(--dim);margin-top:1px}
+.opt:focus-visible,.maplink:focus-visible{outline:1px solid var(--accent);outline-offset:4px}
 .maplink{
-  flex:none;width:42px;display:grid;place-items:center;text-decoration:none;
-  color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:13px;
-  font-size:15px;
+  flex:none;text-decoration:none;color:var(--dim);
+  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;padding:14px 0 14px 12px;
 }
-.opts.grid .maplink{
-  position:absolute;top:7px;right:7px;width:24px;height:24px;
-  background:none;border:0;border-radius:8px;font-size:12px;opacity:.5;
-}
+.maplink:hover{color:var(--accent)}
 
 /* ---------- map ---------- */
-.map{
-  margin:20px 0 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  background:var(--chip);
+.mapwrap{margin:22px 0 0;border:1px solid var(--rule);background:var(--fill);position:relative}
+.mapph{
+  position:absolute;top:0;left:0;right:0;height:220px;display:grid;place-items:center;
+  font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
 }
-.map svg{display:block;width:100%;height:auto}
-.mapcap{font-size:12.5px;color:var(--dim);margin:8px 0 0;text-align:center}
+.mapwrap iframe{position:relative;display:block;width:100%;height:220px;border:0;filter:saturate(.88)}
+.maprow{
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  border-top:1px solid var(--rule);padding:9px 12px;
+  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+}
+.maprow a{color:var(--accent);text-decoration:none}
 
 /* ---------- gate ---------- */
-.gate-inner{text-align:center;display:flex;flex-direction:column;align-items:center}
-.dial{
-  --p:0;
-  position:relative;width:min(56vw,210px);aspect-ratio:1;border-radius:50%;
-  background:conic-gradient(var(--accent) calc(var(--p) * 1turn), rgba(255,255,255,.12) 0);
-  display:grid;place-items:center;margin:24px 0 28px;
-}
-.dial::after{
-  content:"";position:absolute;inset:7px;border-radius:50%;
-  background:radial-gradient(110% 110% at 50% 20%,#241419 0%,#160D11 100%);
-}
+.gate .inner{text-align:center}
 .clock{
-  position:relative;z-index:1;font-family:var(--display);font-optical-sizing:auto;
-  font-weight:400;font-size:clamp(32px,10vw,46px);letter-spacing:.01em;
-  font-variant-numeric:tabular-nums;color:var(--ink);
+  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:clamp(56px,17vw,92px);line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;margin:26px 0 22px;display:block;
 }
-.gate h2{font-size:clamp(25px,6.6vw,36px)}
-.unlock-at{font-size:15px;color:var(--dim);margin:14px 0 0}
-.gate .lede{margin-left:auto;margin-right:auto;text-align:center}
+.meter{height:1px;background:var(--track);position:relative;margin:0 0 18px}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0%;transition:width 1s linear}
+.gate .lede{margin-left:auto;margin-right:auto;max-width:30ch}
+.unlock-at{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:18px 0 0}
 
-/* ---------- progress dots ---------- */
-.hud{
-  position:fixed;z-index:20;left:0;right:0;
-  top:calc(env(safe-area-inset-top,0px) + 18px);
-  display:flex;justify-content:center;gap:7px;pointer-events:none;
-  color:var(--uiink);transition:color .5s ease;
-}
-.hud i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.25;transition:opacity .4s ease}
-.hud i.on{opacity:.75}
+/* ---------- progress ---------- */
+.prog{position:fixed;top:0;left:0;right:0;height:2px;background:var(--track);z-index:40;transition:background .6s ease}
+.prog i{display:block;height:100%;width:0%;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1),background .6s ease}
 
-/* ---------- persistent bar ---------- */
+/* ---------- fixed bar ---------- */
 .bar{
-  position:fixed;z-index:30;left:0;right:0;
-  bottom:calc(env(safe-area-inset-bottom,0px) + 16px);
-  display:flex;justify-content:center;gap:9px;padding:0 16px;
+  position:fixed;left:0;right:0;z-index:30;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 18px);
+  display:flex;justify-content:center;pointer-events:none;
+}
+.bar .grp{
+  pointer-events:auto;display:flex;align-items:stretch;
+  background:var(--barbg);border:1px solid var(--barline);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  transition:background .6s ease,border-color .6s ease;
 }
 .bar button{
-  font:inherit;font-size:13.5px;font-weight:400;letter-spacing:.01em;
-  color:var(--uiink);background:var(--uichip);border:1px solid var(--uiline);
-  border-radius:999px;padding:10px 18px;cursor:pointer;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  transition:color .5s ease,background .5s ease,border-color .5s ease,transform .12s ease;
-  -webkit-tap-highlight-color:transparent;
+  font:inherit;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;
+  color:var(--barink);background:none;border:0;padding:12px 17px;cursor:pointer;
+  transition:color .6s ease;-webkit-tap-highlight-color:transparent;
 }
-.bar button:active{transform:scale(.97)}
+.bar .sep{width:1px;background:var(--barline);transition:background .6s ease}
 
 .hint{
   position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 74px);
-  text-align:center;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--dim);z-index:2;
+  text-align:center;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);
 }
-.hint span{display:inline-block;animation:bob 2.6s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
 /* ---------- sheets ---------- */
 .sheet{
   position:fixed;inset:0;z-index:60;overflow-y:auto;
-  background:#1A0F13;color:#F5E7E5;
-  padding:calc(env(safe-area-inset-top,0px) + 26px) 22px calc(env(safe-area-inset-bottom,0px) + 40px);
-  animation:fadein .28s ease both;
+  background:#15120F;color:#F2EAE1;
+  padding:calc(env(safe-area-inset-top,0px) + 24px) 28px calc(env(safe-area-inset-bottom,0px) + 44px);
+  animation:fade .3s ease both;
 }
 .sheet[hidden]{display:none}
-@keyframes fadein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.sheet .box{max-width:560px;margin:0 auto}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet .box{max-width:470px;margin:0 auto}
 .sheet h3{
-  font-family:var(--display);font-optical-sizing:auto;font-weight:500;
-  font-size:clamp(28px,7.5vw,40px);line-height:1.1;margin:0 0 6px;letter-spacing:-.01em;
-  padding-right:54px;
+  font-family:var(--display);font-optical-sizing:auto;font-weight:400;
+  font-size:clamp(27px,7vw,38px);line-height:1.14;margin:0 0 8px;letter-spacing:-.018em;
+  padding-right:48px;
 }
-.sheet .sub{color:rgba(245,231,229,.66);font-size:15px;margin:0 0 26px}
+.sheet .sub{color:#9E8F84;font-size:15px;margin:0 0 30px;max-width:34ch}
 .closex{
-  position:sticky;top:0;float:right;margin:-6px -4px 0 0;
-  width:40px;height:40px;border-radius:50%;font:inherit;font-size:20px;line-height:1;
-  color:#F5E7E5;background:rgba(32,18,22,.88);border:1px solid rgba(255,255,255,.22);
+  position:sticky;top:0;float:right;margin:-2px -6px 0 0;
+  width:38px;height:38px;border-radius:50%;font:inherit;font-size:17px;line-height:1;
+  color:#F2EAE1;background:rgba(21,18,15,.9);border:1px solid rgba(242,234,225,.22);
   cursor:pointer;display:grid;place-items:center;z-index:2;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
 
-/* itinerary list */
-.tl{list-style:none;margin:0;padding:0}
-.tl li{
-  display:flex;gap:14px;align-items:baseline;
-  padding:15px 0;border-top:1px solid rgba(255,255,255,.13);
-}
-.tl li:last-child{border-bottom:1px solid rgba(255,255,255,.13)}
-.tl .t{
-  flex:none;width:86px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
-  color:rgba(245,231,229,.6);font-weight:500;
-}
-.tl .n{font-family:var(--display);font-optical-sizing:auto;font-size:20px;line-height:1.25;font-weight:500}
-.tl .locked{color:rgba(245,231,229,.42);font-style:italic;font-family:var(--display);font-size:19px}
-.tl li.is-next .t{color:#F0A9A2}
-.tl .soon{display:block;font-size:12px;letter-spacing:0;text-transform:none;color:#F0A9A2;font-weight:400;margin-top:3px}
+/* itinerary */
+.tl{list-style:none;margin:0;padding:0;border-top:1px solid rgba(242,234,225,.15)}
+.tl li{display:flex;gap:18px;align-items:baseline;padding:15px 0;border-bottom:1px solid rgba(242,234,225,.15)}
+.tl .t{flex:none;width:78px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9E8F84;font-weight:500}
+.tl .n{font-family:var(--display);font-optical-sizing:auto;font-size:19px;line-height:1.3;font-weight:400}
+.tl .locked{color:#6E6259;font-family:var(--display);font-style:italic;font-weight:300;font-size:18px}
+.tl li.is-next .t{color:#C9A176}
+.tl .soon{display:block;font-size:10.5px;letter-spacing:.1em;color:#C9A176;font-weight:400;margin-top:4px;text-transform:none}
 
 /* passes */
-.passes{display:flex;flex-direction:column;gap:16px;margin:0 0 28px}
-.pass{background:#FFFFFF;border-radius:18px;padding:18px;text-align:center;color:#2B0910}
-.pass img{width:100%;max-width:230px;height:auto;image-rendering:pixelated;margin:0 auto;display:block}
-.pass .who{font-family:var(--display);font-size:19px;font-weight:500;margin:0 0 12px}
-.pass .meta{font-size:12.5px;color:rgba(43,9,16,.6);margin:12px 0 0;line-height:1.5}
-.terms h4{
-  font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
-  color:rgba(245,231,229,.55);margin:26px 0 10px;
-}
-.terms ul{list-style:none;margin:0;padding:0;font-size:14.5px;color:rgba(245,231,229,.8);line-height:1.55}
-.terms li{position:relative;padding:0 0 0 17px;margin:0 0 7px}
-.terms li::before{content:"";position:absolute;left:2px;top:10px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.5}
-.terms b{color:#F5E7E5;font-weight:500}
-.inc{display:flex;flex-wrap:wrap;gap:6px;margin:0}
-.inc span{font-size:13px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);color:rgba(245,231,229,.85)}
+.pass{background:#FFFFFF;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px}
+.pass img{width:100%;max-width:220px;height:auto;image-rendering:pixelated;margin:0 auto;display:block}
+.pass .who{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#8E1F2F;margin:0 0 16px}
+.pass .meta{font-size:11.5px;letter-spacing:.06em;color:rgba(31,22,19,.55);margin:16px 0 0}
+.terms h4{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#9E8F84;margin:34px 0 0}
+.terms ul{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid rgba(242,234,225,.15)}
+.terms li{font-size:14.5px;line-height:1.5;color:#B5A79D;padding:11px 0;border-bottom:1px solid rgba(242,234,225,.15)}
+.terms b{color:#F2EAE1;font-weight:500}
+.fine{font-size:12px;color:#6E6259;margin:26px 0 0;letter-spacing:.04em}
 
-/* ---------- reveal animation ---------- */
-.rise{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
-.d1{animation-delay:.08s}.d2{animation-delay:.2s}.d3{animation-delay:.32s}.d4{animation-delay:.44s}
-@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+/* ---------- motion ---------- */
+.rise{animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.07s}.d2{animation-delay:.16s}.d3{animation-delay:.26s}.d4{animation-delay:.36s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
-  .rise,.hint span,.sheet{animation:none}
+  .rise,.sheet{animation:none}
   #deck{scroll-behavior:auto}
+  .prog i,.meter i{transition:none}
 }
 
 /* ---------- test bar (remove before sending) ---------- */
-#testbar{
-  position:fixed;z-index:50;right:12px;
-  top:calc(env(safe-area-inset-top,0px) + 10px);
-  display:flex;gap:6px;
-}
+#testbar{position:fixed;z-index:50;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;gap:6px}
 #testbar button{
-  font:inherit;font-size:11px;letter-spacing:.06em;
-  background:rgba(0,0,0,.5);color:#fff;border:1px solid rgba(255,255,255,.28);
-  border-radius:999px;padding:6px 12px;cursor:pointer;backdrop-filter:blur(8px);
+  font:inherit;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.25);
+  padding:6px 11px;cursor:pointer;backdrop-filter:blur(8px);
 }
 </style>
 </head>
 <body>
 
-<div class="hud" id="hud" aria-hidden="true"></div>
+<div class="prog" id="prog" aria-hidden="true"><i></i></div>
 
 <main id="deck">
 
-  <section class="panel t-open">
-    <div class="ring a"></div><div class="ring b"></div>
+  <section class="panel t-cover">
     <div class="inner">
       <p class="eyebrow rise">Dubrovnik &middot; Monday 21 September</p>
-      <h1 class="rise d1">Happy<br>birthday<br><em style="font-style:italic">Alice</em></h1>
+      <h1 class="rise d1">Happy<br>birthday<br><em>Alice</em></h1>
       <p class="lede rise d2">Today is already planned. You do not need to think about a single thing.</p>
-      <p class="lede rise d3">It arrives one piece at a time. Each part unlocks thirty minutes after the last, so keep this open and come back to it.</p>
+      <p class="lede rise d3">It comes to you one part at a time, half an hour apart. Keep this open and come back to it.</p>
     </div>
-    <p class="hint"><span>Scroll &darr;</span></p>
+    <p class="hint">Scroll</p>
   </section>
 
   <section class="panel t-close" id="outro" hidden>
-    <div class="ring a"></div><div class="ring b"></div>
     <div class="inner">
       <p class="eyebrow">That is the whole day</p>
       <h2>Every bit of it<br>is yours.</h2>
-      <p class="lede">Nothing here is fixed. If you would rather swap something, sleep in, stay in the water longer or skip straight to the wine, we will.</p>
-      <p class="sig" style="margin-top:32px">Happy birthday, beautiful.<br>All my love, Jake.</p>
+      <p class="lede">Nothing is fixed. If you would rather stay longer somewhere, skip something, or sit still and do none of it, we will.</p>
+      <p class="sig" style="margin-top:34px">Happy birthday, beautiful.<br>All my love, Jake.</p>
     </div>
   </section>
 
 </main>
 
 <div class="bar">
-  <button type="button" id="dayBtn">The whole day</button>
-  <button type="button" id="passBtn">Our passes</button>
+  <div class="grp">
+    <button type="button" id="dayBtn">The whole day</button>
+    <span class="sep"></span>
+    <button type="button" id="passBtn">Our passes</button>
+  </div>
 </div>
 
-<!-- full itinerary -->
 <section class="sheet" id="daySheet" hidden aria-labelledby="dayTitle">
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
     <h3 id="dayTitle">The whole day</h3>
     <p class="sub" id="daySub"></p>
     <ul class="tl" id="dayList"></ul>
-    <p class="sub" style="margin:22px 0 0">Times are a guide, not a schedule. Everything moves if you want it to.</p>
+    <p class="fine">Times are a guide, not a schedule. Everything moves if you want it to.</p>
   </div>
 </section>
 
-<!-- passes -->
 <section class="sheet" id="passSheet" hidden aria-labelledby="passTitle">
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
     <h3 id="passTitle">Our Dubrovnik Passes</h3>
-    <p class="sub">One each. Turn your brightness up and show the code at the gate.</p>
+    <p class="sub">One each, seven days. Turn your brightness up and show the code.</p>
 
-    <div class="passes">
-      <div class="pass">
-        <p class="who">Pass one</p>
-        <img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one" width="200" height="200">
-        <p class="meta">7 Day Pass &middot; Individual &middot; Summer 2026<br>Valid to 30 November 2026</p>
-      </div>
-      <div class="pass">
-        <p class="who">Pass two</p>
-        <img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two" width="200" height="200">
-        <p class="meta">7 Day Pass &middot; Individual &middot; Summer 2026<br>Valid to 30 November 2026</p>
-      </div>
+    <div class="pass">
+      <p class="who">Pass one</p>
+      <img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one" width="200" height="200">
+      <p class="meta">7 Day Pass &middot; Summer 2026</p>
+    </div>
+    <div class="pass">
+      <p class="who">Pass two</p>
+      <img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two" width="200" height="200">
+      <p class="meta">7 Day Pass &middot; Summer 2026</p>
     </div>
 
     <div class="terms">
+      <h4>What they cover</h4>
+      <ul>
+        <li><b>Every city bus, all week.</b> Show the QR to the driver on the first ride and he hands you a printed ticket. Keep it, that ticket covers every ride after that and cannot be reissued.</li>
+        <li><b>City Walls and Fort Lovrijenac</b>, on one scan at the entrance. Nothing to book.</li>
+        <li><b>Rector's Palace</b>, the Maritime, Ethnographic, Natural History and Modern Art museums, the Franciscan Monastery museum, Fort Revelin and House Bukovac in Cavtat.</li>
+        <li><b>30% off the Lokrum ferry</b>, and off Mljet National Park.</li>
+        <li><b>A discount on the Ston Walls</b> for the 26th.</li>
+        <li>50% off the Summer Festival and &#268;ilipi Folklore, 10% off Lin&#273;o, 9% off the Symphony Orchestra.</li>
+      </ul>
+
       <h4>Worth knowing</h4>
       <ul>
-        <li>The pass <b>activates on first use</b>, either at your first cultural site or when you pick up the bus ticket.</li>
-        <li><b>One visit per site.</b> Each place on the list can be used once.</li>
-        <li>Show the pass to staff <b>before</b> you go in. They may check it is valid.</li>
-        <li><b>Buses are free.</b> On your first ride the driver gives you a printed ticket with its own QR code. Keep that ticket, it covers every ride after that and it cannot be reissued if lost.</li>
-        <li>The pass itself only scans <b>once</b> on a bus. After that it is the paper ticket you show.</li>
+        <li>The <b>first scan starts the seven days</b>. That will be the City Walls this morning, so they run right through to the 27th.</li>
+        <li><b>One visit per place.</b> Each site on the list can be used once.</li>
+        <li>Show the pass before you go in. Staff may check it is valid.</li>
+        <li>The <b>cable car is not included</b>. That is &euro;30 return each, paid at the lower station.</li>
       </ul>
-
-      <h4>Free entry with the pass</h4>
-      <p class="inc">
-        <span>City Walls</span><span>Fort Lovrijenac</span><span>Western Outer Wall</span>
-        <span>Rector's Palace</span><span>Maritime Museum, Fort St John</span><span>Ethnographic Museum</span>
-        <span>House of Marin Dr&#382;i&#263;</span><span>Natural History Museum</span>
-        <span>Franciscan Monastery Museum</span><span>Museum of Modern Art</span>
-        <span>Dul&#269;i&#263; Masle Pulitika Gallery</span><span>Pulitika Studio</span>
-        <span>Fort Revelin archaeology</span><span>House Bukovac, Cavtat</span>
-      </p>
-
-      <h4>Discounts</h4>
-      <ul>
-        <li>Lokrum Nature Reserve and Mljet National Park, <b>30% off</b></li>
-        <li>Dubrovnik Summer Festival and &#268;ilipi Folklore, <b>50% off</b></li>
-        <li>Lin&#273;o Folk Ensemble <b>10% off</b>, Dubrovnik Symphony Orchestra <b>9% off</b></li>
-      </ul>
-
-      <h4>Not included</h4>
-      <ul>
-        <li>The <b>cable car</b> up Sr&#273;. That is &euro;30 return, paid at the lower station.</li>
-      </ul>
-      <p class="sub" style="margin-top:22px">Issued by Grad Dubrovnik. Each pass is your receipt.</p>
+      <p class="fine">Issued by Grad Dubrovnik. Each pass is your receipt.</p>
     </div>
   </div>
 </section>
@@ -407,34 +362,51 @@ h2{
 (function(){
   "use strict";
 
-  var GAP = 30 * 60 * 1000;            // 30 minutes between reveals
-  var KEY = "alice-birthday-2026";
+  var GAP = 30 * 60 * 1000;
+  var KEY = "alice-birthday-2026-v2";
   var MAPS = "https://www.google.com/maps/search/?api=1&query=";
+  var EMBED = "https://maps.google.com/maps?q=Dubrovnik+Old+Town&z=15&hl=en&output=embed";
 
   var STOPS = [
     {
-      theme:"t-dawn", when:"First thing", clock:"Morning",
-      title:"Flowers, presents<br>and breakfast",
-      short:"Flowers, presents and breakfast",
-      lede:"Open the front door before anything else. Then presents, then breakfast, slowly, with nowhere to be.",
+      theme:"t-day", when:"First thing", clock:"Morning",
+      title:"Presents,<br>then breakfast",
+      short:"Presents and breakfast",
+      lede:"Presents at the table and breakfast after, at the flat, with absolutely nowhere to be. The day starts when you say it does.",
       optsLabel:"However you fancy it",
       opts:[
         {t:"Breakfast out on the terrace"},
         {t:"Straight back to bed with it"},
-        {t:"Coffee outside while it is still cool"}
+        {t:"Outside while it is still cool"}
       ]
     },
     {
-      theme:"t-stone", when:"From about 9:30", clock:"09:30",
+      theme:"t-day alt", when:"From about 9:30", clock:"09:30",
+      title:"Into the<br>Old Town",
+      short:"Into the Old Town",
+      lede:"Down to Gru&#382;, the bus in, then the whole length of the Old Town on foot, with a coffee waiting at the far end of it.",
+      notes:[
+        "Drive to <b>Gru&#382; Port Parking</b>, about &euro;15 for the day.",
+        "Bus <b>1A or 1B</b> to Pile Gate. Free with the pass, show the QR and the driver gives you a ticket.",
+        "Walk the length of the Stradun and out through <b>Plo&#269;e Gate</b>.",
+        "Coffee at <b>Life According to Kawa</b>, just outside the gate on Hvarska 2."
+      ],
+      optsLabel:"On the way",
+      opts:[
+        {t:"Take the Stradun slowly", h:"It is the best street in Europe"},
+        {t:"Coffee at Kawa", h:"Hvarska 2, just past the gate", q:"Life According to Kawa, Dubrovnik"}
+      ]
+    },
+    {
+      theme:"t-day", when:"Late morning", clock:"11:00",
       title:"The City Walls",
       short:"The City Walls",
-      lede:"The whole loop, all the way round, while the light is still sharp. The best two kilometres in Croatia.",
+      lede:"Two kilometres around the top of the city. The sea on one side, every rooftop in Dubrovnik on the other.",
       notes:[
-        "Drive to <b>Gru&#382; Port Parking</b>, then bus <b>1A or 1B</b> to Pile. Free with the pass.",
-        "Go in at <b>Plo&#269;e Gate</b>. Quieter start, best views last.",
-        "Allow <b>an hour and a half to two hours</b> for the full circuit.",
-        "Barely any shade up there. <b>Water, hat, sunglasses.</b> Worth every step.",
-        "Keep the ticket scan. It gets you into <b>Fort Lovrijenac</b> too."
+        "In at <b>Plo&#269;e Gate</b>, quieter than Pile. Scan the pass at the entrance, nothing to book.",
+        "Allow <b>an hour and a half to two hours</b> for the full loop.",
+        "<b>Water and sun cream.</b> There is very little shade up there.",
+        "The same ticket covers <b>Fort Lovrijenac</b> if you want it later."
       ],
       optsLabel:"On the way round",
       opts:[
@@ -444,63 +416,62 @@ h2{
       ]
     },
     {
-      theme:"t-sea", when:"From about 12:30", clock:"12:30",
+      theme:"t-day alt", when:"From about 1pm", clock:"13:00",
       title:"The afternoon<br>is yours",
       short:"The afternoon is yours",
-      lede:"Nothing is booked. Here is everything within ten minutes of the Stradun. Tap whatever you fancy and we will do it in whatever order you like.",
+      lede:"Nothing is booked. Lunch, the shops, a museum if you fancy one, or none of it at all.",
       map:true,
-      optsLabel:"Pick as many as you want",
-      grid:true,
+      optsLabel:"Anything you like",
       opts:[
-        {n:1, t:"Lunch at Lucin Kantun", h:"Tiny, brilliant", q:"Lucin Kantun, Dubrovnik"},
-        {n:2, t:"Coffee at Kawa", h:"Just past Plo&#269;e", q:"Life According to Kawa, Dubrovnik"},
-        {n:3, t:"Rector's Palace", h:"Free with the pass", q:"Rector's Palace, Dubrovnik"},
-        {n:4, t:"War Photo Limited", h:"20% off, heavy but brilliant", q:"War Photo Limited, Dubrovnik"},
-        {n:5, t:"A drink at Bu&#382;a", h:"Cliff bar over the sea", q:"Buza Bar, Dubrovnik"},
-        {n:6, t:"Swim at Banje", h:"Straight off the rocks", q:"Banje Beach, Dubrovnik"},
-        {n:7, t:"Fort Lovrijenac", h:"Free, same wall ticket", q:"Fort Lovrijenac, Dubrovnik"},
-        {n:8, t:"Gelato and the Stradun", h:"Wander, shop, people watch", q:"Stradun, Dubrovnik"}
+        {t:"A long lunch inside the walls", h:"Lucin Kantun or Konoba Nava", q:"Lucin Kantun, Dubrovnik"},
+        {t:"Terra Croatica", h:"Od Pu&#269;a 17", q:"Terra Croatica, Od Puca 17, Dubrovnik"},
+        {t:"Rector's Palace", h:"Free with the pass", q:"Rector's Palace, Dubrovnik"},
+        {t:"War Photo Limited", h:"20% off with the pass", q:"War Photo Limited, Dubrovnik"},
+        {t:"Wander, with no plan at all"}
       ]
     },
     {
-      theme:"t-sunset", when:"Cable car 18:30", clock:"18:30",
+      theme:"t-night", when:"From about 4:30", clock:"16:30",
+      title:"Home to<br>get changed",
+      short:"Home to get changed",
+      lede:"Bus back to Gru&#382;, drive home to Lozica, and an hour with your feet up before the best part of the day.",
+      notes:[
+        "Uber back into town at about <b>6pm</b>, straight to the cable car."
+      ],
+      optsLabel:"Your kind of getting ready",
+      opts:[
+        {t:"A cold glass while you do your hair"},
+        {t:"Ten minutes by the pool first"},
+        {t:"Music on, no rush at all"}
+      ]
+    },
+    {
+      theme:"t-night deep", when:"Cable car 6:30", clock:"18:30",
       title:"Sunset on Sr&#273;",
       short:"Sunset on Sr&#273;",
-      lede:"Four minutes up the mountain to watch the sun go down over the city, the walls and the islands.",
+      lede:"Four minutes up the mountain, then the whole city, the walls and the islands laid out underneath you.",
       notes:[
-        "Lower station: <b>Ul. Kralja Petra Kre&#353;imira IV 10A</b>, just above the Old Town.",
-        "<b>&euro;30 return</b> each, cash or card. Not covered by the pass.",
-        "Runs <b>9am to 11pm</b> this week. Sunset is about <b>19:15</b>.",
-        "The terraces are open to anyone who rides up, but bar seats are not bookable, so we will get there early."
+        "Lower station on <b>Petra Kre&#353;imira IV 10a</b>, opposite the fire station.",
+        "<b>&euro;30 return</b> each, not covered by the pass. Cash or card there, or online for a &euro;2 fee.",
+        "Runs until <b>11pm</b>, and pauses in strong wind, so we will watch the forecast.",
+        "<b>Sunset is about 7:15.</b> We will be up early to get a spot on the terrace."
       ],
       optsLabel:"At the top",
       opts:[
-        {t:"A Hugo Spritz on the terrace"},
+        {t:"A Hugo Spritz at Panorama", h:"On the terrace, looking down at all of it", q:"Panorama Restaurant and Bar, Dubrovnik"},
         {t:"Stay until the city lights come on"},
         {t:"One photo of you I will keep forever"}
       ]
     },
     {
-      theme:"t-dusk", when:"From about 20:00", clock:"20:00",
-      title:"Home to get ready",
-      short:"Home to get ready",
-      lede:"Cable car down, bus back to Gru&#382;, then home to Lozica. Something cold poured the second we walk in.",
-      notes:[
-        "Give it <b>an hour and a quarter</b> from the top of Sr&#273; back to the flat.",
-        "Then <b>45 minutes</b> back into town, so we leave by about 20:45."
-      ],
-      optsLabel:"Your kind of getting ready",
-      opts:[
-        {t:"A cold glass while you do your hair"},
-        {t:"Five quiet minutes by the pool first"},
-        {t:"Music on, no rush at all"}
-      ]
-    },
-    {
-      theme:"t-night", when:"21:30", clock:"21:30",
-      title:"Dinner at Nautika",
+      theme:"t-night deep", when:"Table at 9:30", clock:"21:30",
+      title:"Dinner<br>at Nautika",
       short:"Dinner at Nautika",
       lede:"A table looking straight out at the sea, right by Pile Gate. The best one I could get you.",
+      notes:[
+        "Cable car down, then <b>ten minutes on the flat</b> along the pavement outside the walls. No Bu&#382;a steps in those shoes.",
+        "Table at <b>9:30</b>, and an Uber home to Lozica whenever we are ready."
+      ],
       optsLabel:"How we end it",
       opts:[
         {t:"Champagne to start"},
@@ -510,49 +481,10 @@ h2{
     }
   ];
 
-  var MAP_SVG =
-  '<svg viewBox="0 0 400 268" role="img" aria-label="Sketch map of the Old Town with the afternoon options marked">' +
-    '<defs>' +
-      '<linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">' +
-        '<stop offset="0" stop-color="#7FC6DE" stop-opacity=".45"/>' +
-        '<stop offset="1" stop-color="#3E9DC0" stop-opacity=".6"/>' +
-      '</linearGradient>' +
-    '</defs>' +
-    '<rect width="400" height="268" fill="none"/>' +
-    '<path d="M0 196 Q60 188 120 200 T240 204 T400 192 L400 268 L0 268 Z" fill="url(#sea)"/>' +
-    '<g stroke="#06283B" stroke-opacity=".3" fill="none" stroke-linecap="round">' +
-      '<path d="M28 228 q14 -7 28 0 t28 0"/><path d="M300 236 q14 -7 28 0 t28 0"/>' +
-      '<path d="M150 244 q14 -7 28 0 t28 0"/>' +
-    '</g>' +
-    '<path d="M56 150 L86 96 L176 66 L268 78 L328 124 L312 178 L214 202 L120 192 L84 170 Z" ' +
-      'fill="#FFF8EC" fill-opacity=".65" stroke="#06283B" stroke-opacity=".55" stroke-width="3" stroke-linejoin="round"/>' +
-    '<path d="M86 146 L284 140" stroke="#06283B" stroke-opacity=".38" stroke-width="7" stroke-linecap="round"/>' +
-    '<g fill="#06283B" fill-opacity=".62" font-family="Inter,sans-serif" font-size="10" letter-spacing="1">' +
-      '<text x="182" y="158" text-anchor="middle">STRADUN</text>' +
-      '<text x="56" y="142" text-anchor="end">PILE</text>' +
-      '<text x="340" y="126" text-anchor="start">PLO&#268;E</text>' +
-      '<text x="200" y="232" text-anchor="middle" fill-opacity=".8">THE ADRIATIC</text>' +
-      '<text x="196" y="50" text-anchor="middle">&#8593; SR&#272; IS UP HERE</text>' +
-      '<text x="304" y="198" text-anchor="middle" font-size="9">OLD PORT</text>' +
-    '</g>' +
-    '<g stroke="#06283B" stroke-opacity=".5" stroke-width="2">' +
-      '<path d="M58 148 L70 148" fill="none"/><path d="M330 130 L344 130" fill="none"/>' +
-    '</g>' +
-    '<g class="pins" font-family="Inter,sans-serif" font-size="11" font-weight="500" text-anchor="middle">' +
-      '<g><circle cx="126" cy="126" r="11" fill="#A8552B"/><text x="126" y="130" fill="#fff">1</text></g>' +
-      '<g><circle cx="356" cy="104" r="11" fill="#A8552B"/><text x="356" y="108" fill="#fff">2</text></g>' +
-      '<g><circle cx="258" cy="158" r="11" fill="#A8552B"/><text x="258" y="162" fill="#fff">3</text></g>' +
-      '<g><circle cx="178" cy="116" r="11" fill="#A8552B"/><text x="178" y="120" fill="#fff">4</text></g>' +
-      '<g><circle cx="212" cy="196" r="11" fill="#0C6B93"/><text x="212" y="200" fill="#fff">5</text></g>' +
-      '<g><circle cx="366" cy="158" r="11" fill="#0C6B93"/><text x="366" y="162" fill="#fff">6</text></g>' +
-      '<g><circle cx="34" cy="174" r="11" fill="#A8552B"/><text x="34" y="178" fill="#fff">7</text></g>' +
-      '<g><circle cx="236" cy="142" r="11" fill="#A8552B"/><text x="236" y="146" fill="#fff">8</text></g>' +
-    '</g>' +
-  '</svg>';
-
   var deck = document.getElementById("deck");
   var outro = document.getElementById("outro");
-  var hud = document.getElementById("hud");
+  var prog = document.getElementById("prog");
+  var progFill = prog.firstElementChild;
 
   /* ---------- state ---------- */
   var state = { revealed:1, nextAt:Date.now() + GAP, picks:{} };
@@ -574,28 +506,34 @@ h2{
   function two(n){ return (n<10?"0":"") + n; }
   function hhmm(ts){ var d = new Date(ts); return two(d.getHours()) + ":" + two(d.getMinutes()); }
 
-  /* ---------- build the panels ---------- */
+  /* ---------- build ---------- */
   var sections = STOPS.map(function(stop, i){
     var s = document.createElement("section");
     s.className = "panel " + stop.theme;
     s.id = "stop-" + i;
     s.hidden = true;
 
-    var html = '<div class="ring a"></div><div class="ring b"></div><div class="inner">' +
+    var html = '<div class="inner">' +
       '<p class="when rise">' + stop.when + '</p>' +
       '<h2 class="rise d1">' + stop.title + '</h2>' +
       '<p class="lede rise d2">' + stop.lede + '</p>';
 
     if(stop.notes){
-      html += '<ul class="notes rise d3">';
+      html += '<ul class="rows rise d3">';
       stop.notes.forEach(function(n){ html += '<li>' + n + '</li>'; });
       html += '</ul>';
     }
     if(stop.map){
-      html += '<div class="map rise d3">' + MAP_SVG + '</div>';
+      html += '<div class="mapwrap rise d3">' +
+        '<span class="mapph">Dubrovnik Old Town</span>' +
+        '<iframe src="' + EMBED + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
+        'title="Map of Dubrovnik Old Town"></iframe>' +
+        '<div class="maprow"><span>The Old Town</span>' +
+        '<a href="' + MAPS + encodeURIComponent("Dubrovnik Old Town") + '" target="_blank" rel="noopener">Open in Maps</a>' +
+        '</div></div>';
     }
-    html += '<p class="opts-label rise d3">' + stop.optsLabel + '</p>' +
-            '<ul class="opts rise d4' + (stop.grid ? ' grid' : '') + '"></ul></div>';
+    html += '<p class="label rise d3">' + stop.optsLabel + '</p>' +
+            '<ul class="opts rise d4"></ul></div>';
     s.innerHTML = html;
 
     var ul = s.querySelector(".opts");
@@ -611,13 +549,11 @@ h2{
 
       var tick = document.createElement("span");
       tick.className = "tick";
-      tick.innerHTML = opt.n ? String(opt.n) : "&#10003;";
+      var txt = document.createElement("span");
+      txt.className = "txt";
+      txt.innerHTML = opt.t + (opt.h ? '<span class="hintxt">' + opt.h + '</span>' : "");
 
-      var label = document.createElement("span");
-      label.innerHTML = opt.t + (opt.h ? '<span class="hintxt">' + opt.h + '</span>' : "");
-
-      b.appendChild(tick);
-      b.appendChild(label);
+      b.appendChild(tick); b.appendChild(txt);
       b.addEventListener("click", function(){
         var on = b.getAttribute("aria-pressed") === "true";
         b.setAttribute("aria-pressed", on ? "false" : "true");
@@ -630,10 +566,8 @@ h2{
         var a = document.createElement("a");
         a.className = "maplink";
         a.href = MAPS + encodeURIComponent(opt.q);
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.setAttribute("aria-label", "Open in Maps");
-        a.innerHTML = "&#8599;";
+        a.target = "_blank"; a.rel = "noopener";
+        a.textContent = "Map";
         li.appendChild(a);
       }
       ul.appendChild(li);
@@ -643,30 +577,22 @@ h2{
     return s;
   });
 
-  /* ---------- the gate ---------- */
+  /* ---------- gate ---------- */
   var gate = document.createElement("section");
   gate.className = "panel t-gate gate";
   gate.innerHTML =
-    '<div class="inner gate-inner">' +
+    '<div class="inner">' +
       '<p class="eyebrow">Not quite yet</p>' +
-      '<div class="dial"><span class="clock" id="clock">30:00</span></div>' +
-      '<h2>The next part of your day</h2>' +
-      '<p class="lede">Go and enjoy this bit first. It unlocks on its own, and you can leave this page and come back.</p>' +
+      '<span class="clock" id="clock">30:00</span>' +
+      '<div class="meter"><i id="meterFill"></i></div>' +
+      '<p class="lede">Go and enjoy this bit first. The next part opens on its own, and you can close this and come back.</p>' +
       '<p class="unlock-at" id="unlockAt"></p>' +
     '</div>';
   deck.insertBefore(gate, outro);
 
   var clockEl = gate.querySelector("#clock");
-  var dialEl = gate.querySelector(".dial");
+  var meterFill = gate.querySelector("#meterFill");
   var unlockEl = gate.querySelector("#unlockAt");
-
-  /* ---------- progress dots ---------- */
-  STOPS.forEach(function(){ hud.appendChild(document.createElement("i")); });
-  function paintHud(){
-    for(var i=0;i<hud.children.length;i++){
-      hud.children[i].className = i < state.revealed ? "on" : "";
-    }
-  }
 
   /* ---------- reveal ---------- */
   function placeGate(){
@@ -684,7 +610,7 @@ h2{
   function renderAll(scrollToNew){
     for(var i=0;i<sections.length;i++){ sections[i].hidden = i >= state.revealed; }
     placeGate();
-    paintHud();
+    progFill.style.width = (state.revealed / STOPS.length * 100) + "%";
     paintDay();
     if(scrollToNew){
       var target = sections[state.revealed - 1];
@@ -712,11 +638,12 @@ h2{
     if(left <= 0){ if(catchUp()) renderAll(true); return; }
     var secs = Math.ceil(left/1000);
     clockEl.textContent = two(Math.floor(secs/60)) + ":" + two(secs%60);
-    dialEl.style.setProperty("--p", String(1 - Math.min(left/GAP,1)));
-    unlockEl.textContent = "Unlocks at " + hhmm(state.nextAt);
+    meterFill.style.width = ((1 - Math.min(left/GAP,1)) * 100) + "%";
+    unlockEl.textContent = "Opens at " + hhmm(state.nextAt);
   }
 
-  /* ---------- the whole day sheet ---------- */
+  /* ---------- the whole day ---------- */
+  var WORDS = ["none","One","Two","Three","Four","Five","Six","Seven"];
   var dayList = document.getElementById("dayList");
   var daySub = document.getElementById("daySub");
 
@@ -746,24 +673,19 @@ h2{
       li.appendChild(t); li.appendChild(n);
       dayList.appendChild(li);
     });
-    var WORDS = ["none","One","Two","Three","Four","Five","Six"];
     var leftCount = STOPS.length - state.revealed;
     daySub.textContent = leftCount === 0
-      ? "All six parts are open. Nothing left hiding."
-      : "Six parts to today. " + WORDS[leftCount] + (leftCount === 1 ? " is" : " are") + " still wrapped up.";
+      ? "All seven parts are open. Nothing left hiding."
+      : "Seven parts to today. " + WORDS[leftCount] + (leftCount === 1 ? " is" : " are") + " still wrapped up.";
   }
 
   /* ---------- sheets ---------- */
   var openSheet = null;
   function show(el){
     if(openSheet) openSheet.hidden = true;
-    el.hidden = false; openSheet = el;
-    document.body.style.overflow = "hidden";
-    el.scrollTop = 0;
+    el.hidden = false; openSheet = el; el.scrollTop = 0;
   }
-  function hide(){
-    if(openSheet){ openSheet.hidden = true; openSheet = null; document.body.style.overflow = ""; }
-  }
+  function hide(){ if(openSheet){ openSheet.hidden = true; openSheet = null; } }
   document.getElementById("dayBtn").addEventListener("click", function(){
     paintDay(); show(document.getElementById("daySheet"));
   });
@@ -773,20 +695,16 @@ h2{
   document.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click", hide); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") hide(); });
 
-  /* ---------- tint the fixed ui to the panel on screen ---------- */
+  /* ---------- carry the panel's tone into the fixed ui ---------- */
   if("IntersectionObserver" in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
         if(en.isIntersecting && en.intersectionRatio > 0.4){
           var cs = getComputedStyle(en.target);
-          var ink = cs.getPropertyValue("--ink").trim();
-          var chip = cs.getPropertyValue("--chip").trim();
-          var line = cs.getPropertyValue("--line").trim();
-          if(ink){
-            document.documentElement.style.setProperty("--uiink", ink);
-            document.documentElement.style.setProperty("--uichip", chip);
-            document.documentElement.style.setProperty("--uiline", line);
-          }
+          ["--barink","--barbg","--barline","--track","--accent"].forEach(function(v){
+            var val = cs.getPropertyValue(v).trim();
+            if(val) document.documentElement.style.setProperty(v, val);
+          });
         }
       });
     }, {root:deck, threshold:[0.41]});
