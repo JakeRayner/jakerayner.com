@@ -250,6 +250,15 @@ h2{
 }
 
 /* ---------- fixed chrome ---------- */
+.topfade,.botfade{position:fixed;left:0;right:0;pointer-events:none}
+.topfade{
+  top:0;height:80px;z-index:20;
+  background:linear-gradient(to bottom,rgba(10,5,7,.94) 0%,rgba(10,5,7,.64) 44%,rgba(10,5,7,0) 100%);
+}
+.botfade{
+  bottom:0;height:64px;z-index:3;
+  background:linear-gradient(to top,rgba(10,5,7,.9) 0%,rgba(10,5,7,0) 100%);
+}
 .prog{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(245,234,229,.14);z-index:40}
 .prog i{display:block;height:100%;width:0%;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1)}
 .count{
@@ -263,8 +272,8 @@ h2{
 }
 .bar button{
   font:inherit;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:400;
-  color:var(--ink);background:rgba(245,234,229,.13);border:0;border-radius:999px;
-  padding:10px 14px;cursor:pointer;
+  color:var(--ink);background:rgba(245,234,229,.16);border:0;border-radius:999px;
+  padding:10px 14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.35);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   -webkit-tap-highlight-color:transparent;
 }
@@ -272,8 +281,10 @@ h2{
 .bar button[hidden]{display:none}
 .more-below{
   position:absolute;left:50%;transform:translateX(-50%);z-index:4;pointer-events:none;
-  bottom:calc(env(safe-area-inset-bottom,0px) + 18px);
+  bottom:calc(env(safe-area-inset-bottom,0px) + 16px);
   font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);
+  margin:0;padding:6px 13px;border-radius:999px;background:rgba(10,5,7,.8);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   opacity:0;transition:opacity .4s ease;
 }
 .more-below.on{opacity:.85;animation:nudge 2.4s ease-in-out infinite}
@@ -356,10 +367,13 @@ h2{
 .gets{list-style:none;margin:24px 0 0;padding:0}
 .gets li{
   display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-  font-size:13.5px;line-height:1.45;color:var(--dim);padding:5px 0;
+  font-size:15.5px;line-height:1.35;color:var(--ink);padding:10px 0;
 }
 .gets li em{font-style:normal;flex:1;min-width:0}
-.gets li span{flex:none;color:var(--accent);font-size:11.5px;letter-spacing:.04em}
+.gets li em .gd{
+  display:block;font-size:12.5px;line-height:1.42;color:#8A756E;margin:3px 0 0;
+}
+.gets li > span{flex:none;color:var(--accent);font-size:11.5px;letter-spacing:.04em}
 .gets li.h{
   display:block;color:var(--ink);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
   font-weight:500;margin:22px 0 7px;padding:0 0 8px;border-bottom:1px solid var(--rule);
@@ -382,6 +396,8 @@ h2{
 </head>
 <body>
 
+<div class="topfade" aria-hidden="true"></div>
+<div class="botfade" aria-hidden="true"></div>
 <div class="prog" id="prog" aria-hidden="true"><i></i></div>
 <div class="count" id="count" aria-hidden="true"></div>
 
@@ -580,43 +596,45 @@ h2{
 
   var GETS = [
     ["h", "Free entry"],
-    ["", "The City Walls"],
-    ["", "Fort Lovrijenac"],
-    ["", "The Western Outer Wall"],
-    ["", "Rector's Palace"],
-    ["", "Maritime Museum, Fort St John"],
-    ["", "Ethnographic Museum, Od Rupa"],
-    ["", "House of Marin Dr&#382;i&#263;"],
-    ["", "Natural History Museum"],
-    ["", "Franciscan Monastery Museum"],
-    ["", "Museum of Modern Art"],
-    ["", "Dul&#269;i&#263; Masle Pulitika Gallery"],
-    ["", "Pulitika Studio, Fort St John"],
-    ["", "Fort Revelin archaeology"],
-    ["", "House Bukovac, Cavtat"],
+    ["", "The City Walls", "", "Two kilometres around the top of the city."],
+    ["", "Fort Lovrijenac", "", "The fortress on the rock outside Pile Gate."],
+    ["", "The Western Outer Wall", "", "The outer defences by Pile, included with the walls."],
+    ["", "Rector's Palace", "", "The old seat of the Republic, courtyard and chambers."],
+    ["", "Maritime Museum", "", "Ships, charts and sea trade, up inside Fort St John."],
+    ["", "Ethnographic Museum", "", "Country life, inside Rupe, the old domed grain store."],
+    ["", "House of Marin Dr&#382;i&#263;", "", "The playwright's house, just off &#352;iroka."],
+    ["", "Natural History Museum", "", "Small, odd, and usually empty."],
+    ["", "Franciscan Monastery Museum", "", "Cloister, and one of the oldest pharmacies in Europe."],
+    ["", "Museum of Modern Art", "", "Croatian painting in a villa on the coast road."],
+    ["", "Dul&#269;i&#263; Masle Pulitika Gallery", "", "Three Dubrovnik painters, on Marin Dr&#382;i&#263; square."],
+    ["", "Pulitika Studio", "", "The painter's studio in Fort St John, left as it was."],
+    ["", "Fort Revelin archaeology", "", "Finds from the city, inside the eastern fortress."],
+    ["", "House Bukovac, Cavtat", "", "Vlaho Bukovac's family home, down the coast."],
 
     ["h", "Buses"],
-    ["", "Every city bus", "168 hours"],
+    ["", "Every city bus", "168 hours", "Show the QR on the first ride, then keep the paper ticket."],
 
     ["h", "Money off"],
-    ["", "Lokrum Nature Reserve", "30% off"],
-    ["", "Mljet National Park", "30% off"],
-    ["", "Dubrovnik Summer Festival", "50% off"],
-    ["", "&#268;ilipi Folklore", "50% off"],
-    ["", "Lin&#273;o Folk Ensemble", "10% off"],
-    ["", "Dubrovnik Symphony Orchestra", "9% off"],
-    ["", "Lazareti"],
+    ["", "Lokrum Nature Reserve", "30% off", "The island ferry, fifteen minutes from the old port."],
+    ["", "Mljet National Park", "30% off", "Forests and salt lakes, a day trip up the coast."],
+    ["", "Dubrovnik Summer Festival", "50% off", "Theatre and music in the squares, July and August."],
+    ["", "&#268;ilipi Folklore", "50% off", "Sunday folk dancing in the village out past the airport."],
+    ["", "Lin&#273;o Folk Ensemble", "10% off", "Traditional Dalmatian dancing, most evenings in season."],
+    ["", "Dubrovnik Symphony Orchestra", "9% off", "The city orchestra, in halls and palace courtyards."],
+    ["", "Lazareti", "", "The old quarantine houses past Plo&#269;e, now a venue."],
 
     ["h", "Pass holder prices"],
-    ["", "Ston Walls", "&euro;8"],
-    ["", "Sokol Fortress, Konavle", "&euro;8"],
-    ["", "Rector's Palace, Slano", "&euro;3"],
-    ["", "Heritage House, Primorje", "&euro;3"]
+    ["", "Ston Walls", "&euro;8", "The long wall over the hills, an hour up the coast."],
+    ["", "Sokol Fortress, Konavle", "&euro;8", "A fortress grown straight out of a rock, inland."],
+    ["", "Rector's Palace, Slano", "&euro;3", "The smaller palace, north along the coast."],
+    ["", "Heritage House, Primorje", "&euro;3", "Local history from the coastal villages."]
   ];
 
   var COVERS = GETS.map(function(row){
     if(row[0] === "h") return '<li class="h">' + row[1] + '</li>';
-    return '<li><em>' + row[1] + '</em>' + (row[2] ? '<span>' + row[2] + '</span>' : '') + '</li>';
+    return '<li><em>' + row[1] +
+           (row[3] ? '<span class="gd">' + row[3] + '</span>' : '') + '</em>' +
+           (row[2] ? '<span>' + row[2] + '</span>' : '') + '</li>';
   }).join("") +
     '<li class="note">One visit each. The first scan starts the seven days.</li>';
 
