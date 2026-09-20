@@ -305,11 +305,19 @@ h2{
 .pass{background:#fff;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px;border-radius:6px}
 .pass img{width:100%;max-width:210px;height:auto;image-rendering:pixelated;margin:0 auto;display:block}
 .pass .who{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#8E1F2F;margin:0 0 16px}
-.covers{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--rule)}
-.covers li{font-size:15px;color:var(--dim);padding:13px 0;border-bottom:1px solid var(--rule)}
-.covers.oncard{margin:22px 0 0}
-.covers.oncard li{font-size:13.5px;padding:8px 0;line-height:1.45}
-.covers b{color:var(--ink);font-weight:500}
+.gets{list-style:none;margin:24px 0 0;padding:0}
+.gets li{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  font-size:13.5px;line-height:1.45;color:var(--dim);padding:5px 0;
+}
+.gets li em{font-style:normal;flex:1;min-width:0}
+.gets li span{flex:none;color:var(--accent);font-size:11.5px;letter-spacing:.04em}
+.gets li.h{
+  display:block;color:var(--ink);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  font-weight:500;margin:22px 0 7px;padding:0 0 8px;border-bottom:1px solid var(--rule);
+}
+.gets li.h:first-child{margin-top:0}
+.gets .note{font-size:11.5px;color:#6A5550;padding-top:10px;display:block}
 
 /* ---------- motion ---------- */
 .rise{animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
@@ -388,13 +396,7 @@ h2{
       <img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two" width="200" height="200">
     </div>
 
-    <ul class="covers">
-      <li><b>Every city bus</b>, all week</li>
-      <li><b>The City Walls</b> and Fort Lovrijenac</li>
-      <li><b>Rector's Palace</b> and the museums</li>
-      <li><b>30% off</b> the Lokrum ferry</li>
-      <li>The first scan starts the seven days</li>
-    </ul>
+    <ul class="gets" id="passGets"></ul>
   </div>
 </section>
 
@@ -457,12 +459,46 @@ h2{
   ];
   var CATS = ["Eat","Drink","With the pass","Wander"];
 
-  var COVERS =
-    '<li><b>Every city bus</b>, all week</li>' +
-    '<li><b>The City Walls</b> and Fort Lovrijenac</li>' +
-    '<li><b>Rector\'s Palace</b> and the museums</li>' +
-    '<li><b>30% off</b> the Lokrum ferry</li>' +
-    '<li>The first scan starts the seven days</li>';
+  var GETS = [
+    ["h", "Free entry"],
+    ["", "The City Walls"],
+    ["", "Fort Lovrijenac"],
+    ["", "The Western Outer Wall"],
+    ["", "Rector's Palace"],
+    ["", "Maritime Museum, Fort St John"],
+    ["", "Ethnographic Museum, Od Rupa"],
+    ["", "House of Marin Dr&#382;i&#263;"],
+    ["", "Natural History Museum"],
+    ["", "Franciscan Monastery Museum"],
+    ["", "Museum of Modern Art"],
+    ["", "Dul&#269;i&#263; Masle Pulitika Gallery"],
+    ["", "Pulitika Studio, Fort St John"],
+    ["", "Fort Revelin archaeology"],
+    ["", "House Bukovac, Cavtat"],
+
+    ["h", "Buses"],
+    ["", "Every city bus", "168 hours"],
+
+    ["h", "Money off"],
+    ["", "Lokrum Nature Reserve", "30% off"],
+    ["", "Mljet National Park", "30% off"],
+    ["", "Dubrovnik Summer Festival", "50% off"],
+    ["", "&#268;ilipi Folklore", "50% off"],
+    ["", "Lin&#273;o Folk Ensemble", "10% off"],
+    ["", "Dubrovnik Symphony Orchestra", "9% off"],
+
+    ["h", "Pass holder prices"],
+    ["", "Ston Walls", "&euro;8"],
+    ["", "Sokol Fortress, Konavle", "&euro;8"],
+    ["", "Rector's Palace, Slano", "&euro;3"],
+    ["", "Heritage House, Primorje", "&euro;3"]
+  ];
+
+  var COVERS = GETS.map(function(row){
+    if(row[0] === "h") return '<li class="h">' + row[1] + '</li>';
+    return '<li><em>' + row[1] + '</em>' + (row[2] ? '<span>' + row[2] + '</span>' : '') + '</li>';
+  }).join("") +
+    '<li class="note">One visit each. The first scan starts the seven days.</li>';
 
   var deck = document.getElementById("deck");
   var outro = document.getElementById("outro");
@@ -516,7 +552,7 @@ h2{
           '<div class="qr"><img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one"><p>Pass one</p></div>' +
           '<div class="qr"><img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two"><p>Pass two</p></div>' +
         '</div>' +
-        '<ul class="covers oncard" data-covers hidden>' + COVERS + '</ul>';
+        '<ul class="gets" data-covers hidden>' + COVERS + '</ul>';
     }else if(stop.kind === "wheel"){
       extra =
         '<div class="wheelwrap rise d3"><div class="ptr"></div>' +
@@ -767,6 +803,8 @@ h2{
   }
 
   /* ---------- places sheet ---------- */
+  document.getElementById("passGets").innerHTML = COVERS;
+
   var placeSub = document.getElementById("placeSub");
   (function buildPlaces(){
     var body = document.getElementById("placeBody");
