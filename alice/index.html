@@ -25,54 +25,37 @@
   --skin:radial-gradient(135% 85% at 50% -8%,#4A1220 0%,#250A11 44%,#0E0508 100%);
 }
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
 html,body{height:100%}
 body{
-  margin:0;
-  font-family:var(--sans);
-  font-weight:300;
-  font-size:16.5px;
-  line-height:1.65;
-  color:var(--ink);
-  background:#0E0508;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  margin:0;font-family:var(--sans);font-weight:300;font-size:16.5px;line-height:1.65;
+  color:var(--ink);background:#0E0508;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 
 /* ---------- deck ---------- */
 #deck{
-  height:100svh;
-  overflow-y:auto;
-  overflow-x:hidden;
-  scroll-snap-type:y mandatory;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
-  scrollbar-width:none;
+  height:100svh;overflow-y:auto;overflow-x:hidden;
+  scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;scrollbar-width:none;
 }
 #deck::-webkit-scrollbar{display:none}
 .panel{
-  position:relative;
-  height:100svh;
-  scroll-snap-align:start;
-  scroll-snap-stop:always;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  overflow:hidden;
-  background:var(--skin);
-  color:var(--ink);
+  position:relative;height:100svh;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;flex-direction:column;justify-content:center;overflow:hidden;
+  background:var(--skin);color:var(--ink);
 }
 .panel[hidden]{display:none}
 .pad{
   width:100%;max-height:100%;overflow-y:auto;scrollbar-width:none;
-  padding:calc(env(safe-area-inset-top,0px) + 60px) 30px calc(env(safe-area-inset-bottom,0px) + 100px);
+  padding:calc(env(safe-area-inset-top,0px) + 58px) 30px calc(env(safe-area-inset-bottom,0px) + 96px);
 }
 .pad::-webkit-scrollbar{display:none}
 .inner{width:100%;max-width:460px;margin:0 auto}
 
 /* ---------- type ---------- */
-.eyebrow,.when{
-  font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;margin:0 0 22px;
-}
+.eyebrow,.when{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;margin:0 0 20px}
 .eyebrow{color:var(--dim)}
 .when{color:var(--accent)}
 h1{
@@ -82,25 +65,79 @@ h1{
 h1 em{font-style:italic;font-weight:300}
 h2{
   font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:clamp(36px,10vw,58px);line-height:1.08;letter-spacing:-.022em;margin:0;
+  font-size:clamp(34px,9.4vw,54px);line-height:1.08;letter-spacing:-.022em;margin:0;
 }
-.lede{font-size:17px;color:var(--dim);margin:20px 0 0;max-width:30ch}
+.lede{font-size:17px;color:var(--dim);margin:18px 0 0;max-width:30ch}
 .sig{font-family:var(--display);font-style:italic;font-weight:300;font-size:clamp(21px,5.6vw,28px);line-height:1.4;margin:0}
 
-/* ---------- inline button ---------- */
-.more{
-  margin:30px 0 0;font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+/* ---------- buttons ---------- */
+.btn{
+  font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--ink);background:rgba(245,234,229,.1);border:0;border-radius:999px;
-  padding:14px 24px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  padding:13px 22px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:background .2s ease,transform .1s ease;text-decoration:none;display:inline-block;
 }
-.more:active{transform:scale(.98)}
+.btn:active{transform:scale(.97)}
+.btn.solid{background:var(--accent);color:#1C0910;font-weight:500}
+.btn.ghost{background:none;color:var(--dim);padding-left:0}
+.next{margin:26px 0 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+/* ---------- hold to reveal ---------- */
+.holdwrap{margin:26px 0 0;display:flex;flex-direction:column;align-items:center}
+.hold{
+  position:relative;width:132px;height:132px;border-radius:50%;border:0;padding:0;
+  background:rgba(245,234,229,.07);cursor:pointer;display:grid;place-items:center;
+  -webkit-tap-highlight-color:transparent;touch-action:none;
+}
+.hold svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.hold circle{fill:none;stroke-width:2}
+.hold .trk{stroke:rgba(245,234,229,.16)}
+.hold .bar{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:389;stroke-dashoffset:389}
+.hold span{
+  position:relative;z-index:2;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+}
+.holdhint{font-size:12.5px;color:var(--dim);margin:16px 0 0;letter-spacing:.04em}
+.qrs{display:flex;gap:12px;margin:24px 0 0}
+.qr{flex:1;background:#fff;border-radius:6px;padding:11px}
+.qr img{width:100%;height:auto;display:block;image-rendering:pixelated}
+.qr p{margin:8px 0 0;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#8E1F2F;text-align:center}
+.pop{animation:pop .55s cubic-bezier(.2,.9,.3,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+
+/* ---------- wheel ---------- */
+.wheelwrap{position:relative;width:min(70vw,244px);margin:20px auto 0}
+.wheelspin{width:100%;transition:transform 3.6s cubic-bezier(.15,.85,.25,1)}
+.wheelspin svg{display:block;width:100%;height:auto}
+.ptr{
+  position:absolute;top:-3px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;
+  border-top:15px solid var(--accent);z-index:3;
+}
+.result{min-height:104px;margin:16px 0 0;text-align:center}
+.result .rc{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0}
+.result .rn{
+  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:27px;line-height:1.15;margin:6px 0 0;letter-spacing:-.015em;
+}
+.result .ra{display:flex;gap:9px;justify-content:center;margin:14px 0 0;flex-wrap:wrap}
+.result .ra .btn{font-size:10px;padding:11px 17px}
+
+/* ---------- countdown ---------- */
+.cd{display:flex;gap:16px;margin:24px 0 0}
+.cd div{text-align:left}
+.cd b{
+  display:block;font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:40px;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;
+}
+.cd span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:7px;display:block}
+.cdnote{font-size:12.5px;color:var(--dim);margin:14px 0 0;letter-spacing:.04em}
 
 /* ---------- gate ---------- */
 .gate .inner{text-align:center}
 .clock{
   font-family:var(--display);font-optical-sizing:auto;font-weight:300;
   font-size:clamp(58px,18vw,96px);line-height:1;letter-spacing:-.03em;
-  font-variant-numeric:tabular-nums;margin:28px 0 24px;display:block;
+  font-variant-numeric:tabular-nums;margin:26px 0 22px;display:block;
 }
 .meter{height:1px;background:rgba(245,234,229,.16);position:relative;margin:0 0 20px}
 .meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0%;transition:width 1s linear}
@@ -110,6 +147,10 @@ h2{
 /* ---------- fixed chrome ---------- */
 .prog{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(245,234,229,.14);z-index:40}
 .prog i{display:block;height:100%;width:0%;background:var(--accent);transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.count{
+  position:fixed;z-index:40;left:16px;top:calc(env(safe-area-inset-top,0px) + 14px);
+  font-size:10px;letter-spacing:.2em;color:var(--dim);font-variant-numeric:tabular-nums;
+}
 .bar{
   position:fixed;left:0;right:0;z-index:30;
   bottom:calc(env(safe-area-inset-bottom,0px) + 18px);
@@ -124,6 +165,7 @@ h2{
   -webkit-tap-highlight-color:transparent;
 }
 .bar button:active{transform:scale(.97)}
+.bar button[hidden]{display:none}
 .hint{
   position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);
   text-align:center;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);
@@ -131,8 +173,7 @@ h2{
 
 /* ---------- sheets ---------- */
 .sheet{
-  position:fixed;inset:0;z-index:60;overflow-y:auto;
-  background:#130609;color:var(--ink);
+  position:fixed;inset:0;z-index:60;overflow-y:auto;background:#130609;color:var(--ink);
   padding:calc(env(safe-area-inset-top,0px) + 26px) 0 calc(env(safe-area-inset-bottom,0px) + 48px);
   animation:fade .3s ease both;
 }
@@ -141,14 +182,14 @@ h2{
 .box{max-width:460px;margin:0 auto;padding:0 30px}
 .sheet h3{
   font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:clamp(30px,8vw,42px);line-height:1.1;margin:0 0 26px;letter-spacing:-.022em;
-  padding-right:48px;
+  font-size:clamp(30px,8vw,42px);line-height:1.1;margin:0 0 8px;letter-spacing:-.022em;padding-right:48px;
 }
+.sheet .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 26px}
 .closex{
   position:sticky;top:0;float:right;margin:-2px -6px 0 0;
   width:38px;height:38px;border-radius:50%;font:inherit;font-size:17px;line-height:1;
-  color:var(--ink);background:rgba(245,234,229,.12);border:0;
-  cursor:pointer;display:grid;place-items:center;z-index:2;
+  color:var(--ink);background:rgba(245,234,229,.12);border:0;cursor:pointer;
+  display:grid;place-items:center;z-index:2;
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
 
@@ -161,44 +202,38 @@ h2{
 .tl li.is-next .t{color:var(--accent)}
 
 /* places */
-.cat{
-  font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;
-  color:var(--dim);margin:0 0 12px;padding:0 30px;
-}
-.cat:not(:first-of-type){margin-top:30px}
-.rail{
-  display:flex;gap:11px;overflow-x:auto;scroll-snap-type:x proximity;
-  padding:0 30px 2px;scroll-padding-left:30px;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
-}
-.rail::-webkit-scrollbar{display:none}
-.place{
-  flex:none;width:136px;scroll-snap-align:start;text-decoration:none;color:var(--ink);
-  -webkit-tap-highlight-color:transparent;
-}
-.place:active{transform:scale(.985)}
-.shot{
-  display:block;position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:4px;
-  background:linear-gradient(155deg,rgba(226,181,145,.26) 0%,rgba(226,181,145,.09) 55%,rgba(245,234,229,.04) 100%);
+.cat{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;color:var(--dim);margin:0 0 12px}
+.cat:not(:first-of-type){margin-top:26px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tile{
+  position:relative;display:block;width:100%;text-align:left;font:inherit;color:var(--ink);
+  background:linear-gradient(155deg,rgba(226,181,145,.2) 0%,rgba(226,181,145,.07) 60%,rgba(245,234,229,.035) 100%);
+  border:0;border-radius:5px;padding:15px 15px 14px;cursor:pointer;
   box-shadow:inset 0 0 0 1px rgba(245,234,229,.13);
+  -webkit-tap-highlight-color:transparent;transition:background .2s ease,box-shadow .2s ease;
 }
-.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.shot::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(14,5,8,.9) 0%,rgba(14,5,8,.36) 44%,rgba(14,5,8,0) 74%);
+.tile:active{transform:scale(.985)}
+.tile .tn{
+  display:block;font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:17px;line-height:1.2;letter-spacing:-.012em;padding-right:18px;
 }
-.place .nm{
-  position:absolute;left:11px;right:10px;bottom:10px;z-index:2;
-  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:15.5px;line-height:1.18;letter-spacing:-.012em;
+.tile .tt{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:8px 0 0}
+.tile[aria-pressed="true"]{
+  background:linear-gradient(155deg,rgba(226,181,145,.34),rgba(226,181,145,.14));
+  box-shadow:inset 0 0 0 1px rgba(226,181,145,.5);
 }
-.place .tag{
-  position:absolute;left:11px;top:10px;right:10px;z-index:2;
-  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+.tile .dot{
+  position:absolute;top:13px;right:13px;width:14px;height:14px;border-radius:50%;
+  box-shadow:inset 0 0 0 1px rgba(245,234,229,.3);transition:background .2s ease;
+}
+.tile[aria-pressed="true"] .dot{background:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.tilemap{
+  display:inline-block;margin:10px 0 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);text-decoration:none;
 }
 
 /* passes */
-.pass{background:#fff;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px}
+.pass{background:#fff;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px;border-radius:6px}
 .pass img{width:100%;max-width:210px;height:auto;image-rendering:pixelated;margin:0 auto;display:block}
 .pass .who{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#8E1F2F;margin:0 0 16px}
 .covers{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--rule)}
@@ -207,16 +242,16 @@ h2{
 
 /* ---------- motion ---------- */
 .rise{animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
-.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
-  .rise,.sheet{animation:none}
+  .rise,.sheet,.pop{animation:none}
   #deck{scroll-behavior:auto}
-  .prog i,.meter i{transition:none}
+  .prog i,.meter i,.wheelspin{transition:none}
 }
 
 /* ---------- test bar (remove before sending) ---------- */
-#testbar{position:fixed;z-index:50;right:12px;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;gap:6px}
+#testbar{position:fixed;z-index:50;right:12px;top:calc(env(safe-area-inset-top,0px) + 11px);display:flex;gap:6px}
 #testbar button{
   font:inherit;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
   background:rgba(0,0,0,.4);color:#fff;border:0;border-radius:999px;
@@ -227,6 +262,7 @@ h2{
 <body>
 
 <div class="prog" id="prog" aria-hidden="true"><i></i></div>
+<div class="count" id="count" aria-hidden="true"></div>
 
 <main id="deck">
 
@@ -235,15 +271,16 @@ h2{
       <p class="eyebrow rise">Dubrovnik &middot; Monday 21 September</p>
       <h1 class="rise d1">Happy<br>birthday<br><em>Alice</em></h1>
       <p class="lede rise d2">Today is planned. It comes to you one part at a time.</p>
+      <div class="next rise d3"><button type="button" class="btn solid" data-next>Open the first one</button></div>
     </div></div>
-    <p class="hint">Scroll</p>
+    <p class="hint">Swipe up</p>
   </section>
 
   <section class="panel" id="outro" hidden>
     <div class="pad"><div class="inner">
       <p class="eyebrow">That is the day</p>
       <h2>All of it<br>is yours.</h2>
-      <p class="sig" style="margin-top:36px">Happy birthday, beautiful.<br>All my love, Jake.</p>
+      <p class="sig" style="margin-top:34px">Happy birthday, beautiful.<br>All my love, Jake.</p>
     </div></div>
   </section>
 
@@ -251,27 +288,32 @@ h2{
 
 <div class="bar">
   <button type="button" id="dayBtn">The whole day</button>
-  <button type="button" id="passBtn">Our passes</button>
+  <button type="button" id="passBtn" hidden>Our passes</button>
 </div>
 
 <section class="sheet" id="daySheet" hidden aria-labelledby="dayTitle">
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
     <h3 id="dayTitle">The whole day</h3>
+    <p class="sub" id="daySub"></p>
     <ul class="tl" id="dayList"></ul>
   </div>
 </section>
 
 <section class="sheet" id="placeSheet" hidden aria-labelledby="placeTitle">
-  <div class="box"><button type="button" class="closex" data-close aria-label="Close">&times;</button>
-    <h3 id="placeTitle">The Old Town</h3></div>
-  <div id="placeBody"></div>
+  <div class="box">
+    <button type="button" class="closex" data-close aria-label="Close">&times;</button>
+    <h3 id="placeTitle">The Old Town</h3>
+    <p class="sub" id="placeSub"></p>
+    <div id="placeBody"></div>
+  </div>
 </section>
 
 <section class="sheet" id="passSheet" hidden aria-labelledby="passTitle">
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
     <h3 id="passTitle">Our passes</h3>
+    <p class="sub">Unlocked</p>
 
     <div class="pass">
       <p class="who">Pass one</p>
@@ -304,11 +346,12 @@ h2{
   "use strict";
 
   var GAP = 30 * 60 * 1000;
-  var KEY = "alice-birthday-2026-v3";
+  var KEY = "alice-birthday-2026-v4";
   var MAPS = "https://www.google.com/maps/search/?api=1&query=";
+  var SUNSET = new Date(2026, 8, 21, 19, 15, 0);   // 21 September, 19:15, her time
 
   var STOPS = [
-    { clock:"Morning",  when:"First thing",
+    { clock:"Morning", when:"First thing",
       title:"Presents,<br>then breakfast", short:"Presents and breakfast",
       lede:"At the flat, with nowhere to be." },
 
@@ -316,22 +359,25 @@ h2{
       title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
       lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e." },
 
+    { clock:"10:30", when:"Before the walls", kind:"pass",
+      title:"Your<br>Dubrovnik Pass", short:"Your Dubrovnik Pass",
+      lede:"Seven days of the city, one each. Hold the circle to unlock them." },
+
     { clock:"11:00", when:"Late morning",
       title:"The<br>City Walls", short:"The City Walls",
       lede:"The whole loop. Two kilometres above the rooftops and the sea." },
 
-    { clock:"13:00", when:"From about 1pm",
+    { clock:"13:00", when:"From about 1pm", kind:"wheel",
       title:"The afternoon<br>is yours", short:"The afternoon is yours",
-      lede:"Nothing booked. Eat, drink, swim, or none of it.",
-      places:true },
+      lede:"A day out in the Old Town. Give it a spin." },
 
     { clock:"16:30", when:"From about 4:30",
       title:"Home to<br>get changed", short:"Home to get changed",
       lede:"Back to Lozica, feet up, and a cold glass while you get ready." },
 
-    { clock:"18:30", when:"Cable car 6:30",
+    { clock:"18:30", when:"Cable car 6:30", kind:"sunset",
       title:"Sunset<br>on Sr&#273;", short:"Sunset on Sr&#273;",
-      lede:"Up the mountain for a Hugo on the terrace, and the sun going down at about 7:15." },
+      lede:"Up the mountain for a Hugo on the terrace." },
 
     { clock:"21:30", when:"Table at 9:30",
       title:"Dinner<br>at Nautika", short:"Dinner at Nautika",
@@ -339,51 +385,43 @@ h2{
   ];
 
   var PLACES = [
-    { cat:"Eat", items:[
-      { n:"Lucin Kantun",  img:"lucin-kantun",  q:"Lucin Kantun, Dubrovnik" },
-      { n:"Konoba Nava",   img:"konoba-nava",   q:"Konoba Nava, Dubrovnik" },
-      { n:"Peppino's",     img:"peppinos",      q:"Peppino's Gelato, Dubrovnik" }
-    ]},
-    { cat:"Drink", items:[
-      { n:"Bu&#382;a",          img:"buza",           q:"Buza Bar, Dubrovnik" },
-      { n:"D'vino",             img:"dvino",          q:"D'vino Wine Bar, Dubrovnik" },
-      { n:"Gradska Kavana",     img:"gradska-kavana", q:"Gradska Kavana, Dubrovnik" }
-    ]},
-    { cat:"See", items:[
-      { n:"Rector's Palace",    img:"rectors-palace", q:"Rector's Palace, Dubrovnik", tag:"Free with the pass" },
-      { n:"War Photo Limited",  img:"war-photo",      q:"War Photo Limited, Dubrovnik", tag:"20% off" },
-      { n:"Fort Lovrijenac",    img:"lovrijenac",     q:"Fort Lovrijenac, Dubrovnik", tag:"Free with the pass" },
-      { n:"Franciscan Monastery", img:"franciscan",   q:"Franciscan Monastery, Dubrovnik", tag:"Free with the pass" }
-    ]},
-    { cat:"Shop", items:[
-      { n:"Terra Croatica",     img:"terra-croatica", q:"Terra Croatica, Od Puca 17, Dubrovnik" },
-      { n:"The Stradun",        img:"stradun",        q:"Stradun, Dubrovnik" }
-    ]},
-    { cat:"Swim", items:[
-      { n:"Banje Beach",        img:"banje",          q:"Banje Beach, Dubrovnik" },
-      { n:"Lokrum",             img:"lokrum",         q:"Lokrum, Dubrovnik", tag:"30% off the ferry" }
-    ]}
+    { n:"Lucin Kantun",        c:"Eat",   q:"Lucin Kantun, Dubrovnik" },
+    { n:"Konoba Nava",         c:"Eat",   q:"Konoba Nava, Dubrovnik" },
+    { n:"Peppino's",           c:"Eat",   q:"Peppino's Gelato, Dubrovnik" },
+    { n:"Bu&#382;a",           c:"Drink", q:"Buza Bar, Dubrovnik" },
+    { n:"D'vino",              c:"Drink", q:"D'vino Wine Bar, Dubrovnik" },
+    { n:"Gradska Kavana",      c:"Drink", q:"Gradska Kavana, Dubrovnik" },
+    { n:"Rector's Palace",     c:"With the pass", t:"Free", q:"Rector's Palace, Dubrovnik" },
+    { n:"Fort Lovrijenac",     c:"With the pass", t:"Free", q:"Fort Lovrijenac, Dubrovnik" },
+    { n:"Franciscan Monastery",w:"Franciscan", c:"With the pass", t:"Free", q:"Franciscan Monastery, Dubrovnik" },
+    { n:"War Photo Limited",   w:"War Photo", c:"With the pass", t:"20% off", q:"War Photo Limited, Dubrovnik" },
+    { n:"Terra Croatica",      c:"Wander", q:"Terra Croatica, Od Puca 17, Dubrovnik" },
+    { n:"The Stradun",         c:"Wander", q:"Stradun, Dubrovnik" }
   ];
+  var CATS = ["Eat","Drink","With the pass","Wander"];
 
   var deck = document.getElementById("deck");
   var outro = document.getElementById("outro");
   var progFill = document.getElementById("prog").firstElementChild;
+  var countEl = document.getElementById("count");
+  var passBtn = document.getElementById("passBtn");
 
   /* ---------- state ---------- */
-  var state = { revealed:1, nextAt:Date.now() + GAP };
+  var state = { revealed:1, nextAt:Date.now() + GAP, pass:false, done:{} };
   var hadSaved = false;
   try{
     var raw = localStorage.getItem(KEY);
     hadSaved = !!raw;
     if(raw){
-      var p = JSON.parse(raw);
-      if(p && typeof p.revealed === "number"){
-        state.revealed = Math.min(Math.max(p.revealed,1), STOPS.length);
-        state.nextAt = typeof p.nextAt === "number" ? p.nextAt : Date.now() + GAP;
+      var sv = JSON.parse(raw);
+      if(sv && typeof sv.revealed === "number"){
+        state.revealed = Math.min(Math.max(sv.revealed,1), STOPS.length);
+        state.nextAt = typeof sv.nextAt === "number" ? sv.nextAt : Date.now() + GAP;
+        state.pass = !!sv.pass;
+        state.done = sv.done && typeof sv.done === "object" ? sv.done : {};
       }
     }
   }catch(e){}
-
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
   function two(n){ return (n<10?"0":"") + n; }
   function hhmm(ts){ var d = new Date(ts); return two(d.getHours()) + ":" + two(d.getMinutes()); }
@@ -394,12 +432,52 @@ h2{
     s.className = "panel";
     s.id = "stop-" + i;
     s.hidden = true;
+
+    var extra = "";
+    if(stop.kind === "pass"){
+      extra =
+        '<div class="holdwrap rise d3" data-hold>' +
+          '<button type="button" class="hold" aria-label="Hold to unlock the passes">' +
+            '<svg viewBox="0 0 132 132" aria-hidden="true">' +
+              '<circle class="trk" cx="66" cy="66" r="62"></circle>' +
+              '<circle class="bar" cx="66" cy="66" r="62"></circle>' +
+            '</svg><span>Hold</span>' +
+          '</button>' +
+          '<p class="holdhint">Press and hold</p>' +
+        '</div>' +
+        '<div class="qrs" data-qrs hidden>' +
+          '<div class="qr"><img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one"><p>Pass one</p></div>' +
+          '<div class="qr"><img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two"><p>Pass two</p></div>' +
+        '</div>';
+    }else if(stop.kind === "wheel"){
+      extra =
+        '<div class="wheelwrap rise d3"><div class="ptr"></div>' +
+          '<div class="wheelspin" data-wheel></div>' +
+        '</div>' +
+        '<div class="result rise d4" data-result></div>';
+    }else if(stop.kind === "sunset"){
+      extra =
+        '<div class="cd rise d3" data-cd>' +
+          '<div><b data-h>00</b><span>Hours</span></div>' +
+          '<div><b data-m>00</b><span>Mins</span></div>' +
+          '<div><b data-s>00</b><span>Secs</span></div>' +
+        '</div>' +
+        '<p class="cdnote" data-cdnote>until the sun goes down</p>';
+    }
+
+    var nextRow = '<div class="next rise d4">' +
+      (stop.kind === "wheel" ? '<button type="button" class="btn" data-places>See everything</button>' : '') +
+      '<button type="button" class="btn' + (stop.kind === "wheel" ? "" : " solid") + '" data-next>' +
+        (i === STOPS.length - 1 ? "Finish" : "Next") +
+      '</button></div>';
+
     s.innerHTML = '<div class="pad"><div class="inner">' +
       '<p class="when rise">' + stop.when + '</p>' +
       '<h2 class="rise d1">' + stop.title + '</h2>' +
       '<p class="lede rise d2">' + stop.lede + '</p>' +
-      (stop.places ? '<button type="button" class="more rise d3" id="placeBtn">Everywhere to go</button>' : '') +
+      extra + nextRow +
       '</div></div>';
+
     deck.insertBefore(s, outro);
     return s;
   });
@@ -416,54 +494,210 @@ h2{
       '<p class="unlock-at" id="unlockAt"></p>' +
     '</div></div>';
   deck.insertBefore(gate, outro);
-
   var clockEl = gate.querySelector("#clock");
   var meterFill = gate.querySelector("#meterFill");
   var unlockEl = gate.querySelector("#unlockAt");
 
+  /* ---------- move about the deck ---------- */
+  function visible(){
+    var v = [];
+    for(var i=0;i<deck.children.length;i++){ if(!deck.children[i].hidden) v.push(deck.children[i]); }
+    return v;
+  }
+  function step(from, dir){
+    var v = visible();
+    var t = v[v.indexOf(from) + dir];
+    if(t) t.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  /* ---------- hold to unlock the passes ---------- */
+  var HOLD = 1100;
+  function wireHold(section){
+    var wrap = section.querySelector("[data-hold]");
+    if(!wrap) return;
+    var btn = wrap.querySelector(".hold");
+    var bar = wrap.querySelector(".bar");
+    var lbl = btn.querySelector("span");
+    var hint = wrap.querySelector(".holdhint");
+    var qrs = section.querySelector("[data-qrs]");
+    var LEN = 389, timer = null, raf = null, t0 = 0;
+
+    function paint(p){ bar.style.strokeDashoffset = String(LEN * (1 - p)); }
+
+    function unlock(quiet){
+      paint(1);
+      wrap.hidden = true;
+      qrs.hidden = false;
+      if(!quiet) qrs.classList.add("pop");
+      state.pass = true; save();
+      passBtn.hidden = false;
+    }
+    if(state.pass){ unlock(true); return; }
+
+    function start(e){
+      if(e.cancelable) e.preventDefault();
+      t0 = Date.now();
+      lbl.textContent = "Hold";
+      (function loop(){
+        var p = Math.min((Date.now() - t0) / HOLD, 1);
+        paint(p);
+        if(p < 1) raf = requestAnimationFrame(loop);
+      })();
+      timer = setTimeout(function(){ stop(true); unlock(false); }, HOLD);
+    }
+    function stop(done){
+      if(timer){ clearTimeout(timer); timer = null; }
+      if(raf){ cancelAnimationFrame(raf); raf = null; }
+      if(!done){ paint(0); hint.textContent = "Keep holding"; }
+    }
+    btn.addEventListener("pointerdown", start);
+    btn.addEventListener("pointerup", function(){ stop(false); });
+    btn.addEventListener("pointerleave", function(){ stop(false); });
+    btn.addEventListener("pointercancel", function(){ stop(false); });
+    btn.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+  }
+
+  /* ---------- the wheel ---------- */
+  function wireWheel(section){
+    var holder = section.querySelector("[data-wheel]");
+    if(!holder) return;
+    var result = section.querySelector("[data-result]");
+    var N = PLACES.length, SEG = 360 / N, R = 122, C = 132;
+
+    var svg = '<svg viewBox="0 0 264 264" role="img" aria-label="Wheel of places in the Old Town">';
+    for(var i=0;i<N;i++){
+      var a0 = (-90 + i*SEG) * Math.PI/180, a1 = (-90 + (i+1)*SEG) * Math.PI/180;
+      var x0 = C + R*Math.cos(a0), y0 = C + R*Math.sin(a0);
+      var x1 = C + R*Math.cos(a1), y1 = C + R*Math.sin(a1);
+      svg += '<path d="M' + C + ',' + C + ' L' + x0.toFixed(2) + ',' + y0.toFixed(2) +
+             ' A' + R + ',' + R + ' 0 0 1 ' + x1.toFixed(2) + ',' + y1.toFixed(2) + ' Z" fill="' +
+             (i % 2 ? "rgba(226,181,145,.15)" : "rgba(226,181,145,.07)") +
+             '" stroke="rgba(245,234,229,.14)" stroke-width="1"></path>';
+    }
+    for(var j=0;j<N;j++){
+      var am = -90 + j*SEG + SEG/2;
+      var norm = ((am % 360) + 360) % 360;
+      var flip = norm > 90 && norm < 270;
+      var label = PLACES[j].w || PLACES[j].n.replace(/&#382;/g, "\u017E");
+      svg += '<g transform="rotate(' + (flip ? am + 180 : am).toFixed(2) + ' ' + C + ' ' + C + ')">' +
+             '<text x="' + (flip ? C - R + 9 : C + R - 9) + '" y="' + C + '" ' +
+             'text-anchor="' + (flip ? "start" : "end") + '" dominant-baseline="middle" ' +
+             'font-family="Inter,sans-serif" font-size="9" fill="#F5EAE5" fill-opacity=".92">' +
+             label + '</text></g>';
+    }
+    svg += '<circle cx="' + C + '" cy="' + C + '" r="' + R + '" fill="none" stroke="rgba(226,181,145,.4)" stroke-width="1.5"></circle>';
+    svg += '<circle cx="' + C + '" cy="' + C + '" r="15" fill="#1B0810" stroke="rgba(226,181,145,.4)" stroke-width="1.5"></circle>';
+    svg += '</svg>';
+    holder.innerHTML = svg;
+
+    var rot = 0, spinning = false;
+
+    function showIdle(){
+      result.innerHTML = '';
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "btn solid"; b.textContent = "Spin";
+      b.addEventListener("click", spin);
+      result.appendChild(b);
+    }
+
+    function showResult(i){
+      var p = PLACES[i];
+      result.innerHTML =
+        '<p class="rc">' + p.c + (p.t ? " &middot; " + p.t : "") + '</p>' +
+        '<p class="rn">' + p.n + '</p>' +
+        '<div class="ra">' +
+          '<a class="btn" href="' + MAPS + encodeURIComponent(p.q) + '" target="_blank" rel="noopener">Open in Maps</a>' +
+          '<button type="button" class="btn solid" data-again>Spin again</button>' +
+        '</div>';
+      result.classList.remove("pop"); void result.offsetWidth; result.classList.add("pop");
+      result.querySelector("[data-again]").addEventListener("click", spin);
+    }
+
+    function spin(){
+      if(spinning) return;
+      spinning = true;
+      result.innerHTML = '<p class="rc">Spinning</p>';
+      var i = Math.floor(Math.random() * N);
+      var want = -(i*SEG + SEG/2);
+      var cur = rot % 360;
+      var delta = ((want - cur) % 360 + 360) % 360;
+      rot += 360 * (4 + Math.floor(Math.random()*3)) + delta;
+      holder.style.transform = "rotate(" + rot + "deg)";
+      setTimeout(function(){ spinning = false; showResult(i); }, 3650);
+    }
+
+    showIdle();
+  }
+
+  /* ---------- countdown to sunset ---------- */
+  var cdEls = null;
+  function wireSunset(section){
+    var cd = section.querySelector("[data-cd]");
+    if(!cd) return;
+    cdEls = {
+      h: cd.querySelector("[data-h]"), m: cd.querySelector("[data-m]"), s: cd.querySelector("[data-s]"),
+      note: section.querySelector("[data-cdnote]"), box: cd
+    };
+    paintSunset();
+  }
+  function paintSunset(){
+    if(!cdEls) return;
+    var left = SUNSET - Date.now();
+    if(left <= 0){
+      cdEls.box.hidden = true;
+      cdEls.note.textContent = left > -45*60*1000
+        ? "The sun is going down right now."
+        : "Sunset was at 19:15.";
+      return;
+    }
+    cdEls.box.hidden = false;
+    var s = Math.floor(left/1000);
+    cdEls.h.textContent = two(Math.floor(s/3600));
+    cdEls.m.textContent = two(Math.floor(s/60) % 60);
+    cdEls.s.textContent = two(s % 60);
+    cdEls.note.textContent = "until the sun goes down";
+  }
+
   /* ---------- places sheet ---------- */
+  var placeSub = document.getElementById("placeSub");
   (function buildPlaces(){
     var body = document.getElementById("placeBody");
-    PLACES.forEach(function(group){
+    CATS.forEach(function(cat){
+      var items = PLACES.filter(function(p){ return p.c === cat; });
+      if(!items.length) return;
       var h = document.createElement("p");
-      h.className = "cat";
-      h.textContent = group.cat;
+      h.className = "cat"; h.textContent = cat;
       body.appendChild(h);
 
-      var rail = document.createElement("div");
-      rail.className = "rail";
-      group.items.forEach(function(it){
-        var a = document.createElement("a");
-        a.className = "place";
-        a.href = MAPS + encodeURIComponent(it.q);
-        a.target = "_blank"; a.rel = "noopener";
+      var grid = document.createElement("div");
+      grid.className = "tiles";
+      items.forEach(function(p){
+        var idx = PLACES.indexOf(p);
+        var wrap = document.createElement("div");
 
-        var shot = document.createElement("span");
-        shot.className = "shot";
-        var img = document.createElement("img");
-        img.src = "img/" + it.img + ".jpg";
-        img.alt = "";
-        img.loading = "lazy";
-        img.addEventListener("error", function(){ img.remove(); });
-        shot.appendChild(img);
-
-        var nm = document.createElement("span");
-        nm.className = "nm";
-        nm.innerHTML = it.n;
-        shot.appendChild(nm);
-
-        if(it.tag){
-          var tag = document.createElement("span");
-          tag.className = "tag";
-          tag.textContent = it.tag;
-          shot.appendChild(tag);
-        }
-        a.appendChild(shot);
-        rail.appendChild(a);
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "tile";
+        b.setAttribute("aria-pressed", state.done[idx] ? "true" : "false");
+        b.innerHTML = '<span class="dot"></span><span class="tn">' + p.n + '</span>' +
+                      (p.t ? '<span class="tt">' + p.t + '</span>' : '') +
+                      '<a class="tilemap" href="' + MAPS + encodeURIComponent(p.q) + '" target="_blank" rel="noopener">Map</a>';
+        b.addEventListener("click", function(e){
+          if(e.target && e.target.classList.contains("tilemap")) return;
+          var on = b.getAttribute("aria-pressed") === "true";
+          b.setAttribute("aria-pressed", on ? "false" : "true");
+          if(on){ delete state.done[idx]; } else { state.done[idx] = 1; }
+          save(); paintPlaceSub();
+        });
+        wrap.appendChild(b);
+        grid.appendChild(wrap);
       });
-      body.appendChild(rail);
+      body.appendChild(grid);
     });
   })();
+  function paintPlaceSub(){
+    var n = Object.keys(state.done).length;
+    placeSub.textContent = n ? n + " of " + PLACES.length + " ticked off" : PLACES.length + " places";
+  }
 
   /* ---------- reveal ---------- */
   function placeGate(){
@@ -472,10 +706,18 @@ h2{
     else{ gate.hidden = true; outro.hidden = false; }
   }
 
+  var wired = {};
   function renderAll(scrollToNew){
-    for(var i=0;i<sections.length;i++){ sections[i].hidden = i >= state.revealed; }
+    for(var i=0;i<sections.length;i++){
+      sections[i].hidden = i >= state.revealed;
+      if(!sections[i].hidden && !wired[i]){
+        wired[i] = 1;
+        wireHold(sections[i]); wireWheel(sections[i]); wireSunset(sections[i]);
+      }
+    }
     placeGate();
     progFill.style.width = (state.revealed / STOPS.length * 100) + "%";
+    countEl.textContent = two(state.revealed) + " / " + two(STOPS.length);
     paintDay();
     if(scrollToNew){
       var target = sections[state.revealed - 1];
@@ -498,34 +740,35 @@ h2{
   }
 
   function tick(){
+    paintSunset();
     if(state.revealed >= STOPS.length){ gate.hidden = true; outro.hidden = false; return; }
     var left = state.nextAt - Date.now();
     if(left <= 0){ if(catchUp()) renderAll(true); return; }
-    var secs = Math.ceil(left/1000);
-    clockEl.textContent = two(Math.floor(secs/60)) + ":" + two(secs%60);
+    var s = Math.ceil(left/1000);
+    clockEl.textContent = two(Math.floor(s/60)) + ":" + two(s%60);
     meterFill.style.width = ((1 - Math.min(left/GAP,1)) * 100) + "%";
     unlockEl.textContent = "Opens at " + hhmm(state.nextAt);
   }
 
   /* ---------- the whole day ---------- */
   var dayList = document.getElementById("dayList");
+  var daySub = document.getElementById("daySub");
   function paintDay(){
     dayList.innerHTML = "";
     STOPS.forEach(function(stop, i){
       var li = document.createElement("li");
       var t = document.createElement("span");
-      t.className = "t";
-      t.innerHTML = stop.clock;
+      t.className = "t"; t.innerHTML = stop.clock;
       var n = document.createElement("span");
       if(i < state.revealed){ n.className = "n"; n.innerHTML = stop.short; }
       else{
-        n.className = "locked";
-        n.textContent = "Still to come";
+        n.className = "locked"; n.textContent = "Still to come";
         if(i === state.revealed) li.className = "is-next";
       }
       li.appendChild(t); li.appendChild(n);
       dayList.appendChild(li);
     });
+    daySub.textContent = state.revealed + " of " + STOPS.length + " open";
   }
 
   /* ---------- sheets ---------- */
@@ -538,17 +781,23 @@ h2{
   document.getElementById("dayBtn").addEventListener("click", function(){
     paintDay(); show(document.getElementById("daySheet"));
   });
-  document.getElementById("passBtn").addEventListener("click", function(){
-    show(document.getElementById("passSheet"));
-  });
-  deck.addEventListener("click", function(e){
-    if(e.target && e.target.id === "placeBtn") show(document.getElementById("placeSheet"));
-  });
+  passBtn.addEventListener("click", function(){ show(document.getElementById("passSheet")); });
   document.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click", hide); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") hide(); });
 
+  deck.addEventListener("click", function(e){
+    var t = e.target;
+    if(!t || !t.closest) return;
+    if(t.closest("[data-next]")){
+      var sec = t.closest(".panel");
+      if(sec) step(sec, 1);
+    }else if(t.closest("[data-places]")){
+      paintPlaceSub(); show(document.getElementById("placeSheet"));
+    }
+  });
+
   /* ---------- a card taller than the screen hands the scroll on ---------- */
-  function chain(section){
+  document.querySelectorAll(".panel").forEach(function(section){
     var pad = section.querySelector(".pad");
     if(!pad) return;
     var startY = 0, startTop = 0, lastMove = 0;
@@ -558,11 +807,7 @@ h2{
     function go(dir){
       var now = Date.now();
       if(now - lastMove < 800) return;
-      lastMove = now;
-      var vis = [];
-      for(var i=0;i<deck.children.length;i++){ if(!deck.children[i].hidden) vis.push(deck.children[i]); }
-      var target = vis[vis.indexOf(section) + dir];
-      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      lastMove = now; step(section, dir);
     }
     pad.addEventListener("touchstart", function(e){
       startY = e.touches[0].clientY; startTop = deck.scrollTop;
@@ -579,8 +824,7 @@ h2{
       if(e.deltaY > 0 && atEnd()) go(1);
       else if(e.deltaY < 0 && atStart()) go(-1);
     }, {passive:true});
-  }
-  document.querySelectorAll(".panel").forEach(chain);
+  });
 
   if("IntersectionObserver" in window){
     var rewind = new IntersectionObserver(function(entries){
@@ -596,7 +840,9 @@ h2{
 
   /* ---------- go ---------- */
   if(!hadSaved){ state.nextAt = Date.now() + GAP; save(); }
+  if(state.pass) passBtn.hidden = false;
   catchUp();
+  paintPlaceSub();
   renderAll(false);
   tick();
   setInterval(tick, 1000);
