@@ -18,8 +18,8 @@
   color-scheme:dark;
   --display:"Fraunces","Iowan Old Style",Georgia,serif;
   --sans:"Inter","Helvetica Neue",Arial,sans-serif;
-  --ink:#F5EAE5;
-  --dim:#A38D87;
+  --ink:#FFFFFF;
+  --dim:#ADA9A8;
   --rule:rgba(245,234,229,.15);
   --accent:#E2B591;
   --skin:radial-gradient(135% 85% at 50% -8%,#4A1220 0%,#250A11 44%,#0E0508 100%);
@@ -294,7 +294,7 @@ h2{
 
 /* ---------- sheets ---------- */
 .sheet{
-  position:fixed;inset:0;z-index:60;overflow-y:auto;background:#130609;color:var(--ink);
+  position:fixed;inset:0;z-index:60;overflow-y:auto;background:#120A0C;color:var(--ink);
   padding:calc(env(safe-area-inset-top,0px) + 30px) 0 calc(env(safe-area-inset-bottom,0px) + 48px);
   animation:fade .3s ease both;
 }
@@ -321,7 +321,7 @@ h2{
 .tl li{display:flex;gap:18px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--rule)}
 .tl .t{flex:none;width:76px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:500}
 .tl .n{font-family:var(--display);font-optical-sizing:auto;font-size:20px;line-height:1.3;font-weight:300}
-.tl .locked{color:#6A5550;font-family:var(--display);font-style:italic;font-weight:300;font-size:19px}
+.tl .locked{color:#6F6B6A;font-family:var(--display);font-style:italic;font-weight:300;font-size:19px}
 .tl li.is-next .t{color:var(--accent)}
 
 /* places, set like the pass list */
@@ -342,7 +342,7 @@ h2{
 }
 .gets li em{font-style:normal;flex:1;min-width:0}
 .gets li em .gd{
-  display:block;font-size:14.5px;line-height:1.45;color:#96817A;margin:4px 0 0;
+  display:block;font-size:14.5px;line-height:1.45;color:#A6A2A1;margin:4px 0 0;
 }
 .gets li > span,.gets li a > span{flex:none;color:var(--accent);font-size:13px;letter-spacing:.04em}
 .gets li.h{
@@ -350,7 +350,7 @@ h2{
   font-weight:500;margin:26px 0 9px;padding:0 0 9px;border-bottom:1px solid var(--rule);
 }
 .gets li.h:first-child{margin-top:0}
-.gets .note{font-size:13px;line-height:1.45;color:#7A6660;padding-top:12px;display:block}
+.gets .note{font-size:13px;line-height:1.45;color:#837F7E;padding-top:12px;display:block}
 
 /* ---------- motion ---------- */
 .rise{animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
@@ -378,8 +378,9 @@ h2{
     <div class="pad"><div class="inner">
       <p class="eyebrow rise">Dubrovnik &middot; Monday 21 September</p>
       <h1 class="rise d1">Happy<br>birthday<br><em>Alice</em></h1>
-      <p class="lede rise d2">Today is planned. It comes to you one part at a time.</p>
-      <div class="next rise d3"><button type="button" class="btn solid" data-next>Open the first one</button></div>
+      <p class="lede rise d2">Your custom made birthday itinerary. The whole day planned out just for you.</p>
+      <p class="lede rise d2">Whenever you're ready&hellip;</p>
+      <div class="next rise d3"><button type="button" class="btn solid" data-next>I'm ready</button></div>
     </div></div>
     <p class="hint">Swipe up</p>
   </section>
