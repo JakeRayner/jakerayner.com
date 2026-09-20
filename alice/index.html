@@ -82,21 +82,74 @@ h2{
 .btn.ghost{background:none;color:var(--dim);padding-left:0}
 .next{margin:26px 0 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 
-/* ---------- hold to reveal ---------- */
-.holdwrap{margin:26px 0 0;display:flex;flex-direction:column;align-items:center}
-.hold{
-  position:relative;width:132px;height:132px;border-radius:50%;border:0;padding:0;
-  background:rgba(245,234,229,.07);cursor:pointer;display:grid;place-items:center;
-  -webkit-tap-highlight-color:transparent;touch-action:none;
+/* ---------- the present ---------- */
+.giftwrap{margin:22px 0 0;display:flex;flex-direction:column;align-items:center}
+.gift{
+  position:relative;width:200px;height:206px;background:none;border:0;padding:0;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
-.hold svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
-.hold circle{fill:none;stroke-width:2}
-.hold .trk{stroke:rgba(245,234,229,.16)}
-.hold .bar{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:389;stroke-dashoffset:389}
-.hold span{
-  position:relative;z-index:2;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+.gift .glow{
+  position:absolute;left:50%;top:56%;width:280px;height:280px;margin:-140px 0 0 -140px;
+  border-radius:50%;pointer-events:none;opacity:0;transition:opacity .6s ease;
+  background:radial-gradient(circle,rgba(226,181,145,.5) 0%,rgba(226,181,145,.11) 46%,transparent 70%);
 }
-.holdhint{font-size:12.5px;color:var(--dim);margin:16px 0 0;letter-spacing:.04em}
+.gift.lit .glow{opacity:.75}
+.gift .rays{position:absolute;left:50%;top:56%;width:0;height:0;opacity:0;pointer-events:none}
+.gift .rays i{
+  position:absolute;left:-1.5px;top:0;width:3px;height:30px;border-radius:2px;
+  background:var(--accent);transform-origin:50% 0;
+}
+.gift .body{position:absolute;inset:0;transform-origin:50% 88%;animation:float 3.4s ease-in-out infinite}
+.gift .box{
+  position:absolute;left:14px;right:14px;bottom:6px;height:110px;border-radius:9px;
+  background:linear-gradient(158deg,#6E1C2C 0%,#4B1221 56%,#330C16 100%);
+  box-shadow:0 20px 42px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.09);
+}
+.gift .lid{
+  position:absolute;left:0;right:0;top:54px;height:33px;border-radius:7px;
+  background:linear-gradient(158deg,#812333 0%,#5C1728 58%,#3F1021 100%);
+  box-shadow:0 12px 24px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.gift .box b,.gift .lid b{
+  position:absolute;left:50%;margin-left:-11px;top:0;bottom:0;width:22px;
+  background:var(--accent);opacity:.92;
+}
+.gift .bow{position:absolute;left:50%;top:-27px;width:80px;height:34px;margin-left:-40px}
+.gift .bow i{position:absolute;background:var(--accent)}
+.gift .bow .k{z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.gift .bow .l{left:0;top:0;width:37px;height:30px;border-radius:62% 38% 52% 48% / 62% 62% 38% 38%;transform:rotate(-15deg)}
+.gift .bow .r{right:0;top:0;width:37px;height:30px;border-radius:38% 62% 48% 52% / 62% 62% 38% 38%;transform:rotate(15deg)}
+.gift .bow .k{left:50%;top:8px;width:19px;height:19px;margin-left:-9.5px;border-radius:50%}
+.gifthint{font-size:12.5px;color:var(--dim);margin:14px 0 0;letter-spacing:.04em;min-height:1.3em}
+
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-7px) rotate(-1.2deg)}}
+@keyframes wob1{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes wob2{
+  0%,100%{transform:rotate(0deg) translateY(0)}
+  12%{transform:rotate(-10deg) translateY(-3px)}
+  30%{transform:rotate(9deg) translateY(-6px)}
+  48%{transform:rotate(-8deg) translateY(-2px)}
+  66%{transform:rotate(7deg) translateY(-5px)}
+  84%{transform:rotate(-4deg) translateY(0)}
+}
+.gift.s1 .body{animation:wob1 .5s ease-in-out}
+.gift.s2 .body{animation:wob2 .72s ease-in-out}
+.gift.open .body{animation:none}
+.gift.open .lid{
+  transform:translate(46px,-132px) rotate(-24deg);opacity:0;
+  transition:transform .85s cubic-bezier(.16,.9,.3,1), opacity .45s ease .4s;
+}
+.gift.open .box{
+  transform:translateY(22px) scale(.88);opacity:0;
+  transition:transform .7s ease .08s, opacity .55s ease .12s;
+}
+.gift.open .glow{opacity:0;transition:opacity 1s ease .25s}
+.gift.open .rays{opacity:1;animation:burst .9s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes burst{
+  0%{opacity:1;transform:scale(.2)}
+  60%{opacity:.75}
+  100%{opacity:0;transform:scale(2)}
+}
 .qrs{display:flex;gap:12px;margin:24px 0 0}
 .qr{flex:1;background:#fff;border-radius:6px;padding:11px}
 .qr img{width:100%;height:auto;display:block;image-rendering:pixelated}
@@ -263,7 +316,7 @@ h2{
 .d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.4s}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
-  .rise,.sheet,.pop{animation:none}
+  .rise,.sheet,.pop,.gift .body,.gift.s1 .body,.gift.s2 .body,.gift.open .rays{animation:none}
   #deck{scroll-behavior:auto}
   .prog i,.meter i,.wheelspin{transition:none}
 }
@@ -359,13 +412,13 @@ h2{
       title:"Presents,<br>then breakfast", short:"Presents and breakfast",
       lede:"At the flat, with nowhere to be." },
 
+    { clock:"09:00", when:"Before you go", kind:"pass",
+      title:"One more<br>thing", short:"Your Dubrovnik Pass", shortLocked:"One more thing",
+      lede:"This one you have to open." },
+
     { clock:"09:30", when:"From about 9:30",
       title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
       lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e." },
-
-    { clock:"10:30", when:"Before the walls", kind:"pass",
-      title:"Your<br>Dubrovnik Pass", short:"Your Dubrovnik Pass",
-      lede:"Seven days of the city, one each. Hold the circle to unlock them." },
 
     { clock:"11:00", when:"Late morning",
       title:"The<br>City Walls", short:"The City Walls",
@@ -447,14 +500,17 @@ h2{
     var extra = "";
     if(stop.kind === "pass"){
       extra =
-        '<div class="holdwrap rise d3" data-hold>' +
-          '<button type="button" class="hold" aria-label="Hold to unlock the passes">' +
-            '<svg viewBox="0 0 132 132" aria-hidden="true">' +
-              '<circle class="trk" cx="66" cy="66" r="62"></circle>' +
-              '<circle class="bar" cx="66" cy="66" r="62"></circle>' +
-            '</svg><span>Hold</span>' +
+        '<div class="giftwrap rise d3" data-gift>' +
+          '<button type="button" class="gift" aria-label="Open your present">' +
+            '<span class="glow"></span><span class="rays"></span>' +
+            '<span class="body">' +
+              '<span class="box"><b></b></span>' +
+              '<span class="lid"><b></b>' +
+                '<span class="bow"><i class="l"></i><i class="r"></i><i class="k"></i></span>' +
+              '</span>' +
+            '</span>' +
           '</button>' +
-          '<p class="holdhint">Press and hold</p>' +
+          '<p class="gifthint">Tap it</p>' +
         '</div>' +
         '<div class="qrs" data-qrs hidden>' +
           '<div class="qr"><img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one"><p>Pass one</p></div>' +
@@ -477,7 +533,7 @@ h2{
         '<p class="cdnote" data-cdnote>until the sun goes down</p>';
     }
 
-    var nextRow = '<div class="next rise d4">' +
+    var nextRow = '<div class="next rise d4"' + (stop.kind === "pass" ? ' data-nextrow hidden' : '') + '>' +
       (stop.kind === "wheel" ? '<button type="button" class="btn" data-places>See everything</button>' : '') +
       '<button type="button" class="btn' + (stop.kind === "wheel" ? "" : " solid") + '" data-next>' +
         (i === STOPS.length - 1 ? "Finish" : "Next") +
@@ -543,55 +599,70 @@ h2{
     if(t) t.scrollIntoView({behavior:"smooth", block:"start"});
   }
 
-  /* ---------- hold to unlock the passes ---------- */
-  var HOLD = 1100;
-  function wireHold(section){
-    var wrap = section.querySelector("[data-hold]");
+  /* ---------- opening the present ---------- */
+  var PASS_TITLE = "Your<br>Dubrovnik Pass";
+  var PASS_LEDE  = "Seven days of the city, one each. Here is what they get us.";
+
+  function wireGift(section){
+    var wrap = section.querySelector("[data-gift]");
     if(!wrap) return;
-    var btn = wrap.querySelector(".hold");
-    var bar = wrap.querySelector(".bar");
-    var lbl = btn.querySelector("span");
-    var hint = wrap.querySelector(".holdhint");
+    var gift = wrap.querySelector(".gift");
+    var hint = wrap.querySelector(".gifthint");
+    var rays = wrap.querySelector(".rays");
     var qrs = section.querySelector("[data-qrs]");
     var covers = section.querySelector("[data-covers]");
-    var lede = section.querySelector(".lede");
-    var LEN = 389, timer = null, raf = null, t0 = 0;
+    var titleEl = section.querySelector("h2");
+    var ledeEl = section.querySelector(".lede");
+    var stage = 0, done = false;
 
-    function paint(p){ bar.style.strokeDashoffset = String(LEN * (1 - p)); }
+    for(var r=0;r<12;r++){
+      var i = document.createElement("i");
+      i.style.transform = "rotate(" + (r*30) + "deg) translateY(-74px)";
+      rays.appendChild(i);
+    }
 
-    function unlock(quiet){
-      paint(1);
+    function reveal(){
       wrap.hidden = true;
       qrs.hidden = false;
       covers.hidden = false;
-      lede.textContent = "Seven days of the city, one each. Here is what they get us.";
-      if(!quiet){ qrs.classList.add("pop"); covers.classList.add("pop"); }
+      titleEl.innerHTML = PASS_TITLE;
+      ledeEl.textContent = PASS_LEDE;
+      var nx = section.querySelector("[data-nextrow]");
+      if(nx) nx.hidden = false;
       state.pass = true; save();
       passBtn.hidden = false;
+      paintDay();
     }
-    if(state.pass){ unlock(true); return; }
 
-    function start(e){
-      if(e.cancelable) e.preventDefault();
-      t0 = Date.now();
-      lbl.textContent = "Hold";
-      (function loop(){
-        var p = Math.min((Date.now() - t0) / HOLD, 1);
-        paint(p);
-        if(p < 1) raf = requestAnimationFrame(loop);
-      })();
-      timer = setTimeout(function(){ stop(true); unlock(false); }, HOLD);
+    if(state.pass){ reveal(); return; }
+
+    var STEPS = ["Something is in there", "One more"];
+    function bump(cls){
+      gift.classList.remove("s1","s2");
+      void gift.offsetWidth;
+      gift.classList.add(cls);
+      setTimeout(function(){ gift.classList.remove(cls); }, 760);
     }
-    function stop(done){
-      if(timer){ clearTimeout(timer); timer = null; }
-      if(raf){ cancelAnimationFrame(raf); raf = null; }
-      if(!done){ paint(0); hint.textContent = "Keep holding"; }
-    }
-    btn.addEventListener("pointerdown", start);
-    btn.addEventListener("pointerup", function(){ stop(false); });
-    btn.addEventListener("pointerleave", function(){ stop(false); });
-    btn.addEventListener("pointercancel", function(){ stop(false); });
-    btn.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+
+    gift.addEventListener("click", function(){
+      if(done) return;
+      stage++;
+      if(stage < 3){
+        bump("s" + stage);
+        if(stage === 2) gift.classList.add("lit");
+        hint.textContent = STEPS[stage - 1];
+        return;
+      }
+      done = true;
+      gift.classList.remove("s1","s2");
+      gift.classList.add("open");
+      hint.textContent = "";
+      setTimeout(function(){
+        reveal();
+        qrs.classList.add("pop");
+        covers.classList.add("pop");
+      }, 680);
+    });
   }
 
   /* ---------- the wheel ---------- */
@@ -749,7 +820,7 @@ h2{
       sections[i].hidden = i >= state.revealed;
       if(!sections[i].hidden && !wired[i]){
         wired[i] = 1;
-        wireHold(sections[i]); wireWheel(sections[i]); wireSunset(sections[i]);
+        wireGift(sections[i]); wireWheel(sections[i]); wireSunset(sections[i]);
       }
     }
     placeGate();
@@ -797,7 +868,10 @@ h2{
       var t = document.createElement("span");
       t.className = "t"; t.innerHTML = stop.clock;
       var n = document.createElement("span");
-      if(i < state.revealed){ n.className = "n"; n.innerHTML = stop.short; }
+      if(i < state.revealed){
+        n.className = "n";
+        n.innerHTML = (stop.shortLocked && !state.pass) ? stop.shortLocked : stop.short;
+      }
       else{
         n.className = "locked"; n.textContent = "Still to come";
         if(i === state.revealed) li.className = "is-next";
