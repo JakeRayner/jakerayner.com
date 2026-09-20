@@ -143,6 +143,22 @@ h2{
 .meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0%;transition:width 1s linear}
 .gate .lede{margin:0 auto;max-width:26ch}
 .unlock-at{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:20px 0 0}
+.pw{display:flex;gap:8px;justify-content:center;align-items:center;margin:30px 0 0}
+.pw input{
+  width:104px;font:inherit;font-size:14px;letter-spacing:.14em;text-align:center;color:var(--ink);
+  background:none;border:0;border-bottom:1px solid var(--rule);padding:8px 4px;
+  -webkit-appearance:none;border-radius:0;
+}
+.pw input::placeholder{color:#6A5550;letter-spacing:.18em;font-size:11px;text-transform:uppercase}
+.pw input:focus{outline:none;border-bottom-color:var(--accent)}
+.pw button{
+  font:inherit;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);background:none;border:0;padding:8px 4px;cursor:pointer;
+}
+.pw.no{animation:no .4s ease}
+@keyframes no{
+  10%,90%{transform:translateX(-3px)} 30%,70%{transform:translateX(5px)} 50%{transform:translateX(-5px)}
+}
 
 /* ---------- fixed chrome ---------- */
 .prog{position:fixed;top:0;left:0;right:0;height:2px;background:rgba(245,234,229,.14);z-index:40}
@@ -238,6 +254,8 @@ h2{
 .pass .who{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#8E1F2F;margin:0 0 16px}
 .covers{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--rule)}
 .covers li{font-size:15px;color:var(--dim);padding:13px 0;border-bottom:1px solid var(--rule)}
+.covers.oncard{margin:22px 0 0}
+.covers.oncard li{font-size:13.5px;padding:8px 0;line-height:1.45}
 .covers b{color:var(--ink);font-weight:500}
 
 /* ---------- motion ---------- */
@@ -250,13 +268,6 @@ h2{
   .prog i,.meter i,.wheelspin{transition:none}
 }
 
-/* ---------- test bar (remove before sending) ---------- */
-#testbar{position:fixed;z-index:50;right:12px;top:calc(env(safe-area-inset-top,0px) + 11px);display:flex;gap:6px}
-#testbar button{
-  font:inherit;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  background:rgba(0,0,0,.4);color:#fff;border:0;border-radius:999px;
-  padding:7px 13px;cursor:pointer;backdrop-filter:blur(10px);
-}
 </style>
 </head>
 <body>
@@ -334,13 +345,6 @@ h2{
   </div>
 </section>
 
-<!-- TEST ONLY: delete this block and the one marked TEST ONLY in the script before sending -->
-<div id="testbar">
-  <button type="button" id="skipBtn">Skip</button>
-  <button type="button" id="resetBtn">Reset</button>
-</div>
-<!-- END TEST ONLY -->
-
 <script>
 (function(){
   "use strict";
@@ -400,6 +404,13 @@ h2{
   ];
   var CATS = ["Eat","Drink","With the pass","Wander"];
 
+  var COVERS =
+    '<li><b>Every city bus</b>, all week</li>' +
+    '<li><b>The City Walls</b> and Fort Lovrijenac</li>' +
+    '<li><b>Rector\'s Palace</b> and the museums</li>' +
+    '<li><b>30% off</b> the Lokrum ferry</li>' +
+    '<li>The first scan starts the seven days</li>';
+
   var deck = document.getElementById("deck");
   var outro = document.getElementById("outro");
   var progFill = document.getElementById("prog").firstElementChild;
@@ -448,7 +459,8 @@ h2{
         '<div class="qrs" data-qrs hidden>' +
           '<div class="qr"><img src="pass-1.png" alt="Dubrovnik Pass QR code, pass one"><p>Pass one</p></div>' +
           '<div class="qr"><img src="pass-2.png" alt="Dubrovnik Pass QR code, pass two"><p>Pass two</p></div>' +
-        '</div>';
+        '</div>' +
+        '<ul class="covers oncard" data-covers hidden>' + COVERS + '</ul>';
     }else if(stop.kind === "wheel"){
       extra =
         '<div class="wheelwrap rise d3"><div class="ptr"></div>' +
@@ -492,8 +504,29 @@ h2{
       '<div class="meter"><i id="meterFill"></i></div>' +
       '<p class="lede">Enjoy this bit first. The next part opens on its own.</p>' +
       '<p class="unlock-at" id="unlockAt"></p>' +
+      '<form class="pw" id="pwForm" autocomplete="off">' +
+        '<input type="text" id="pwInput" inputmode="numeric" placeholder="Password" ' +
+          'aria-label="Password" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="8">' +
+        '<button type="submit">Go</button>' +
+      '</form>' +
     '</div></div>';
   deck.insertBefore(gate, outro);
+  var pwForm = gate.querySelector("#pwForm");
+  var pwInput = gate.querySelector("#pwInput");
+  pwForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    if(pwInput.value.trim() === "32"){
+      pwInput.value = "";
+      pwInput.blur();
+      state.nextAt = Date.now();
+      if(catchUp()) renderAll(true);
+      tick();
+    }else{
+      pwInput.value = "";
+      pwForm.classList.remove("no"); void pwForm.offsetWidth; pwForm.classList.add("no");
+    }
+  });
+
   var clockEl = gate.querySelector("#clock");
   var meterFill = gate.querySelector("#meterFill");
   var unlockEl = gate.querySelector("#unlockAt");
@@ -520,6 +553,8 @@ h2{
     var lbl = btn.querySelector("span");
     var hint = wrap.querySelector(".holdhint");
     var qrs = section.querySelector("[data-qrs]");
+    var covers = section.querySelector("[data-covers]");
+    var lede = section.querySelector(".lede");
     var LEN = 389, timer = null, raf = null, t0 = 0;
 
     function paint(p){ bar.style.strokeDashoffset = String(LEN * (1 - p)); }
@@ -528,7 +563,9 @@ h2{
       paint(1);
       wrap.hidden = true;
       qrs.hidden = false;
-      if(!quiet) qrs.classList.add("pop");
+      covers.hidden = false;
+      lede.textContent = "Seven days of the city, one each. Here is what they get us.";
+      if(!quiet){ qrs.classList.add("pop"); covers.classList.add("pop"); }
       state.pass = true; save();
       passBtn.hidden = false;
     }
@@ -839,6 +876,11 @@ h2{
   }
 
   /* ---------- go ---------- */
+  if(/[?&]reset\b/.test(location.search)){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.replace(location.pathname);
+    return;
+  }
   if(!hadSaved){ state.nextAt = Date.now() + GAP; save(); }
   if(state.pass) passBtn.hidden = false;
   catchUp();
@@ -850,16 +892,6 @@ h2{
     if(!document.hidden){ if(catchUp()) renderAll(true); tick(); }
   });
 
-  /* TEST ONLY: remove with the #testbar markup above */
-  var skip = document.getElementById("skipBtn");
-  var reset = document.getElementById("resetBtn");
-  if(skip) skip.addEventListener("click", function(){
-    state.nextAt = Date.now(); if(catchUp()) renderAll(true); tick();
-  });
-  if(reset) reset.addEventListener("click", function(){
-    try{ localStorage.removeItem(KEY); }catch(e){} location.reload();
-  });
-  /* END TEST ONLY */
 })();
 </script>
 </body>
