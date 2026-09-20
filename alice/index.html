@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday Alice</title>
+<meta name="description" content="Your birthday, one piece at a time.">
+<meta name="theme-color" content="#A30F2A">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Happy Birthday Alice">
+<meta property="og:description" content="Your birthday, one piece at a time. Open me first thing.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --display:"Fraunces","Iowan Old Style",Georgia,serif;
+  --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+  --ink:#2B0910;
+  --dim:rgba(43,9,16,.68);
+  --line:rgba(43,9,16,.22);
+  --accent:#A30F2A;
+  --chip:rgba(255,255,255,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.6;
+  color:var(--ink);
+  background:#120A0D;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- deck + panels ---------- */
+#deck{
+  height:100svh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+}
+.panel{
+  position:relative;
+  min-height:100svh;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 76px) 24px calc(env(safe-area-inset-bottom,0px) + 56px);
+  overflow:hidden;
+  color:var(--ink);
+}
+.panel[hidden]{display:none}
+.inner{width:100%;max-width:560px;margin:0 auto;position:relative;z-index:2}
+
+/* themes */
+.t-open{--ink:#FFF0EE;--dim:rgba(255,240,238,.78);--line:rgba(255,240,238,.34);--accent:#FFD9D2;--chip:rgba(255,255,255,.12);
+  background:radial-gradient(120% 80% at 80% 8%,#C41834 0%,#A30F2A 42%,#6B0A1E 100%)}
+.t-dawn{--ink:#4A2317;--dim:rgba(74,35,23,.72);--line:rgba(74,35,23,.24);--accent:#B94A2C;--chip:rgba(255,255,255,.4);
+  background:linear-gradient(168deg,#FFF6EC 0%,#FFE2CC 46%,#F8B79B 100%)}
+.t-sea{--ink:#06283B;--dim:rgba(6,40,59,.72);--line:rgba(6,40,59,.22);--accent:#0C6B93;--chip:rgba(255,255,255,.42);
+  background:linear-gradient(168deg,#EAF7FC 0%,#BEE4F2 40%,#6FBDD9 100%)}
+.t-stone{--ink:#4A2E1C;--dim:rgba(74,46,28,.72);--line:rgba(74,46,28,.22);--accent:#A8552B;--chip:rgba(255,255,255,.42);
+  background:linear-gradient(168deg,#FDF4E8 0%,#F0D6B4 48%,#DFAE82 100%)}
+.t-sunset{--ink:#3B0F26;--dim:rgba(59,15,38,.74);--line:rgba(59,15,38,.24);--accent:#8E1B44;--chip:rgba(255,255,255,.34);
+  background:linear-gradient(170deg,#FFE0A8 0%,#FBA372 42%,#E06A7C 74%,#B34A7E 100%)}
+.t-dusk{--ink:#F6EEFF;--dim:rgba(246,238,255,.76);--line:rgba(246,238,255,.3);--accent:#EBCBFF;--chip:rgba(255,255,255,.12);
+  background:linear-gradient(170deg,#7B64A0 0%,#4E3C72 48%,#2A2247 100%)}
+.t-night{--ink:#F6EADC;--dim:rgba(246,234,220,.76);--line:rgba(246,234,220,.28);--accent:#E7BE84;--chip:rgba(255,255,255,.1);
+  background:linear-gradient(170deg,#1B2E4C 0%,#132238 48%,#0A1220 100%)}
+.t-gate{--ink:#F3E4E2;--dim:rgba(243,228,226,.7);--line:rgba(243,228,226,.24);--accent:#F0A9A2;--chip:rgba(255,255,255,.08);
+  background:radial-gradient(110% 70% at 50% 18%,#2A171C 0%,#1A0F13 55%,#100A0C 100%)}
+.t-close{--ink:#FFF0EE;--dim:rgba(255,240,238,.78);--line:rgba(255,240,238,.32);--accent:#FFD9D2;--chip:rgba(255,255,255,.12);
+  background:radial-gradient(120% 90% at 20% 90%,#C41834 0%,#A30F2A 44%,#5E0819 100%)}
+
+/* decorative rings */
+.ring{position:absolute;border:1px solid var(--line);border-radius:50%;opacity:.55;pointer-events:none;z-index:1}
+.ring.a{width:78vw;max-width:540px;aspect-ratio:1;right:-26vw;top:-10vh}
+.ring.b{width:52vw;max-width:360px;aspect-ratio:1;left:-20vw;bottom:-8vh}
+
+/* ---------- type ---------- */
+.eyebrow{
+  font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin:0 0 18px;
+}
+h1{
+  font-family:var(--display);font-optical-sizing:auto;font-weight:400;
+  font-size:clamp(56px,17vw,116px);line-height:.92;letter-spacing:-.02em;margin:0;
+}
+h2{
+  font-family:var(--display);font-optical-sizing:auto;font-weight:500;
+  font-size:clamp(34px,9.2vw,56px);line-height:1.06;letter-spacing:-.015em;margin:0;
+}
+.lede{font-size:17px;color:var(--dim);margin:16px 0 0;max-width:34ch}
+.when{
+  display:inline-flex;align-items:center;gap:9px;margin:0 0 16px;
+  font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;color:var(--ink);
+}
+.when::before{content:"";width:26px;height:1px;background:currentColor;opacity:.6}
+.sig{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(22px,6vw,30px);line-height:1.3;margin:0}
+
+/* ---------- options ---------- */
+.opts{margin:30px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.opts-label{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:28px 0 12px;font-weight:500}
+.opt{
+  width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
+  background:var(--chip);border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;display:flex;align-items:center;gap:13px;
+  transition:background .22s ease,border-color .22s ease,transform .12s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.opt:active{transform:scale(.985)}
+.opt .tick{
+  flex:none;width:21px;height:21px;border-radius:50%;border:1px solid var(--line);
+  display:grid;place-items:center;font-size:12px;line-height:1;color:transparent;transition:.22s ease;
+}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.t-dawn .opt[aria-pressed="true"],.t-sea .opt[aria-pressed="true"],
+.t-stone .opt[aria-pressed="true"],.t-sunset .opt[aria-pressed="true"]{color:#FFF6F2}
+.t-open .opt[aria-pressed="true"],.t-dusk .opt[aria-pressed="true"],
+.t-night .opt[aria-pressed="true"],.t-close .opt[aria-pressed="true"]{color:#1A0D11}
+.opt[aria-pressed="true"] .tick{border-color:currentColor;color:currentColor}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------- gate ---------- */
+.gate-inner{text-align:center;display:flex;flex-direction:column;align-items:center}
+.dial{
+  --p:0;
+  position:relative;width:min(58vw,224px);aspect-ratio:1;border-radius:50%;
+  background:conic-gradient(var(--accent) calc(var(--p) * 1turn), rgba(255,255,255,.12) 0);
+  display:grid;place-items:center;margin:26px 0 30px;
+}
+.dial::after{
+  content:"";position:absolute;inset:7px;border-radius:50%;
+  background:radial-gradient(110% 110% at 50% 20%,#241419 0%,#160D11 100%);
+}
+.clock{
+  position:relative;z-index:1;font-family:var(--display);font-optical-sizing:auto;
+  font-weight:400;font-size:clamp(34px,11vw,48px);letter-spacing:.01em;
+  font-variant-numeric:tabular-nums;color:var(--ink);
+}
+.gate h2{font-size:clamp(26px,7vw,38px)}
+.unlock-at{font-size:15px;color:var(--dim);margin:14px 0 0}
+.gate .lede{margin-left:auto;margin-right:auto;text-align:center}
+
+/* ---------- progress ---------- */
+.hud{
+  position:fixed;z-index:20;left:0;right:0;
+  top:calc(env(safe-area-inset-top,0px) + 18px);
+  display:flex;justify-content:center;gap:7px;pointer-events:none;
+  color:#FFF0EE;transition:color .5s ease;
+}
+.hud i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.25;transition:opacity .4s ease}
+.hud i.on{opacity:.75}
+
+/* ---------- hints ---------- */
+.hint{
+  position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);
+  text-align:center;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);z-index:2;
+}
+.hint span{display:inline-block;animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ---------- reveal animation ---------- */
+.rise{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.2s}.d3{animation-delay:.32s}.d4{animation-delay:.44s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .rise,.hint span{animation:none}
+  #deck{scroll-behavior:auto}
+}
+
+/* ---------- test bar (remove before sending) ---------- */
+#testbar{
+  position:fixed;z-index:50;right:12px;
+  top:calc(env(safe-area-inset-top,0px) + 10px);
+  display:flex;gap:6px;
+}
+#testbar button{
+  font:inherit;font-size:11px;letter-spacing:.06em;
+  background:rgba(0,0,0,.5);color:#fff;border:1px solid rgba(255,255,255,.28);
+  border-radius:999px;padding:6px 12px;cursor:pointer;backdrop-filter:blur(8px);
+}
+#testbar button:active{transform:scale(.96)}
+</style>
+</head>
+<body>
+
+<div class="hud" id="hud" aria-hidden="true"></div>
+
+<main id="deck">
+
+  <section class="panel t-open">
+    <div class="ring a"></div><div class="ring b"></div>
+    <div class="inner">
+      <p class="eyebrow rise">Dubrovnik &middot; Monday 21 September</p>
+      <h1 class="rise d1">Happy<br>birthday<br><em style="font-style:italic">Alice</em></h1>
+      <p class="lede rise d2">Today is already planned. You do not need to think about a single thing.</p>
+      <p class="lede rise d3">It arrives one piece at a time, so keep this open and come back to it. Each part unlocks thirty minutes after the last.</p>
+    </div>
+    <p class="hint"><span>Scroll &darr;</span></p>
+  </section>
+
+  <!-- stops are injected here -->
+
+  <section class="panel t-close" id="outro" hidden>
+    <div class="ring a"></div><div class="ring b"></div>
+    <div class="inner">
+      <p class="eyebrow">That is the whole day</p>
+      <h2>Every bit of it<br>is yours.</h2>
+      <p class="lede">Nothing here is fixed. If you would rather swap something, sleep in, stay in the water longer or skip straight to the wine, we will.</p>
+      <p class="sig" style="margin-top:34px">Happy birthday, beautiful.<br>All my love, Jake.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- TEST ONLY: delete this block and the one marked TEST ONLY in the script before sending -->
+<div id="testbar">
+  <button type="button" id="skipBtn">Skip</button>
+  <button type="button" id="resetBtn">Reset</button>
+</div>
+<!-- END TEST ONLY -->
+
+<script>
+(function(){
+  "use strict";
+
+  var GAP = 30 * 60 * 1000;            // 30 minutes between reveals
+  var KEY = "alice-birthday-2026";
+
+  var STOPS = [
+    {
+      theme:"t-dawn", when:"First thing", title:"Flowers, then breakfast",
+      lede:"Open the front door before anything else. Then come and eat, slowly, with no plan to be anywhere.",
+      optsLabel:"However you fancy it",
+      opts:["Breakfast out on the terrace","Straight back to bed with it","Coffee and pastries down by the water"]
+    },
+    {
+      theme:"t-sea", when:"Late morning", title:"A private boat on the Adriatic",
+      lede:"Just the two of us, the coastline and very blue water. Swimwear on, phone off.",
+      optsLabel:"Pick your kind of morning",
+      opts:["Swim stops in the quiet coves","A loop out to the Elaphiti islands","Anchor somewhere still and just float"]
+    },
+    {
+      theme:"t-stone", when:"Afternoon", title:"Into the Old Town",
+      lede:"Back on dry land and inside the walls. Lunch first, then as much or as little wandering as you want.",
+      optsLabel:"Choose your afternoon",
+      opts:["A long lunch inside the walls","Walk the city walls","Cocktails on the cliff at Buza"]
+    },
+    {
+      theme:"t-sunset", when:"Around 19:15", title:"Sunset on Sr&#273;",
+      lede:"The cable car up the mountain to watch the sun go down over the city, the walls and the islands.",
+      optsLabel:"While we are up there",
+      opts:["A drink at the top","Stay until the city lights come on","One photo of you I will keep forever"]
+    },
+    {
+      theme:"t-dusk", when:"Evening", title:"Home to get ready",
+      lede:"Back to Lozica. Something cold poured the moment we walk in, and all the time in the world to get dressed up.",
+      optsLabel:"Your kind of getting ready",
+      opts:["A cold glass while you do your hair","Five quiet minutes by the pool first","Music on, no rush at all"]
+    },
+    {
+      theme:"t-night", when:"21:30", title:"Dinner at Nautika",
+      lede:"A table looking straight out at the sea, just outside the city walls. The best one I could get you.",
+      optsLabel:"How we end it",
+      opts:["Champagne to start","The tasting menu, all of it","One more drink somewhere after"]
+    }
+  ];
+
+  var deck = document.getElementById("deck");
+  var outro = document.getElementById("outro");
+  var hud = document.getElementById("hud");
+
+  /* ---------- state ---------- */
+  var state = { revealed:1, nextAt:Date.now() + GAP, picks:{} };
+  var hadSaved = false;
+  try{
+    var raw = localStorage.getItem(KEY);
+    hadSaved = !!raw;
+    if(raw){
+      var p = JSON.parse(raw);
+      if(p && typeof p.revealed === "number"){
+        state.revealed = Math.min(Math.max(p.revealed,1), STOPS.length);
+        state.nextAt = typeof p.nextAt === "number" ? p.nextAt : Date.now() + GAP;
+        state.picks = p.picks && typeof p.picks === "object" ? p.picks : {};
+      }
+    }
+  }catch(e){}
+
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  /* ---------- build ---------- */
+  var sections = STOPS.map(function(stop, i){
+    var s = document.createElement("section");
+    s.className = "panel " + stop.theme;
+    s.id = "stop-" + i;
+    s.hidden = true;
+
+    var ringA = document.createElement("div"); ringA.className = "ring a";
+    var ringB = document.createElement("div"); ringB.className = "ring b";
+
+    var inner = document.createElement("div");
+    inner.className = "inner";
+    inner.innerHTML =
+      '<p class="when rise">' + stop.when + '</p>' +
+      '<h2 class="rise d1">' + stop.title + '</h2>' +
+      '<p class="lede rise d2">' + stop.lede + '</p>' +
+      '<p class="opts-label rise d3">' + stop.optsLabel + '</p>';
+
+    var ul = document.createElement("ul");
+    ul.className = "opts rise d4";
+    stop.opts.forEach(function(text, j){
+      var key = i + ":" + j;
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.setAttribute("aria-pressed", state.picks[key] ? "true" : "false");
+      var tick = document.createElement("span");
+      tick.className = "tick";
+      tick.textContent = "✓";
+      var label = document.createElement("span");
+      label.textContent = text;
+      b.appendChild(tick);
+      b.appendChild(label);
+      b.addEventListener("click", function(){
+        var on = b.getAttribute("aria-pressed") === "true";
+        b.setAttribute("aria-pressed", on ? "false" : "true");
+        if(on){ delete state.picks[key]; } else { state.picks[key] = 1; }
+        save();
+      });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    inner.appendChild(ul);
+
+    s.appendChild(ringA); s.appendChild(ringB); s.appendChild(inner);
+    deck.insertBefore(s, outro);
+    return s;
+  });
+
+  /* ---------- the gate ---------- */
+  var gate = document.createElement("section");
+  gate.className = "panel t-gate gate";
+  gate.innerHTML =
+    '<div class="inner gate-inner">' +
+      '<p class="eyebrow">Not quite yet</p>' +
+      '<div class="dial"><span class="clock" id="clock">30:00</span></div>' +
+      '<h2 id="gateTitle">The next part of your day</h2>' +
+      '<p class="lede">Go and enjoy this bit first. It will unlock on its own, and you can leave this page and come back.</p>' +
+      '<p class="unlock-at" id="unlockAt"></p>' +
+    '</div>';
+  deck.insertBefore(gate, outro);
+
+  var clockEl = gate.querySelector("#clock");
+  var dialEl = gate.querySelector(".dial");
+  var unlockEl = gate.querySelector("#unlockAt");
+
+  /* ---------- hud dots ---------- */
+  STOPS.forEach(function(){ hud.appendChild(document.createElement("i")); });
+  function paintHud(){
+    var dots = hud.children;
+    for(var i=0;i<dots.length;i++){
+      dots[i].className = i < state.revealed ? "on" : "";
+    }
+  }
+
+  /* ---------- reveal ---------- */
+  function placeGate(){
+    var next = sections[state.revealed];
+    if(next){
+      gate.hidden = false;
+      deck.insertBefore(gate, next);
+      outro.hidden = true;
+    }else{
+      gate.hidden = true;
+      outro.hidden = false;
+    }
+  }
+
+  function renderAll(scrollToNew){
+    for(var i=0;i<sections.length;i++){
+      sections[i].hidden = i >= state.revealed;
+    }
+    placeGate();
+    paintHud();
+    if(scrollToNew){
+      var target = sections[state.revealed - 1];
+      if(target){
+        target.querySelectorAll(".rise").forEach(function(el){
+          el.style.animation = "none";
+          void el.offsetWidth;
+          el.style.animation = "";
+        });
+        requestAnimationFrame(function(){
+          target.scrollIntoView({behavior:"smooth", block:"start"});
+        });
+      }
+    }
+  }
+
+  /* ---------- catch up on time passed ---------- */
+  function catchUp(){
+    var moved = false;
+    while(state.revealed < STOPS.length && Date.now() >= state.nextAt){
+      state.revealed++;
+      state.nextAt += GAP;
+      moved = true;
+    }
+    if(moved) save();
+    return moved;
+  }
+
+  function two(n){ return (n<10?"0":"") + n; }
+
+  function tick(){
+    if(state.revealed >= STOPS.length){
+      gate.hidden = true;
+      outro.hidden = false;
+      return;
+    }
+    var left = state.nextAt - Date.now();
+    if(left <= 0){
+      if(catchUp()) renderAll(true);
+      return;
+    }
+    var secs = Math.ceil(left/1000);
+    clockEl.textContent = two(Math.floor(secs/60)) + ":" + two(secs%60);
+    dialEl.style.setProperty("--p", String(1 - Math.min(left/GAP,1)));
+    var t = new Date(state.nextAt);
+    unlockEl.textContent = "Unlocks at " + two(t.getHours()) + ":" + two(t.getMinutes());
+  }
+
+  /* hud takes the colour of whatever panel is on screen */
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting && en.intersectionRatio > 0.5){
+          var ink = getComputedStyle(en.target).getPropertyValue("--ink").trim();
+          if(ink) hud.style.color = ink;
+        }
+      });
+    }, {root:deck, threshold:[0.51]});
+    document.querySelectorAll(".panel").forEach(function(el){ io.observe(el); });
+  }
+
+  /* first run: start the clock from now */
+  if(!hadSaved){ state.nextAt = Date.now() + GAP; save(); }
+  catchUp();
+  renderAll(false);
+  tick();
+  setInterval(tick, 1000);
+  document.addEventListener("visibilitychange", function(){
+    if(!document.hidden){ if(catchUp()) renderAll(true); tick(); }
+  });
+
+  /* TEST ONLY: remove with the #testbar markup above */
+  var skip = document.getElementById("skipBtn");
+  var reset = document.getElementById("resetBtn");
+  if(skip) skip.addEventListener("click", function(){
+    state.nextAt = Date.now();
+    if(catchUp()) renderAll(true);
+    tick();
+  });
+  if(reset) reset.addEventListener("click", function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  });
+  /* END TEST ONLY */
+})();
+</script>
+</body>
+</html>
