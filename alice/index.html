@@ -324,39 +324,12 @@ h2{
 .tl .locked{color:#6A5550;font-family:var(--display);font-style:italic;font-weight:300;font-size:19px}
 .tl li.is-next .t{color:var(--accent)}
 
-/* places */
-.cat{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;color:var(--dim);margin:0 0 12px}
-.cat:not(:first-of-type){margin-top:26px}
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.tiles > div{display:flex}
-.tiles > div > .tile{flex:1}
-.tile{
-  --tint:226,181,145;
-  position:relative;display:block;width:100%;text-align:left;font:inherit;color:var(--ink);
-  background:linear-gradient(155deg,rgba(var(--tint),.26) 0%,rgba(var(--tint),.09) 60%,rgba(245,234,229,.035) 100%);
-  border:0;border-radius:5px;padding:15px 15px 14px;cursor:pointer;
-  box-shadow:inset 0 0 0 1px rgba(var(--tint),.28);
-  -webkit-tap-highlight-color:transparent;transition:background .2s ease,box-shadow .2s ease;
+/* places, set like the pass list */
+.gets li a{
+  flex:1;min-width:0;display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;
 }
-.tile:active{transform:scale(.985)}
-.tile .tn{
-  display:block;font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:17px;line-height:1.2;letter-spacing:-.012em;padding-right:18px;
-}
-.tile .tt{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--tint));margin:8px 0 0}
-.tile[aria-pressed="true"]{
-  background:linear-gradient(155deg,rgba(var(--tint),.5),rgba(var(--tint),.22));
-  box-shadow:inset 0 0 0 1px rgba(var(--tint),.72);
-}
-.tile .dot{
-  position:absolute;top:13px;right:13px;width:14px;height:14px;border-radius:50%;
-  box-shadow:inset 0 0 0 1px rgba(245,234,229,.3);transition:background .2s ease;
-}
-.tile[aria-pressed="true"] .dot{background:rgb(var(--tint));box-shadow:inset 0 0 0 1px rgb(var(--tint))}
-.tilemap{
-  display:inline-block;margin:10px 0 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--dim);text-decoration:none;
-}
+.gets li a:active{opacity:.55}
 
 /* passes */
 .pass{background:#fff;padding:22px 20px 18px;text-align:center;color:#1F1613;margin:0 0 14px;border-radius:6px}
@@ -438,7 +411,7 @@ h2{
 <section class="sheet" id="placeSheet" hidden aria-labelledby="placeTitle">
   <div class="box">
     <button type="button" class="closex" data-close aria-label="Close">&times;</button>
-    <h3 id="placeTitle">The Old Town</h3>
+    <h3 id="placeTitle">Everything</h3>
     <p class="sub" id="placeSub"></p>
     <div id="placeBody"></div>
   </div>
@@ -512,84 +485,133 @@ h2{
   ];
 
   var CATS = [
-    { n:"Eat",            rgb:"198,92,66" },
-    { n:"Drink",          rgb:"201,154,78" },
-    { n:"With the pass",  rgb:"78,154,142" },
-    { n:"Jewellery",      rgb:"186,124,170" },
-    { n:"Shops",          rgb:"170,142,110" },
-    { n:"Wander",         rgb:"142,136,176" }
+    { n:"The Old Town",      rgb:"78,154,142" },
+    { n:"Museums on the pass", rgb:"108,142,184" },
+    { n:"Eat",               rgb:"198,92,66" },
+    { n:"Bigger nights",     rgb:"178,86,98" },
+    { n:"Drink",             rgb:"201,154,78" },
+    { n:"Ice cream",         rgb:"214,150,172" },
+    { n:"Shops",             rgb:"170,142,110" },
+    { n:"In the water",      rgb:"86,162,178" },
+    { n:"Further afield",    rgb:"142,136,176" }
   ];
   function catRgb(name){
     for(var i=0;i<CATS.length;i++){ if(CATS[i].n === name) return CATS[i].rgb; }
     return "226,181,145";
   }
 
+  /* s:1 means it can come up on the wheel, w is its short label there */
   var PLACES = [
-    { n:"Lucin Kantun",      c:"Eat", d:"Tiny, a handful of tables, everything cooked to order.", q:"Lucin Kantun, Dubrovnik" },
-    { n:"Konoba Nava",       c:"Eat", d:"Dalmatian home cooking down a side street.", q:"Konoba Nava, Dubrovnik" },
-    { n:"Proto",             c:"Eat", d:"The grand old fish restaurant on &#352;iroka.", q:"Proto Restaurant, Dubrovnik" },
-    { n:"Nishta",            c:"Eat", d:"The vegetarian one on Prijeko, and always full.", q:"Nishta, Dubrovnik" },
-    { n:"Barba",             c:"Eat", d:"Octopus burgers and seafood in a paper cone.", q:"Barba, Dubrovnik" },
-    { n:"Kopun",             c:"Eat", d:"Old Ragusan recipes on the quiet square under the stairs.", q:"Restaurant Kopun, Dubrovnik" },
-    { n:"Taj Mahal",         c:"Eat", d:"Bosnian, not Indian. Slow cooked lamb and burek.", q:"Taj Mahal, Dubrovnik" },
-    { n:"Azur",              c:"Eat", d:"Asian and Mediterranean, tucked in the back lanes.", q:"Azur, Dubrovnik" },
-    { n:"Kamenice",          c:"Eat", d:"Oysters and fried anchovies on the market square.", q:"Kamenice, Dubrovnik" },
-    { n:"Oliva Pizzeria",    w:"Oliva", c:"Eat", d:"Proper thin pizza a minute off the Stradun.", q:"Oliva Pizzeria, Dubrovnik" },
-    { n:"Lady Pi-Pi",        c:"Eat", d:"Famous terrace at the top of the town. Worth the climb.", q:"Lady Pi-Pi, Dubrovnik" },
-    { n:"Dubravka 1836",     w:"Dubravka", c:"Eat", d:"Terrace by Pile with the walls on one side.", q:"Dubravka 1836, Dubrovnik" },
-    { n:"Peppino's",         c:"Eat", d:"The gelato everyone queues for.", q:"Peppino's Gelato, Dubrovnik" },
+    { n:"The City Walls", w:"City Walls", c:"The Old Town", t:"Free", s:1,
+      d:"In at Plo&#269;e for the shortest queue, and Min&#269;eta while you are still fresh. An hour and a half to two.",
+      q:"Dubrovnik City Walls" },
+    { n:"Fort Lovrijenac", w:"Lovrijenac", c:"The Old Town", t:"Free", s:1,
+      d:"The cliff fortress outside Pile, on the same walls scan.", q:"Fort Lovrijenac, Dubrovnik" },
+    { n:"The Stradun", w:"Stradun", c:"The Old Town", s:1,
+      d:"The polished limestone main street, end to end.", q:"Stradun, Dubrovnik" },
+    { n:"Franciscan Monastery", w:"Franciscan", c:"The Old Town", t:"Free", s:1,
+      d:"Cloister and the old pharmacy, just inside Pile.", q:"Franciscan Monastery, Dubrovnik" },
+    { n:"Rector's Palace", w:"Rector's", c:"The Old Town", t:"Free", s:1,
+      d:"The old seat of the Republic, courtyard and chambers.", q:"Rector's Palace, Dubrovnik" },
+    { n:"The Jesuit Steps", w:"Jesuit Steps", c:"The Old Town", s:1,
+      d:"136 baroque steps up to St Ignatius. Free, and a good view over the roofs.", q:"Jesuit Staircase, Dubrovnik" },
+    { n:"Dominican Monastery", w:"Dominican", c:"The Old Town", s:1,
+      d:"Quiet cloister that most people walk straight past.", q:"Dominican Monastery, Dubrovnik" },
+    { n:"The Old Harbour", w:"Old Harbour", c:"The Old Town", s:1,
+      d:"By Plo&#269;e Gate. Boats, arches, and the best light in the evening.", q:"Old Port, Dubrovnik" },
+    { n:"War Photo Limited", w:"War Photo", c:"The Old Town", t:"20% off", s:1,
+      d:"4.8 stars and open till 9pm. The one everyone says changes how you see the place.",
+      q:"War Photo Limited, Dubrovnik" },
+    { n:"Red History Museum", w:"Red History", c:"The Old Town",
+      d:"Out in Gru&#382;. Communist Yugoslavia, a recreated flat and a Yugo.", q:"Red History Museum, Dubrovnik" },
+    { n:"MOMAD, Modern Art", w:"Modern Art", c:"The Old Town", t:"Free", s:1,
+      d:"Past Plo&#269;e, quiet with sea views. Closed Mondays.", q:"Museum of Modern Art, Dubrovnik" },
 
-    { n:"Bu&#382;a",         c:"Drink", d:"A hole in the city wall with the sea underneath.", q:"Buza Bar, Dubrovnik" },
-    { n:"Bu&#382;a II",      c:"Drink", d:"The quieter cliff bar, tiered seats down the rocks.", q:"Buza Bar II, Dubrovnik" },
-    { n:"D'vino",            c:"Drink", d:"Croatian wine flights and someone to talk you through them.", q:"D'vino Wine Bar, Dubrovnik" },
-    { n:"Malvasija",         c:"Drink", d:"Quiet wine bar down an alley, heavy on Croatian whites.", q:"Malvasija Wine Bar, Dubrovnik" },
-    { n:"Troubadour",        c:"Drink", d:"Jazz in the courtyard once the sun goes down.", q:"Troubadour Jazz Cafe, Dubrovnik" },
-    { n:"Gradska Kavana",    w:"Gradska", c:"Drink", d:"The grand old cafe on Lu&#382;a, terrace over the port.", q:"Gradska Kavana, Dubrovnik" },
-    { n:"Cele Bar",          c:"Drink", d:"On the Stradun. The best people watching in the city.", q:"Cele Bar, Dubrovnik" },
+    { n:"Maritime Museum", w:"Maritime", c:"Museums on the pass", t:"Free", s:1,
+      d:"Ships, charts and sea trade, up inside Fort St John.", q:"Maritime Museum, Dubrovnik" },
+    { n:"Cultural-Historical Museum", w:"Cultural", c:"Museums on the pass", t:"Free", s:1,
+      d:"Inside the Rector's Palace, the rooms the Republic actually used.", q:"Cultural Historical Museum, Dubrovnik" },
+    { n:"Ethnographic Museum", w:"Ethnographic", c:"Museums on the pass", t:"Free", s:1,
+      d:"Country life, inside Rupe, the old domed grain store.", q:"Ethnographic Museum Rupe, Dubrovnik" },
+    { n:"Archaeological Exhibitions", w:"Archaeology", c:"Museums on the pass", t:"Free", s:1,
+      d:"Finds from the city, inside Fort Revelin.", q:"Fort Revelin, Dubrovnik" },
+    { n:"Natural History Museum", w:"Natural History", c:"Museums on the pass", t:"Free", s:1,
+      d:"Small, odd, and usually empty.", q:"Natural History Museum, Dubrovnik" },
+    { n:"Marin Dr&#382;i&#263; House", w:"Marin Dr\u017Ei\u0107", c:"Museums on the pass", t:"Free", s:1,
+      d:"The playwright's house, just off &#352;iroka.", q:"House of Marin Drzic, Dubrovnik" },
+    { n:"Dul&#269;i&#263; Masle Pulitika", w:"DMP Gallery", c:"Museums on the pass", t:"Free", s:1,
+      d:"Three Dubrovnik painters, on Marin Dr&#382;i&#263; square.", q:"Dulcic Masle Pulitika Gallery, Dubrovnik" },
+    { n:"Pulitika Atelier", w:"Pulitika", c:"Museums on the pass", t:"Free", s:1,
+      d:"The painter's studio in Fort St John, left as it was.", q:"Pulitika Studio, Dubrovnik" },
+    { n:"Bukovac House, Cavtat", w:"Bukovac", c:"Museums on the pass", t:"Free",
+      d:"Vlaho Bukovac's family home. Handy for the 24th.", q:"Bukovac House, Cavtat" },
 
-    { n:"Rector's Palace",   w:"Rector's", c:"With the pass", t:"Free", d:"The old seat of the Republic, courtyard and all.", q:"Rector's Palace, Dubrovnik" },
-    { n:"Fort Lovrijenac",   w:"Lovrijenac", c:"With the pass", t:"Free", d:"The fortress on the rock outside Pile.", q:"Fort Lovrijenac, Dubrovnik" },
-    { n:"Franciscan Monastery", w:"Franciscan", c:"With the pass", t:"Free", d:"Cloister, and one of the oldest pharmacies in Europe.", q:"Franciscan Monastery, Dubrovnik" },
-    { n:"Maritime Museum",   w:"Maritime", c:"With the pass", t:"Free", d:"Ships and sea trade, up inside Fort St John.", q:"Maritime Museum, Dubrovnik" },
-    { n:"Ethnographic Museum", w:"Ethnographic", c:"With the pass", t:"Free", d:"In Rupe, the old domed grain store.", q:"Ethnographic Museum Rupe, Dubrovnik" },
-    { n:"Museum of Modern Art", w:"Modern Art", c:"With the pass", t:"Free", d:"Croatian art in a villa on the coast road.", q:"Museum of Modern Art, Dubrovnik" },
-    { n:"Natural History Museum", w:"Natural History", c:"With the pass", t:"Free", d:"Small, odd and very quiet.", q:"Natural History Museum, Dubrovnik" },
-    { n:"House of Marin Dr&#382;i&#263;", w:"Marin Dr\u017Ei\u0107", c:"With the pass", t:"Free", d:"The playwright's house, just off &#352;iroka.", q:"House of Marin Drzic, Dubrovnik" },
-    { n:"Pulitika Studio",   w:"Pulitika", c:"With the pass", t:"Free", d:"The painter's studio inside Fort St John.", q:"Pulitika Studio, Dubrovnik" },
-    { n:"Fort Revelin",      w:"Revelin", c:"With the pass", t:"Free", d:"Archaeology inside the eastern fortress.", q:"Fort Revelin, Dubrovnik" },
-    { n:"War Photo Limited", w:"War Photo", c:"With the pass", t:"20% off", d:"Serious photojournalism. Heavy, and very good.", q:"War Photo Limited, Dubrovnik" },
-    { n:"Dominican Monastery", w:"Dominican", c:"With the pass", t:"Small fee", d:"Quiet cloister and a museum most people walk past.", q:"Dominican Monastery, Dubrovnik" },
-    { n:"The Aquarium",      w:"Aquarium", c:"With the pass", t:"Small fee", d:"In the vaults of Fort St John, cool and dim.", q:"Dubrovnik Aquarium" },
+    { n:"Lady Pi-Pi", c:"Eat", s:1,
+      d:"No bookings, charcoal grill under the vines. Before 6pm or you queue. Outdoor only.", q:"Lady Pi-Pi, Dubrovnik" },
+    { n:"Konoba Nava", w:"Nava", c:"Eat", s:1,
+      d:"Family run, alley seating, octopus salad and fresh fish. The most local feeling one.", q:"Konoba Nava, Dubrovnik" },
+    { n:"Lucin Kantun", w:"Lucin Kantun", c:"Eat", s:1,
+      d:"Od Sigurate 4A. Small plates, and only a handful of tables.", q:"Lucin Kantun, Dubrovnik" },
+    { n:"Taverna Pupo", w:"Pupo", c:"Eat", s:1, d:"Black risotto.", q:"Taverna Pupo, Dubrovnik" },
+    { n:"Tapas Bar Alamaka", w:"Alamaka", c:"Eat", s:1, d:"Tapas and small plates.", q:"Tapas Bar Alamaka, Dubrovnik" },
+    { n:"Barka", c:"Eat", s:1, d:"Small plates, tucked away.", q:"Barka, Dubrovnik" },
+    { n:"Barba", c:"Eat", s:1, d:"Octopus burgers and seafood in a paper cone.", q:"Barba, Dubrovnik" },
+    { n:"M'arden", c:"Eat", s:1, d:"Tapas and small plates.", q:"M'arden, Dubrovnik" },
+    { n:"Trattoria Carmen", w:"Carmen", c:"Eat", s:1, d:"Kneza Damjana Jude 10.", q:"Trattoria Carmen, Dubrovnik" },
+    { n:"Richeta", c:"Eat", s:1,
+      d:"Behind the Cathedral. Modern Croatian, and properly hidden.", q:"Richeta, Dubrovnik" },
 
-    { n:"Jewellers on Od Pu&#269;a", w:"Od Pu\u010Da", c:"Jewellery", t:"The street", d:"The jewellery street. Silver and coral end to end.", q:"Od Puca, Dubrovnik" },
-    { n:"Clara Stones",      c:"Jewellery", d:"Adriatic red coral, cut and set in the workshop downstairs.", q:"Clara Stones, Dubrovnik" },
-    { n:"Filigree and coral", w:"Filigree", c:"Jewellery", d:"The old Dubrovnik craft, fine silver thread.", q:"filigree jewellery Dubrovnik Old Town" },
+    { n:"Proto", c:"Bigger nights", t:"Book ahead",
+      d:"Fish since 1886, with a hidden rooftop terrace.", q:"Proto Fish Restaurant, Dubrovnik" },
+    { n:"Bota &#352;are", w:"Bota \u0160are", c:"Bigger nights",
+      d:"Oyster bar, though Ston is already on for the 26th.", q:"Bota Sare Oyster Bar, Dubrovnik" },
+    { n:"Nautika", c:"Bigger nights", t:"Booked",
+      d:"Tomorrow at 21:30, by Pile Gate, looking out at the sea.", q:"Nautika Restaurant, Dubrovnik" },
 
-    { n:"Kawa",              c:"Shops", d:"Croatian makers and designers, just past Plo&#269;e.", q:"Life According to Kawa, Dubrovnik" },
-    { n:"Dubrova&#269;ka Ku&#263;a", w:"Dubrova\u010Dka Ku\u0107a", c:"Shops", d:"Local spirits, oil, soap and pottery, nicely done.", q:"Dubrovacka Kuca, Dubrovnik" },
-    { n:"Medusa",            c:"Shops", d:"Handmade local crafts and lavender everything.", q:"Medusa Gift and Art Shop, Dubrovnik" },
-    { n:"Ronchi Hats",       w:"Ronchi", c:"Shops", d:"Hatmakers since 1858, by the market square.", q:"Ronchi Hats, Dubrovnik" },
-    { n:"Dubrovnik's Cats",  w:"The Cats", c:"Shops", d:"Everything inspired by the city's very many cats.", q:"Dubrovnik's Cats shop, Dubrovnik" },
-    { n:"Maria Store",       c:"Shops", d:"Designer fashion, if you fancy a look.", q:"Maria Store, Dubrovnik" },
-    { n:"Croata",            c:"Shops", d:"Silk ties, in the city that invented the cravat.", q:"Croata, Dubrovnik" },
-    { n:"Terra Croatica",    c:"Shops", d:"Croatian food, drink and gifts on Od Pu&#269;a.", q:"Terra Croatica, Od Puca, Dubrovnik" },
-    { n:"Gunduli&#263; market", w:"The market", c:"Shops", d:"Morning market on the square. Figs, lavender, honey.", q:"Gunduliceva Poljana market, Dubrovnik" },
+    { n:"Bu&#382;a Bar", w:"Bu\u017Ea", c:"Drink", s:1,
+      d:"Cliff bar through a hole in the wall. Already in for the 23rd.", q:"Buza Bar, Dubrovnik" },
+    { n:"D'Vino Wine Bar", w:"D'Vino", c:"Drink", s:1,
+      d:"A big Croatian list, and tasting flights if you want a tour of it.", q:"D'vino Wine Bar, Dubrovnik" },
+    { n:"Dubrovnik Beer Company", w:"Beer Co", c:"Drink",
+      d:"Brewery tap in an old Gru&#382; warehouse, on the way back to the car.", q:"Dubrovnik Beer Company" },
+    { n:"Panorama", c:"Drink",
+      d:"The bar and terrace at the top of the cable car.", q:"Panorama Restaurant and Bar, Dubrovnik" },
 
-    { n:"The Stradun",       c:"Wander", d:"The polished limestone main street, end to end.", q:"Stradun, Dubrovnik" },
-    { n:"Jesuit Staircase",  w:"Jesuit Stairs", c:"Wander", d:"136 baroque steps. Cersei's walk of shame.", q:"Jesuit Staircase, Dubrovnik" },
-    { n:"St Ignatius",       c:"Wander", d:"At the top of the stairs, and free to walk into.", q:"Church of St Ignatius, Dubrovnik" },
-    { n:"Prijeko Street",    w:"Prijeko", c:"Wander", d:"The quiet lane one street behind the Stradun.", q:"Prijeko Street, Dubrovnik" },
-    { n:"Orlando's Column",  w:"Orlando", c:"Wander", d:"The little knight on Lu&#382;a who set the city's measures.", q:"Orlando's Column, Dubrovnik" },
-    { n:"The Bell Tower",    w:"Bell Tower", c:"Wander", d:"Two bronze green men strike the hour on Lu&#382;a.", q:"Dubrovnik Bell Tower" },
-    { n:"Sponza Palace",     w:"Sponza", c:"Wander", d:"The old customs house. Arches and the city archive.", q:"Sponza Palace, Dubrovnik" },
-    { n:"The Cathedral",     w:"Cathedral", c:"Wander", d:"Baroque, with a treasury full of gold reliquaries.", q:"Dubrovnik Cathedral" },
-    { n:"St Blaise's",       c:"Wander", d:"The city's patron saint, holding Dubrovnik above the door.", q:"Church of St Blaise, Dubrovnik" },
-    { n:"St Saviour",        c:"Wander", d:"Tiny renaissance church by Pile that survived the quake.", q:"Church of St Saviour, Dubrovnik" },
-    { n:"The Synagogue",     w:"Synagogue", c:"Wander", d:"On &#381;udioska, one of the oldest still standing in Europe.", q:"Dubrovnik Synagogue" },
-    { n:"Onofrio's Fountain", w:"Onofrio's", c:"Wander", d:"The big domed fountain just inside Pile Gate.", q:"Onofrio's Fountain, Dubrovnik" },
-    { n:"The Old Port",      w:"Old Port", c:"Wander", d:"Boats, arches, and the best light in the evening.", q:"Old Port, Dubrovnik" },
-    { n:"Min&#269;eta Tower", w:"Min\u010Deta", c:"Wander", d:"The great round tower at the top of the walls.", q:"Minceta Tower, Dubrovnik" },
-    { n:"Lazareti",          c:"Wander", d:"The old quarantine houses past Plo&#269;e, now studios.", q:"Lazareti, Dubrovnik" }
+    { n:"Gelateria Dubrovnik", w:"Gelateria", c:"Ice cream", s:1,
+      d:"On the Stradun. Best value, and cash only.", q:"Gelateria Dubrovnik, Stradun" },
+    { n:"Mazzolino", c:"Ice cream", s:1, d:"The quality one.", q:"Mazzolino Gelato, Dubrovnik" },
+
+    { n:"Terra Croatica", w:"Terra Croatica", c:"Shops", s:1,
+      d:"Od Pu&#269;a 17. Ston salt, truffles, ceramics and lavender.", q:"Terra Croatica, Od Puca 17, Dubrovnik" },
+    { n:"Croata", c:"Shops", s:1,
+      d:"Ties and leather next to the Cathedral. Closed Sundays.", q:"Croata, Dubrovnik" },
+    { n:"Maria Store", w:"Maria", c:"Shops", s:1,
+      d:"Luxury multibrand in a 16th century building near Plo&#269;e.", q:"Maria Store, Dubrovnik" },
+    { n:"Life According to Kawa", w:"Kawa", c:"Shops", s:1,
+      d:"Hvarska 2. Croatian designers, craft beer, and coffee from 7:30.", q:"Life According to Kawa, Dubrovnik" },
+    { n:"Gunduli&#263; Square market", w:"The market", c:"Shops", s:1,
+      d:"Mornings. Dried figs, liqueurs, candied almonds. Closed Sundays.", q:"Gundulic Square, Dubrovnik" },
+    { n:"Gru&#382; Market", w:"Gru\u017E Market", c:"Shops",
+      d:"Where locals actually shop. Mornings Monday to Saturday, right by the parking.", q:"Gruz Market, Dubrovnik" },
+    { n:"Od Pu&#269;a", w:"Od Pu\u010Da", c:"Shops", s:1,
+      d:"The street itself. Better browsing than the Stradun, and the jewellers are here.", q:"Od Puca, Dubrovnik" },
+
+    { n:"Banje Beach", w:"Banje", c:"In the water",
+      d:"Straight off the rocks below Plo&#269;e. Already on for the 22nd.", q:"Banje Beach, Dubrovnik" },
+    { n:"Sveti Jakov", c:"In the water",
+      d:"Calmer and clearer, looking back at the Old Town. A 20 to 30 minute walk.", q:"Sveti Jakov Beach, Dubrovnik" },
+    { n:"Lokrum", c:"In the water", t:"30% off",
+      d:"Fifteen minutes by boat from the old port. Peacocks, and three or four hours. Buy at the harbour kiosk, not on board.",
+      q:"Lokrum Island, Dubrovnik" },
+
+    { n:"Cavtat and Konavle", w:"Cavtat", c:"Further afield", t:"The 24th",
+      d:"The harbour town, then the wineries inland.", q:"Cavtat, Croatia" },
+    { n:"The Elaphiti Islands", w:"Elaphiti", c:"Further afield", t:"The 25th",
+      d:"A boat day between the quiet islands.", q:"Elaphiti Islands, Croatia" },
+    { n:"Ston and Pelje&#353;ac", w:"Ston", c:"Further afield", t:"The 26th",
+      d:"Oysters, wine, and the long wall over the hills. Discounted with the pass.", q:"Ston, Croatia" },
+    { n:"Mljet National Park", w:"Mljet", c:"Further afield", t:"30% off",
+      d:"Forests and salt lakes, if you fancy a whole day of nothing.", q:"Mljet National Park, Croatia" }
   ];
 
   var GETS = [
@@ -643,7 +665,7 @@ h2{
   var passBtn = document.getElementById("passBtn");
 
   /* ---------- state ---------- */
-  var state = { revealed:1, nextAt:Date.now() + GAP, pass:false, done:{} };
+  var state = { revealed:1, nextAt:Date.now() + GAP, pass:false };
   var hadSaved = false;
   try{
     var raw = localStorage.getItem(KEY);
@@ -654,7 +676,6 @@ h2{
         state.revealed = Math.min(Math.max(sv.revealed,1), STOPS.length);
         state.nextAt = typeof sv.nextAt === "number" ? sv.nextAt : Date.now() + GAP;
         state.pass = !!sv.pass;
-        state.done = sv.done && typeof sv.done === "object" ? sv.done : {};
       }
     }
   }catch(e){}
@@ -868,8 +889,9 @@ h2{
     var N = 12, SEG = 360 / N, R = 122, C = 132, SPINMS = 3400;
     var rot = 0, spinning = false, face = [];
 
+    var SPINNABLE = PLACES.filter(function(pl){ return pl.s; });
     function sample(){
-      var pool = PLACES.slice(), picked = [];
+      var pool = SPINNABLE.slice(), picked = [];
       while(picked.length < N && pool.length){
         picked.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
       }
@@ -1048,42 +1070,33 @@ h2{
   (function buildPlaces(){
     var body = document.getElementById("placeBody");
     CATS.forEach(function(cat){
-      var items = PLACES.filter(function(p){ return p.c === cat.n; });
+      var items = PLACES.filter(function(pl){ return pl.c === cat.n; });
       if(!items.length) return;
-      var h = document.createElement("p");
-      h.className = "cat"; h.textContent = cat.n;
-      h.style.color = "rgb(" + cat.rgb + ")";
-      body.appendChild(h);
 
-      var grid = document.createElement("div");
-      grid.className = "tiles";
-      items.forEach(function(p){
-        var idx = PLACES.indexOf(p);
-        var wrap = document.createElement("div");
+      var list = document.createElement("ul");
+      list.className = "gets";
 
-        var b = document.createElement("button");
-        b.type = "button"; b.className = "tile";
-        b.style.setProperty("--tint", cat.rgb);
-        b.setAttribute("aria-pressed", state.done[idx] ? "true" : "false");
-        b.innerHTML = '<span class="dot"></span><span class="tn">' + p.n + '</span>' +
-                      (p.t ? '<span class="tt">' + p.t + '</span>' : '') +
-                      '<a class="tilemap" href="' + MAPS + encodeURIComponent(p.q) + '" target="_blank" rel="noopener">Map</a>';
-        b.addEventListener("click", function(e){
-          if(e.target && e.target.classList.contains("tilemap")) return;
-          var on = b.getAttribute("aria-pressed") === "true";
-          b.setAttribute("aria-pressed", on ? "false" : "true");
-          if(on){ delete state.done[idx]; } else { state.done[idx] = 1; }
-          save(); paintPlaceSub();
-        });
-        wrap.appendChild(b);
-        grid.appendChild(wrap);
+      var head = document.createElement("li");
+      head.className = "h";
+      head.style.color = "rgb(" + cat.rgb + ")";
+      head.innerHTML = cat.n;
+      list.appendChild(head);
+
+      items.forEach(function(pl){
+        var li = document.createElement("li");
+        li.innerHTML =
+          '<a href="' + MAPS + encodeURIComponent(pl.q) + '" target="_blank" rel="noopener">' +
+            '<em>' + pl.n + (pl.d ? '<span class="gd">' + pl.d + '</span>' : '') + '</em>' +
+            (pl.t ? '<span style="color:rgb(' + cat.rgb + ')">' + pl.t + '</span>' : '') +
+          '</a>';
+        list.appendChild(li);
       });
-      body.appendChild(grid);
+      body.appendChild(list);
     });
   })();
   function paintPlaceSub(){
-    var n = Object.keys(state.done).length;
-    placeSub.textContent = n ? n + " of " + PLACES.length + " ticked off" : PLACES.length + " places";
+    placeSub.textContent = PLACES.length + " places &middot; tap any of them for the map";
+    placeSub.innerHTML = PLACES.length + " places &middot; tap any of them for the map";
   }
 
   /* ---------- reveal ---------- */
