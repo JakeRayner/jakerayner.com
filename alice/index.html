@@ -231,9 +231,11 @@ h2{
 .gate .lede{margin:0 auto;max-width:26ch}
 .unlock-at{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:20px 0 0}
 .pw{display:flex;flex-direction:column;align-items:center;gap:11px;margin:30px 0 0}
-.pwdots{display:flex;gap:7px;height:7px}
-.pwdots i{width:7px;height:7px;border-radius:50%;background:rgba(245,234,229,.18);transition:background .2s ease}
-.pwdots i.on{background:var(--accent)}
+.pwval{
+  height:24px;line-height:24px;font-family:var(--display);font-optical-sizing:auto;
+  font-weight:300;font-size:22px;letter-spacing:.34em;text-indent:.34em;
+  color:var(--accent);font-variant-numeric:tabular-nums;
+}
 .pwkeys{display:flex;gap:3px;justify-content:center}
 .pwkeys button{
   width:27px;height:27px;border-radius:50%;border:0;padding:0;
@@ -454,8 +456,8 @@ h2{
       photo:"https://www.forkknifeswoon.com/wp-content/uploads/2012/12/easy-vanilla-honey-french-toast-fork-knife-swoon-01.jpg" },
 
     { clock:"09:00", when:"Before you go", kind:"pass",
-      title:"One more<br>thing", short:"Your Dubrovnik Pass", shortLocked:"One more thing",
-      lede:"This one you have to open." },
+      title:"One Last<br>Present", short:"Your Dubrovnik Pass", shortLocked:"One last present",
+      lede:"" },
 
     { clock:"09:30", when:"From about 9:30",
       title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
@@ -740,7 +742,8 @@ h2{
       '<div class="pad"><div class="inner">' +
       '<p class="when rise">' + stop.when + '</p>' +
       '<h2 class="rise d1">' + stop.title + '</h2>' +
-      '<p class="lede rise d2">' + stop.lede + '</p>' +
+      (stop.lede ? '<p class="lede rise d2">' + stop.lede + '</p>'
+                 : '<p class="lede rise d2" hidden></p>') +
       extra + nextRow +
       '</div></div>';
 
@@ -762,21 +765,17 @@ h2{
       '<p class="lede">Enjoy this bit first. The next part opens on its own.</p>' +
       '<p class="unlock-at" id="unlockAt"></p>' +
       '<div class="pw" id="pwForm">' +
-        '<div class="pwdots" id="pwDots"><i></i><i></i></div>' +
+        '<div class="pwval" id="pwVal"></div>' +
         '<div class="pwkeys" id="pwKeys"></div>' +
       '</div>' +
     '</div></div>';
   deck.insertBefore(gate, outro);
   var pwForm = gate.querySelector("#pwForm");
-  var pwDots = gate.querySelector("#pwDots");
+  var pwVal = gate.querySelector("#pwVal");
   var pwKeys = gate.querySelector("#pwKeys");
   var pwEntry = "";
 
-  function pwPaint(){
-    for(var i=0;i<pwDots.children.length;i++){
-      pwDots.children[i].className = i < pwEntry.length ? "on" : "";
-    }
-  }
+  function pwPaint(){ pwVal.textContent = pwEntry; }
   for(var k=0;k<10;k++){
     (function(d){
       var b = document.createElement("button");
@@ -843,6 +842,7 @@ h2{
       covers.hidden = false;
       titleEl.innerHTML = PASS_TITLE;
       ledeEl.textContent = PASS_LEDE;
+      ledeEl.hidden = false;
       var nx = section.querySelector("[data-nextrow]");
       if(nx) nx.hidden = false;
       state.pass = true; save();
