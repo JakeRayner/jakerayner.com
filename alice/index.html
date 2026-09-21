@@ -108,8 +108,21 @@ h2{
 .btn:active{transform:scale(.97)}
 .btn.solid{background:var(--accent);color:#1C0910;font-weight:500}
 .btn.ghost{background:none;color:var(--dim);padding-left:0}
-.next{margin:26px 0 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.next{margin:26px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .next.mid{justify-content:center;margin-top:14px}
+.picks{list-style:none;margin:24px 0 0;padding:0;border-top:1px solid var(--rule)}
+.picks button{
+  width:100%;text-align:left;font:inherit;font-size:16.5px;color:var(--ink);
+  background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:13px 0;display:flex;align-items:center;gap:14px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:color .2s ease;
+}
+.picks .tick{
+  flex:none;width:15px;height:15px;border-radius:50%;
+  box-shadow:inset 0 0 0 1px var(--rule);transition:background .2s ease,box-shadow .2s ease;
+}
+.picks button[aria-pressed="true"]{color:var(--accent)}
+.picks button[aria-pressed="true"] .tick{background:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 
 /* ---------- the present ---------- */
 .giftwrap{margin:22px 0 0;display:flex;flex-direction:column;align-items:center}
@@ -203,9 +216,12 @@ h2{
 .result .rd{font-size:13.5px;line-height:1.45;color:var(--dim);margin:7px auto 0;max-width:32ch}
 .result .rc{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0}
 .result .rn{
-  font-family:var(--display);font-optical-sizing:auto;font-weight:300;
-  font-size:26px;line-height:1.15;margin:5px 0 0;letter-spacing:-.015em;
+  display:inline-block;font-family:var(--display);font-optical-sizing:auto;font-weight:300;
+  font-size:26px;line-height:1.2;margin:5px 0 0;letter-spacing:-.015em;
+  color:var(--ink);text-decoration:none;
 }
+.result .rn i{font-style:normal;font-size:16px;color:var(--accent);margin-left:7px;vertical-align:2px}
+.result .rn:active{opacity:.6}
 .result .ra{display:flex;gap:9px;justify-content:center;margin:12px 0 0;flex-wrap:wrap}
 .result .ra .btn{font-size:10px;padding:11px 17px}
 
@@ -391,7 +407,7 @@ h2{
     <div class="pad"><div class="inner">
       <p class="eyebrow">That is the day</p>
       <h2>All of it<br>is yours.</h2>
-      <p class="sig" style="margin-top:34px">Happy birthday, beautiful.<br>All my love, Jake.</p>
+      <p class="sig" style="margin-top:34px">Happy birthday girly pop<br>Love Jake</p>
     </div></div>
   </section>
 
@@ -452,7 +468,8 @@ h2{
   var STOPS = [
     { clock:"Morning", when:"First thing",
       title:"Presents,<br>then breakfast", short:"Presents and breakfast",
-      lede:"At the flat, with nowhere to be.",
+      lede:"At the flat, with nowhere to be. Where do you want it?",
+      opts:["On the terrace","Back in bed","In the hot tub"],
       photo:"https://www.forkknifeswoon.com/wp-content/uploads/2012/12/easy-vanilla-honey-french-toast-fork-knife-swoon-01.jpg" },
 
     { clock:"09:00", when:"Before you go", kind:"pass",
@@ -462,11 +479,13 @@ h2{
     { clock:"09:30", when:"From about 9:30",
       title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
       lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e.",
+      map:"Life According to Kawa, Hvarska 2, Dubrovnik", mapLabel:"Kawa",
       photo:"https://www.lostindubrovnik.com/wp-content/uploads/2022/09/Lost-in-Dubrovnik-Shopping-Kawa-04.jpg" },
 
     { clock:"11:00", when:"Late morning",
       title:"The<br>City Walls", short:"The City Walls",
-      lede:"The whole loop. Two kilometres above the rooftops and the sea.",
+      lede:"The whole loop. Two kilometres above the rooftops and the sea. In at Plo&#269;e, two minutes from your coffee.",
+      map:"Ploce Gate City Walls entrance, Dubrovnik", mapLabel:"The entrance",
       photo:"https://walkindubrovnik.com/wp-content/uploads/2022/03/dubrovnik-city-walls.jpg" },
 
     { clock:"13:00", when:"From about 1pm", kind:"wheel",
@@ -669,7 +688,7 @@ h2{
   var passBtn = document.getElementById("passBtn");
 
   /* ---------- state ---------- */
-  var state = { revealed:1, nextAt:Date.now() + GAP, pass:false };
+  var state = { revealed:1, nextAt:Date.now() + GAP, pass:false, picks:{} };
   var hadSaved = false;
   try{
     var raw = localStorage.getItem(KEY);
@@ -680,6 +699,7 @@ h2{
         state.revealed = Math.min(Math.max(sv.revealed,1), STOPS.length);
         state.nextAt = typeof sv.nextAt === "number" ? sv.nextAt : Date.now() + GAP;
         state.pass = !!sv.pass;
+        state.picks = sv.picks && typeof sv.picks === "object" ? sv.picks : {};
       }
     }
   }catch(e){}
@@ -735,7 +755,10 @@ h2{
       : '<div class="next rise d4"' + (stop.kind === "pass" ? ' data-nextrow hidden' : '') + '>' +
         '<button type="button" class="btn solid" data-next>' +
           (i === STOPS.length - 1 ? "Finish" : "Next") +
-        '</button></div>';
+        '</button>' +
+        (stop.map ? '<a class="btn" href="' + MAPS + encodeURIComponent(stop.map) +
+                    '" target="_blank" rel="noopener">' + (stop.mapLabel || "Map") + '</a>' : '') +
+        '</div>';
 
     s.innerHTML =
       (stop.photo ? '<div class="shot"><img src="' + stop.photo + '" alt="" referrerpolicy="no-referrer"></div>' : '') +
@@ -744,6 +767,11 @@ h2{
       '<h2 class="rise d1">' + stop.title + '</h2>' +
       (stop.lede ? '<p class="lede rise d2">' + stop.lede + '</p>'
                  : '<p class="lede rise d2" hidden></p>') +
+      (stop.opts ? '<ul class="picks rise d3">' + stop.opts.map(function(o, j){
+          return '<li><button type="button" data-pick="' + i + ':' + j + '" ' +
+                 'aria-pressed="' + (state.picks[i + ":" + j] ? "true" : "false") + '">' +
+                 '<span class="tick"></span>' + o + '</button></li>';
+        }).join("") + '</ul>' : '') +
       extra + nextRow +
       '</div></div>';
 
@@ -889,20 +917,36 @@ h2{
     var wrap = holder.parentNode;
     var result = section.querySelector("[data-result]");
     var N = 12, SEG = 360 / N, R = 122, C = 132, SPINMS = 3400;
-    var rot = 0, spinning = false, face = [];
+    var rot = 0, spinning = false, face = [], queue = [], last = null;
 
-    var SPINNABLE = PLACES.filter(function(pl){ return pl.s; });
-    function sample(){
-      var pool = SPINNABLE.slice(), picked = [];
-      while(picked.length < N && pool.length){
-        picked.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    function shuffle(a){
+      for(var i=a.length-1;i>0;i--){
+        var j = Math.floor(Math.random()*(i+1)), t = a[i]; a[i] = a[j]; a[j] = t;
       }
-      return picked;
+      return a;
+    }
+
+    /* every place comes up once before any of them comes up twice */
+    function nextPick(){
+      if(!queue.length){
+        queue = shuffle(PLACES.slice());
+        if(last && queue[queue.length-1] === last && queue.length > 1){
+          var t = queue[0]; queue[0] = queue[queue.length-1]; queue[queue.length-1] = t;
+        }
+      }
+      last = queue.pop();
+      return last;
+    }
+
+    function faceFor(chosen){
+      var others = shuffle(PLACES.filter(function(pl){ return pl !== chosen; })).slice(0, N-1);
+      others.push(chosen);
+      return shuffle(others);
     }
 
     function draw(items){
       face = items;
-      var svg = '<svg viewBox="0 0 264 264" role="img" aria-label="Wheel of places in the Old Town">';
+      var svg = '<svg viewBox="0 0 264 264" role="img" aria-label="Wheel of places">';
       for(var i=0;i<N;i++){
         var a0 = (-90 + i*SEG) * Math.PI/180, a1 = (-90 + (i+1)*SEG) * Math.PI/180;
         var x0 = C + R*Math.cos(a0), y0 = C + R*Math.sin(a0);
@@ -916,11 +960,14 @@ h2{
         var am = -90 + j*SEG + SEG/2;
         var norm = ((am % 360) + 360) % 360;
         var flip = norm > 90 && norm < 270;
-        var label = items[j].w || items[j].n.replace(/&#382;/g, "\u017E").replace(/&#269;/g, "\u010D").replace(/&#263;/g, "\u0107");
+        var label = items[j].w || items[j].n.replace(/&#382;/g, "\u017E")
+                                            .replace(/&#269;/g, "\u010D")
+                                            .replace(/&#263;/g, "\u0107")
+                                            .replace(/&#353;/g, "\u0161");
         svg += '<g transform="rotate(' + (flip ? am + 180 : am).toFixed(2) + ' ' + C + ' ' + C + ')">' +
                '<text x="' + (flip ? C - R + 9 : C + R - 9) + '" y="' + C + '" ' +
                'text-anchor="' + (flip ? "start" : "end") + '" dominant-baseline="middle" ' +
-               'font-family="Inter,sans-serif" font-size="9.5" fill="#F5EAE5" fill-opacity=".95">' +
+               'font-family="Inter,sans-serif" font-size="9.5" fill="#FFFFFF" fill-opacity=".95">' +
                label + '</text></g>';
       }
       svg += '<circle cx="' + C + '" cy="' + C + '" r="' + R + '" fill="none" stroke="rgba(245,234,229,.32)" stroke-width="1.5"></circle>';
@@ -928,55 +975,68 @@ h2{
       holder.innerHTML = svg + '</svg>';
     }
 
-    /* which segment sits under the pointer at a given rotation, and the
-       nearest rotation that centres it there */
     function settle(target){
       var i = Math.round((-target - SEG/2) / SEG);
       return { i: ((i % N) + N) % N, rot: -(i*SEG + SEG/2) };
     }
 
+    function buttons(firstLabel, firstFn){
+      var row = document.createElement("div");
+      row.className = "ra";
+      var a = document.createElement("button");
+      a.type = "button"; a.className = "btn solid"; a.textContent = firstLabel;
+      a.addEventListener("click", firstFn);
+      var c = document.createElement("button");
+      c.type = "button"; c.className = "btn"; c.textContent = "See all";
+      c.addEventListener("click", function(){
+        paintPlaceSub(); showSheet(document.getElementById("placeSheet"));
+      });
+      row.appendChild(a); row.appendChild(c);
+      return row;
+    }
+
     function showIdle(){
-      result.innerHTML = '';
-      var b = document.createElement("button");
-      b.type = "button"; b.className = "btn solid"; b.textContent = "Spin";
-      b.addEventListener("click", function(){ spin(); });
-      result.appendChild(b);
-      var hint = document.createElement("p");
-      hint.className = "rd";
-      hint.textContent = "or flick the wheel";
-      result.appendChild(hint);
+      result.innerHTML = '<p class="rd">Spin it, or flick the wheel</p>';
+      result.appendChild(buttons("Spin", function(){ spin(); }));
     }
 
     function showResult(i){
       var pl = face[i];
       result.innerHTML =
         '<p class="rc" style="color:rgb(' + catRgb(pl.c) + ')">' + pl.c + (pl.t ? " &middot; " + pl.t : "") + '</p>' +
-        '<p class="rn">' + pl.n + '</p>' +
-        '<p class="rd">' + (pl.d || "") + '</p>' +
-        '<div class="ra">' +
-          '<a class="btn" href="' + MAPS + encodeURIComponent(pl.q) + '" target="_blank" rel="noopener">Open in Maps</a>' +
-          '<button type="button" class="btn solid" data-again>Spin again</button>' +
-        '</div>';
+        '<a class="rn" href="' + MAPS + encodeURIComponent(pl.q) + '" target="_blank" rel="noopener">' +
+          pl.n + '<i>&#8599;</i></a>' +
+        '<p class="rd">' + (pl.d || "") + '</p>';
+      result.appendChild(buttons("Spin again", function(){ spin(); }));
       result.classList.remove("pop"); void result.offsetWidth; result.classList.add("pop");
-      result.querySelector("[data-again]").addEventListener("click", function(){ spin(); });
     }
 
-    function land(target){
-      var s = settle(target);
-      var base = Math.round((target - s.rot) / 360) * 360;
-      rot = s.rot + base;
+    function land(target, idx){
+      var st = settle(target);
+      var base = Math.round((target - st.rot) / 360) * 360;
+      rot = st.rot + base;
       holder.style.transition = "transform " + (SPINMS/1000) + "s cubic-bezier(.15,.85,.25,1)";
       holder.style.transform = "rotate(" + rot + "deg)";
-      setTimeout(function(){ spinning = false; showResult(s.i); }, SPINMS + 60);
+      setTimeout(function(){ spinning = false; showResult(idx); }, SPINMS + 60);
     }
 
-    function spin(extraTurns){
+    /* the pick comes first, then the wheel is dealt so that pick is on it */
+    function go(minTurn){
+      var chosen = nextPick();
+      var items = faceFor(chosen);
+      draw(items);
+      var idx = items.indexOf(chosen);
+      var want = -(idx*SEG + SEG/2);
+      var cur = ((rot % 360) + 360) % 360;
+      var delta = ((((want % 360) + 360) % 360) - cur + 360) % 360;
+      land(rot + Math.max(minTurn, 0) + 360 * 4 + delta, idx);
+    }
+
+    function spin(){
       if(spinning) return;
       spinning = true;
       result.innerHTML = '<p class="rc">Spinning</p>';
-      draw(sample());                       // a fresh twelve every time
-      var turns = extraTurns || (4 + Math.random() * 2);
-      land(rot + turns * 360 + Math.random() * 360);
+      go(360 * Math.floor(Math.random() * 2));
     }
 
     /* ---- flick it with a finger ---- */
@@ -1002,7 +1062,7 @@ h2{
       if(d > 180) d -= 360;
       if(d < -180) d += 360;
       var now = Date.now(), dt = Math.max(now - lastT, 8);
-      vel = d / dt;                          // degrees per millisecond
+      vel = d / dt;
       rot += d; moved += Math.abs(d);
       lastA = a; lastT = now;
       holder.style.transform = "rotate(" + rot + "deg)";
@@ -1013,26 +1073,22 @@ h2{
       if(!dragging) return;
       dragging = false;
       try{ wrap.releasePointerCapture(e.pointerId); }catch(err){}
-      if(Date.now() - lastT > 140) vel = 0;  // a finger that stopped before lifting
-      if(moved < 6 && Math.abs(vel) < 0.05){ spin(); return; }   // a tap
+      if(Date.now() - lastT > 140) vel = 0;
+      if(moved < 6 && Math.abs(vel) < 0.05){ spin(); return; }
       spinning = true;
       result.innerHTML = '<p class="rc">Spinning</p>';
-      var throwq = vel * 1100;
-      if(Math.abs(throwq) < 700) throwq = (throwq < 0 ? -1 : 1) * (700 + Math.random() * 360);
-      land(rot + throwq);
+      go(Math.min(Math.abs(vel) * 900, 1440));
     }
     wrap.addEventListener("pointerup", release);
     wrap.addEventListener("pointercancel", release);
 
-    /* touch-action alone is not enough inside a snapping scroller, so the
-       wheel eats the touch outright and nothing underneath sees it */
     wrap.addEventListener("touchstart", function(e){ e.stopPropagation(); }, {passive:true});
     wrap.addEventListener("touchmove", function(e){
       e.preventDefault(); e.stopPropagation();
     }, {passive:false});
     wrap.addEventListener("touchend", function(e){ e.stopPropagation(); }, {passive:true});
 
-    draw(sample());
+    draw(faceFor(PLACES[Math.floor(Math.random()*PLACES.length)]));
     showIdle();
   }
 
@@ -1181,15 +1237,15 @@ h2{
 
   /* ---------- sheets ---------- */
   var openSheet = null;
-  function show(el){
+  function showSheet(el){
     if(openSheet) openSheet.hidden = true;
     el.hidden = false; openSheet = el; el.scrollTop = 0;
   }
   function hide(){ if(openSheet){ openSheet.hidden = true; openSheet = null; } }
   document.getElementById("dayBtn").addEventListener("click", function(){
-    paintDay(); show(document.getElementById("daySheet"));
+    paintDay(); showSheet(document.getElementById("daySheet"));
   });
-  passBtn.addEventListener("click", function(){ show(document.getElementById("passSheet")); });
+  passBtn.addEventListener("click", function(){ showSheet(document.getElementById("passSheet")); });
   document.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click", hide); });
   document.addEventListener("keydown", function(e){ if(e.key === "Escape") hide(); });
 
@@ -1199,10 +1255,17 @@ h2{
     if(t.closest("[data-next]")){
       var sec = t.closest(".panel");
       if(sec) step(sec, 1);
+    }else if(t.closest("[data-pick]")){
+      var btn = t.closest("[data-pick]");
+      var key = btn.getAttribute("data-pick");
+      var on = btn.getAttribute("aria-pressed") === "true";
+      btn.setAttribute("aria-pressed", on ? "false" : "true");
+      if(on){ delete state.picks[key]; } else { state.picks[key] = 1; }
+      save();
     }
   });
   document.getElementById("allBtn").addEventListener("click", function(){
-    paintPlaceSub(); show(document.getElementById("placeSheet"));
+    paintPlaceSub(); showSheet(document.getElementById("placeSheet"));
   });
 
   /* ---------- a card taller than the screen hands the scroll on ---------- */
