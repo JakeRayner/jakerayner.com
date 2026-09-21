@@ -478,14 +478,17 @@ h2{
 
     { clock:"09:30", when:"From about 9:30",
       title:"Coffee in<br>the Old Town", short:"Coffee in the Old Town",
-      lede:"In through the gates, down the Stradun, and a coffee at Kawa by Plo&#269;e.",
-      map:"Life According to Kawa, Hvarska 2, Dubrovnik", mapLabel:"Kawa",
+      lede:"In through the gates, down the Stradun, and a coffee before the walk. Two to pick from.",
+      maps:[
+        { q:"Life According to Kawa, Hvarska 2, Dubrovnik", label:"Kawa" },
+        { url:"https://maps.app.goo.gl/9LbH5ESsGF7XGw8G6", label:"Option two" }
+      ],
       photo:"https://www.lostindubrovnik.com/wp-content/uploads/2022/09/Lost-in-Dubrovnik-Shopping-Kawa-04.jpg" },
 
     { clock:"11:00", when:"Late morning",
       title:"The<br>City Walls", short:"The City Walls",
       lede:"The whole loop. Two kilometres above the rooftops and the sea. In at Plo&#269;e, two minutes from your coffee.",
-      map:"Ploce Gate City Walls entrance, Dubrovnik", mapLabel:"The entrance",
+      maps:[{ q:"Ploce Gate City Walls entrance, Dubrovnik", label:"The entrance" }],
       photo:"https://walkindubrovnik.com/wp-content/uploads/2022/03/dubrovnik-city-walls.jpg" },
 
     { clock:"13:00", when:"From about 1pm", kind:"wheel",
@@ -756,8 +759,10 @@ h2{
         '<button type="button" class="btn solid" data-next>' +
           (i === STOPS.length - 1 ? "Finish" : "Next") +
         '</button>' +
-        (stop.map ? '<a class="btn" href="' + MAPS + encodeURIComponent(stop.map) +
-                    '" target="_blank" rel="noopener">' + (stop.mapLabel || "Map") + '</a>' : '') +
+        (stop.maps || []).map(function(m){
+          return '<a class="btn" href="' + (m.url || MAPS + encodeURIComponent(m.q)) +
+                 '" target="_blank" rel="noopener">' + m.label + '</a>';
+        }).join("") +
         '</div>';
 
     s.innerHTML =
