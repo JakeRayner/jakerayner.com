@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="css/style.css">
 <script>
 /* re-apply the saved vibe before first paint so page loads don't flash the default theme */
-(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t)return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
+(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t||t.mode==='colour')return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
 </script>
 </head>
 <body>

@@ -13,7 +13,7 @@
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
 <script>
 /* same pre-paint theme snippet as the site, so the gate matches the saved vibe */
-(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t)return;var r=document.documentElement.style;r.setProperty('--bg',t.bg);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);}catch(e){}})();
+(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t||t.mode==='colour')return;var r=document.documentElement.style;r.setProperty('--bg',t.bg);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);}catch(e){}})();
 </script>
 <style>
 :root{--bg:#0b0b0c;--ink:#f6f6f7;--accent:#f6f6f7;--accent-2:var(--accent);--accent-ink:#0b0b0c;}

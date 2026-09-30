@@ -8,6 +8,20 @@
    blur on barely-rounded corners. No outlines, shadows or divider rules.
    ========================================================================== */
 
+/* Registered as real colours so a theme change can fade. The body
+   background is a gradient, which the browser cannot animate, but it is
+   built from these variables, so animating the variables fades it. */
+@property --bg{syntax:'<color>'; inherits:true; initial-value:#0b0b0c;}
+@property --bg2{syntax:'<color>'; inherits:true; initial-value:#141416;}
+@property --ink{syntax:'<color>'; inherits:true; initial-value:#f6f6f7;}
+@property --ink-dim{syntax:'<color>'; inherits:true; initial-value:rgba(246,246,247,.62);}
+@property --accent{syntax:'<color>'; inherits:true; initial-value:#f6f6f7;}
+@property --accent-2{syntax:'<color>'; inherits:true; initial-value:#f6f6f7;}
+@property --accent-ink{syntax:'<color>'; inherits:true; initial-value:#0b0b0c;}
+@property --line{syntax:'<color>'; inherits:true; initial-value:rgba(246,246,247,.14);}
+:root{transition:--bg .9s ease, --bg2 .9s ease, --ink .9s ease, --ink-dim .9s ease, --accent .9s ease, --accent-2 .9s ease, --accent-ink .9s ease, --line .9s ease;}
+@media (prefers-reduced-motion:reduce){:root{transition:none;}}
+
 :root{
   /* night mode, which is also what the site loads on first visit: solid
      off-black and off-white, no warm tint */

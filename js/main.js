@@ -353,6 +353,7 @@
     meta.setAttribute('content', colour);
   }
 
+  var themeColorTimer;
   function applyTheme(t) {
     var root = document.documentElement.style;
     setFace(t.face, t.faceWeight, t.faceScale);
@@ -365,11 +366,24 @@
     root.setProperty('--line', 'color-mix(in srgb, ' + t.ink + ' 14%, transparent)');
     root.setProperty('--ink-dim', 'color-mix(in srgb, ' + t.ink + ' 62%, transparent)');
     syncThemeColor();
+    /* the colours fade over .9s (see @property in the CSS), so the browser
+       chrome tint is re-read once they have landed */
+    clearTimeout(themeColorTimer);
+    themeColorTimer = setTimeout(syncThemeColor, 950);
     currentTheme = t;
     for (var i = 0; i < themeListeners.length; i++) themeListeners[i]();
   }
 
+  /* Colour mode is never remembered: the site always opens in black and
+     white. A colour theme is stored as night with the same face, so the
+     type survives but the palette does not. */
   function storeTheme(t) {
+    if (t.mode === 'colour') {
+      var n = {}, k;
+      for (k in MONO.night) n[k] = MONO.night[k];
+      n.face = t.face; n.faceWeight = t.faceWeight; n.faceScale = t.faceScale;
+      t = n;
+    }
     try { localStorage.setItem(STORE_KEY, JSON.stringify(t)); } catch (e) {}
   }
 
@@ -451,7 +465,11 @@
      the default face; colour is a click away. */
   try {
     var saved = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (saved && saved.mode) {
+    if (saved && saved.mode === 'colour') {
+      /* a colour theme saved before colour stopped being remembered */
+      var face = FACES.filter(function (f) { return f.css === saved.face; })[0] || DEFAULT_FACE;
+      setTheme(MONO.night, face);
+    } else if (saved && saved.mode) {
       currentTheme = saved;
       setPressed(saved.mode);
     } else {
