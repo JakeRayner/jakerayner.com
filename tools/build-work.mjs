@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /*
-  build-work.mjs — writes the "My Work" and "Studio Work" tiles on index.html
-  from the folders in assets/my-work/.
+  build-work.mjs: writes the "My Work" tiles on index.html and the "Studio
+  Work" tiles on freelance.html (the Studio page) from the folders in
+  assets/my-work/. Studio work lives only on the Studio page, so Home is
+  the portfolio alone (September 2026).
 
   One folder per company. Drop any jpg / jpeg / png / webp / avif into a folder and
   run:
@@ -14,9 +16,9 @@
   page grows as images load while you scroll, and anything measured against
   the page beforehand, the pinned studio pitch above all, lands in the wrong
   place on a phone.
-  Everything between the <!-- work:start --> / <!-- work:end --> and
-  <!-- studio:start --> / <!-- studio:end --> markers in index.html is
-  regenerated; nothing outside them is touched. Folders with "do not use" in
+  Everything between the <!-- work:start --> / <!-- work:end --> markers in
+  index.html, and the <!-- studio:start --> / <!-- studio:end --> markers in
+  freelance.html, is regenerated; nothing outside them is touched. Folders with "do not use" in
   the name are ignored. No dependencies.
 */
 import { readFileSync, writeFileSync, readdirSync, statSync, openSync, readSync, closeSync } from 'node:fs';
@@ -26,6 +28,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WORK_DIR = join(ROOT, 'assets', 'my-work');
 const INDEX = join(ROOT, 'index.html');
+const STUDIO_PAGE = join(ROOT, 'freelance.html');
 
 /* Folder name (case-insensitive) -> project. Add a line here when a new
    company folder appears; unknown folders still render, titled by folder
@@ -324,9 +327,9 @@ function clusters(groups) {
   return out;
 }
 
-function replaceBetween(html, startMark, endMark, body) {
+function replaceBetween(html, startMark, endMark, body, file) {
   const a = html.indexOf(startMark), b = html.indexOf(endMark);
-  if (a < 0 || b < 0) throw new Error(`markers ${startMark} / ${endMark} not found in index.html`);
+  if (a < 0 || b < 0) throw new Error(`markers ${startMark} / ${endMark} not found in ${file}`);
   return html.slice(0, a + startMark.length) + '\n' + body + '        ' + html.slice(b);
 }
 
@@ -334,8 +337,10 @@ const groups = readGroups();
 const work = groups.filter(g => !g.studio);
 const studio = groups.filter(g => g.studio);
 let html = readFileSync(INDEX, 'utf8');
-html = replaceBetween(html, '<!-- work:start -->', '<!-- work:end -->', clusters(work).map((c, i) => group(c, i)).join(''));
-html = replaceBetween(html, '<!-- studio:start -->', '<!-- studio:end -->', clusters(studio).map((c, i) => group(c, i)).join(''));
+html = replaceBetween(html, '<!-- work:start -->', '<!-- work:end -->', clusters(work).map((c, i) => group(c, i)).join(''), 'index.html');
 writeFileSync(INDEX, html);
+let studioHtml = readFileSync(STUDIO_PAGE, 'utf8');
+studioHtml = replaceBetween(studioHtml, '<!-- studio:start -->', '<!-- studio:end -->', clusters(studio).map((c, i) => group(c, i)).join(''), 'freelance.html');
+writeFileSync(STUDIO_PAGE, studioHtml);
 
 for (const g of groups) console.log(`${g.studio ? 'studio' : 'work  '}  ${g.name.padEnd(22)} ${g.images.length} image${g.images.length === 1 ? '' : 's'}${PROJECTS[g.key] ? '' : '   (folder not in PROJECTS, no logo or link)'}`);

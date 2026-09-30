@@ -708,7 +708,9 @@ html.lb-open, html.lb-open body{overflow:hidden;}
    utility as the statement on freelance.html: words sit dim until they scroll
    into the reveal band, then brighten to full ink. */
 /* padding kept lean so the pinned pitch fits inside a laptop viewport */
-.nod{padding:60px 0; cursor:pointer;}
+.nod{padding:60px 0;}
+/* on Home the whole pitch linked to the Studio page; on the Studio page it is not a link */
+.nod[data-studio-link]{cursor:pointer;}
 /* the STUDIO lockup runs at the same size as the statement text on request */
 .nod .studio-brand{font-size:clamp(20px,2.2vw,30px);}
 /* full width across the wrap on request, text stays left aligned; the pin
