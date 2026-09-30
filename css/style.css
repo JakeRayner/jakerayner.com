@@ -886,7 +886,7 @@ ol.case-ul li{padding-left:26px; counter-increment:cs;}
 ol.case-ul li::before{content:counter(cs); width:auto; height:auto; background:none; top:0; font-size:12px; font-weight:500; color:var(--ink-dim);}
 .values.two{grid-template-columns:repeat(2,1fr);}
 .values.four{grid-template-columns:repeat(4,1fr);}
-.value img{display:block; width:calc(100% + 56px); margin:-28px -28px 22px; aspect-ratio:3/2; object-fit:cover;}
+.value img{display:block; width:calc(100% + 56px); max-width:none; margin:-28px -28px 22px; aspect-ratio:3/2; object-fit:cover;}
 .value img.contain{object-fit:contain; background:#fff;}
 .value .num{display:block; font-size:clamp(28px,3vw,40px); font-weight:500; letter-spacing:-.03em; line-height:1; margin-bottom:12px;}
 .case-fig{margin:34px 0 0;}
