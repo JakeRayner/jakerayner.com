@@ -934,6 +934,16 @@ a.case-next:hover h2{color:var(--accent);}
 .stat .n{font-weight:500; font-size:40px; line-height:1; letter-spacing:-.02em;}
 .stat .l{color:var(--ink-dim); font-size:13.5px; margin-top:6px;}
 .values{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:44px;}
+/* About: career history from the CV, one glass row per role, newest first */
+.career{display:grid; gap:8px;}
+a.career-row{display:grid; grid-template-columns:minmax(150px,220px) 1fr; gap:24px; padding:22px 28px; background:var(--glass); color:inherit; text-decoration:none; transition:background .3s ease;}
+a.career-row:hover{background:var(--glass-strong);}
+.career-when{font-size:13px; color:var(--ink-dim); padding-top:3px;}
+.career-what{display:flex; flex-direction:column; gap:4px;}
+.career-co{font-size:19px; font-weight:500; letter-spacing:-.02em;}
+.career-role{font-size:13.5px; font-weight:500; color:var(--accent); transition:color .6s ease;}
+.career-note{font-size:14.5px; line-height:1.6; color:var(--ink); margin-top:4px;}
+@media (max-width:700px){ a.career-row{grid-template-columns:1fr; gap:8px;} }
 .value{background:var(--glass); padding:28px;}
 .value h4{font-weight:500; font-size:17px; letter-spacing:-.01em; margin:0 0 10px;}
 .value p{color:var(--ink); font-size:14px; line-height:1.6; margin:0;}

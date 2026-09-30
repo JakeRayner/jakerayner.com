@@ -29,21 +29,79 @@ const INDEX = join(ROOT, 'index.html');
 
 /* Folder name (case-insensitive) -> project. Add a line here when a new
    company folder appears; unknown folders still render, titled by folder
-   name, with no logo and no case study link. Projects that share a
-   `cluster` and sit next to each other in the order are laid out in one
-   tight group (the four retail brands), each keeping its own caption. */
+   name, with no logo and no case study link. Folders that share a project
+   name are merged into that one project, in `sub` order: the four retail
+   brand folders are all Debenhams Group, one project and one case study
+   (asked for, September 2026).
+
+   sector and scope are the project's full line, which is what the title
+   card above a project shows on phones, so it has to cover all of its
+   work. On a desktop each photo's hover caption says what that photo
+   shows instead (CAPTIONS below). Wording follows Jake's CV. */
+const DEB = { order: 3, name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'Debenhams', ls: 1.0, sector: '21-brand retail group', scope: 'Multi-brand design system, e-commerce, CRO, AI features, accessibility' };
 const PROJECTS = {
-  'aston martin':    { order: 1, name: 'Aston Martin',          href: 'work/aston-martin.html',      logo: 'AstonMartin',      ls: 1.45, sector: 'Luxury automotive',              scope: 'Infotainment, website, configurator, connected car app' },
-  'bentley':         { order: 2, name: 'Bentley Motors',        href: 'work/bentley-motors.html',    logo: 'Bentley',          ls: 1.45, sector: 'Luxury automotive',              scope: 'Infotainment, connected car, customer and internal apps' },
-  'debenhams group': { order: 3, name: 'Debenhams Group',       href: 'work/debenhams.html',         logo: 'Debenhams',        ls: 1.0,  sector: 'Multi-brand retail group',       scope: 'Design system, e-commerce, CRO', cluster: 'retail' },
-  'plt':             { order: 4, name: 'PrettyLittleThing',     href: 'work/prettylittlething.html', logo: 'PrettyLittleThing',ls: 1.2,  sector: 'Celebrity and influencer fashion',scope: 'Design system, e-commerce', cluster: 'retail' },
-  'boohoo':          { order: 5, name: 'boohoo',                href: 'work/boohoo.html',            logo: 'boohoo',           ls: 1.0,  sector: 'Online fast fashion',            scope: 'Design system, e-commerce', cluster: 'retail' },
-  'boohooman':       { order: 6, name: 'boohooMAN',             href: 'work/boohooman.html',         logo: 'BOOHOOMAN',        ls: 0.8,  sector: 'Disruptive menswear',            scope: 'Design system, e-commerce', cluster: 'retail' },
-  'coop bank':       { order: 7, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9,  sector: 'Retail banking',                 scope: 'Mobile banking app' },
-  'bet365':          { order: 8, name: 'bet365',                href: 'work/bet365.html',            logo: 'bet365',           ls: 1.0,  sector: 'Online gaming',                  scope: 'Web, iOS and Android' },
-  'barclays':        { order: 9, name: 'Barclays',              href: 'work/barclays.html',          logo: 'Barclays',         ls: 1.05, sector: 'Retail banking',                 scope: 'Mobile banking, B-Tap' },
-  'the loose lead':  { order: 1, name: 'The Loose Lead',        href: 'work/the-loose-lead-co.html', logo: null,               ls: 1.0,  sector: 'Dog walking and pet care',       scope: 'Website, booking, photography', studio: true },
+  'aston martin':    { order: 1, name: 'Aston Martin',          href: 'work/aston-martin.html',      logo: 'AstonMartin',      ls: 1.45, sector: 'Luxury automotive', scope: 'Infotainment and HMI, switchgear, connected car app, website, configurator' },
+  'bentley':         { order: 2, name: 'Bentley Motors',        href: 'work/bentley-motors.html',    logo: 'Bentley',          ls: 1.45, sector: 'Luxury automotive', scope: 'Owner apps, design systems, infotainment and HMI concepts, enterprise apps' },
+  'debenhams group': { ...DEB, sub: 1 },
+  'plt':             { ...DEB, sub: 2 },
+  'boohoo':          { ...DEB, sub: 3 },
+  'boohooman':       { ...DEB, sub: 4 },
+  'coop bank':       { order: 7, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9,  sector: 'Retail banking', scope: 'Mobile banking app and website' },
+  'bet365':          { order: 8, name: 'bet365',                href: 'work/bet365.html',            logo: 'bet365',           ls: 1.0,  sector: 'Online gaming', scope: 'Web, iOS and Android, brand identity' },
+  'barclays':        { order: 9, name: 'Barclays',              href: 'work/barclays.html',          logo: 'Barclays',         ls: 1.05, sector: 'Retail banking', scope: 'Mobile Banking, Barclaycard and Pingit apps, Windows Phone, design language' },
+  'the loose lead':  { order: 1, name: 'The Loose Lead',        href: 'work/the-loose-lead-co.html', logo: null,               ls: 1.0,  sector: 'Dog walking and pet care', scope: 'Website, booking, photography', studio: true },
 };
+
+/* Per-photo hover caption (desktop), matched on part of the filename: what
+   that one photo shows. A photo not listed falls back to the project line. */
+const CAPTIONS = {
+  // Aston Martin
+  '01-image 9':                         'Interior HMI · Infotainment, digital cluster and switchgear',
+  '02-Aston-Martin-DBX707_14':          'DBX707 · Digital instrument cluster',
+  '03-2025-Aston-Martin-DBX707':        'DBX707 · Central infotainment touchscreen',
+  '04-Aston-Martin-DBX707_9':           'DBX707 · Infotainment touchscreen',
+  '05-aston-martin-2':                  'Centre console controls and switchgear',
+  '06-aston-martin-vantage':            'Vantage · Infotainment and centre console controls',
+  '07-Connected-Car':                   'Connected car app · iOS and Android',
+  'Frame 1000004098':                   'Connected car app · Phone and wearable',
+  'Frame 1000004097':                   'Connected car app · App Store screens',
+  '10-a430aa276834fc24a0f637c126f081f9':'Configurator · Exterior',
+  '11-ebb7cf2659670a0d4549e7e8b95f4e15':'Configurator · Interior personalisation',
+  // Bentley
+  '01-image 6':                         'Infotainment and connected car',
+  '02-Boodles':                         'Infotainment and digital instrument cluster',
+  '03-image 3':                         'Infotainment · Navigation',
+  '04-bentley-1':                       'My Bentley app · Vehicle status',
+  '05-bentley-news-feed':               'Owner app · News feed',
+  '06-bentley-discover':                'Owner app · Discover and recommendations',
+  '07-bentley-2':                       'My Bentley app · Connected car',
+  // Debenhams Group
+  'debenhams-group-1':                  'Group design system · One system, every brand',
+  'Mockups.png':                        'PrettyLittleThing · App and e-commerce screens',
+  'PLT.jpeg':                           'PrettyLittleThing · Product page',
+  'boohoo-1':                           'boohoo · Mobile shopping',
+  'boohooman-mobile':                   'boohooMAN · Product page',
+  // The Co-operative Bank
+  '01-co-operative-bank-1':             'Mobile banking app',
+  '02-Fraud':                           'Mobile banking app · Fraud and security',
+  '03-media_13a709':                    'Website',
+  // bet365
+  '01-bet365-2':                        'Mobile sportsbook · Web',
+  '02-bet365-3':                        'App · In-play',
+  '03-bet365-5':                        'Brand identity · Campaign',
+  '04-bet365-1':                        'Brand identity · Out of home',
+  '05-bet365-4':                        'Brand identity · Out of home',
+  // Barclays
+  '01-barclays_app':                    'Barclays Mobile Banking app',
+  '02-4TXuiYYMWfzB9SFpKQZSF':           'Mobile Banking for Windows Phone',
+  '03-BAR-APP-002':                     'Barclays Mobile Banking app',
+  '04-as3-barclaycard':                 'Barclaycard app',
+  '05-app 18_05':                       'Barclaycard app',
+  // The Loose Lead
+  'Mockuuups Smartphone':               'Website · Mobile',
+  'TLL Desktop':                        'Website · Desktop',
+};
+const captionFor = f => { for (const k in CAPTIONS) if (f.includes(k)) return CAPTIONS[k]; return null; };
 
 const IMAGE_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
 /* folders skipped entirely: hidden, underscore-prefixed, or anything with
@@ -151,7 +209,13 @@ function readGroups() {
       return { folder, key, ...p, images };
     })
     .filter(g => g.images.length)
-    .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+    .sort((a, b) => a.order - b.order || (a.sub || 0) - (b.sub || 0) || a.name.localeCompare(b.name))
+    /* folders sharing a project name become one project */
+    .reduce((out, g) => {
+      const last = out[out.length - 1];
+      if (last && last.name === g.name) last.images = last.images.concat(g.images); else out.push(g);
+      return out;
+    }, []);
 }
 
 /* ---- layout: pair images into rows, landscape shots take the wider slot ---- */
@@ -202,7 +266,8 @@ function tile(g, t, idx, total, endAlone) {
   const id = idx === 0 ? `work-${base}` : `work-${base}-${idx + 1}`;
   const cls = ['col-item', `span-${t.span}`, t.start ? `c${t.start}` : '', t.centre ? 'centre' : '', t.drop ? 'drop' : '', (t.end || endAlone) ? 'end' : ''].filter(Boolean).join(' ');
   const speed = t.span <= 5 ? '1.0' : '0.55';
-  const alt = `${g.name} work, image ${idx + 1} of ${total}`;
+  const cap = captionFor(t.img.file);
+  const alt = cap ? `${g.name}: ${cap}` : `${g.name} work, image ${idx + 1} of ${total}`;
   const gate = g.href ? ` data-gated` : '';
   const href = g.href || '#';
   return `          <a class="${cls}" href="${href}" id="${id}"${gate} data-speed="${speed}">
@@ -211,17 +276,17 @@ function tile(g, t, idx, total, endAlone) {
                 <img src="${t.img.src}" width="${t.img.w}" height="${t.img.h}" alt="${esc(alt)}" loading="lazy" decoding="async">
               </div>${t.img.shaped ? shade(t.img.src) : ''}
             </div>
-            <div class="col-cap">${caption(g)}
+            <div class="col-cap">${caption(g, cap)}
             </div>
           </a>
 `;
 }
 
-function caption(g) {
+function caption(g, line) {
   const logo = g.logo
     ? `\n              <span class="col-logo" aria-hidden="true" style="--ls:${g.ls}; -webkit-mask-image:url('assets/logos/${g.logo}.svg'); mask-image:url('assets/logos/${g.logo}.svg')"></span>`
     : '';
-  const meta = [g.sector, g.scope].filter(Boolean).join(' · ');
+  const meta = line || [g.sector, g.scope].filter(Boolean).join(' · ');
   return `${logo}
               <span class="col-name">${esc(g.name)}</span>
               <span class="col-meta">${esc(meta)}</span>`;
