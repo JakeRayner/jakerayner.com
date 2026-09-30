@@ -84,6 +84,15 @@ const FEATURE = {
 };
 const featureFor = f => { for (const k in FEATURE) if (f.includes(k)) return FEATURE[k]; return 0; };
 
+/* Shaped images: shots that are not a plain rectangle (the Aston Martin App
+   Store sets are rounded cards with transparent gaps between them). The
+   hover zoom would push their rounded corners into the tile's square edge
+   and clip them, so it is off, and the hover caption's blurred band is
+   masked by the image itself so it tints the cards and not the gaps.
+   Matched on part of the filename. */
+const SHAPED = ['Frame 1000004098', 'Frame 1000004097'];
+const shapedFor = f => SHAPED.some(k => f.includes(k));
+
 /* ---- image dimensions, read from the file header (no libraries) ---- */
 function dimensions(file) {
   const fd = openSync(file, 'r');
@@ -137,7 +146,7 @@ function readGroups() {
           /* a cropped image is laid out by the shape it ends up, not the
              shape the file happens to be */
           const ratio = crop ? eval(crop.ratio.replace(/\s/g, '')) : w / h;
-          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, w, h, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop };
+          return { file: f, src: `assets/my-work/${urlPath(folder)}/${urlPath(f)}`, w, h, landscape: ratio > 1.15, zoom: zoomFor(f), feature: featureFor(f), crop, shaped: shapedFor(f) };
         });
       return { folder, key, ...p, images };
     })
@@ -177,6 +186,15 @@ function imgStyle(img) {
   return bits.length ? ` style="${bits.join('; ')}"` : '';
 }
 
+/* the hover band for a shaped shot. Its mask is written inline, not passed
+   through a custom property, because a relative url() inside a custom
+   property resolves against the stylesheet (css/) in some browsers and the
+   page in others; inline it always resolves against the page. */
+function shade(src) {
+  const mask = `linear-gradient(to top, #000 0%, #000 21%, transparent 55%), url('${src}')`;
+  return `\n              <span class="col-shade" aria-hidden="true" style="-webkit-mask-image:${mask}; mask-image:${mask}"></span>`;
+}
+
 function tile(g, t, idx, total, endAlone) {
   // ids follow the case study filename so the hero logo strip's #work-… links land here
   const base = g.href ? g.href.replace(/^.*\//, '').replace(/\.html$/, '') : slug(g.name);
@@ -187,10 +205,10 @@ function tile(g, t, idx, total, endAlone) {
   const gate = g.href ? ` data-gated` : '';
   const href = g.href || '#';
   return `          <a class="${cls}" href="${href}" id="${id}"${gate} data-speed="${speed}">
-            <div class="col-media">
+            <div class="col-media${t.img.shaped ? ' is-shaped' : ''}">
               <div class="col-img${t.img.crop ? ' is-crop' : ''}"${imgStyle(t.img)}>
-                <img src="${t.img.src}" width="${t.img.w}" height="${t.img.h}" alt="${esc(alt)}" loading="lazy">
-              </div>
+                <img src="${t.img.src}" width="${t.img.w}" height="${t.img.h}" alt="${esc(alt)}" loading="lazy" decoding="async">
+              </div>${t.img.shaped ? shade(t.img.src) : ''}
             </div>
             <div class="col-cap">${caption(g)}
             </div>

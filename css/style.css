@@ -240,7 +240,11 @@ h1,h2,h3{font-family:var(--sans); font-weight:500; margin:0; letter-spacing:-.03
    time the line arrives, and the field meets the plain background behind
    the toolbar without a join. */
 .site-dots{
-  position:fixed; left:0; right:0; top:0; height:100vh; height:100lvh;
+  /* width is explicit: a canvas is a replaced element, so left and right
+     alone do not stretch it, and it sized itself from its 2:1 default
+     aspect instead (1800px wide on a 1512px screen, 1700px on a phone),
+     drawing thousands of dots nobody could see */
+  position:fixed; left:0; right:0; top:0; width:100%; height:100vh; height:100lvh;
   z-index:-1; pointer-events:none;
   -webkit-mask-image:var(--edge-fade);
   mask-image:var(--edge-fade);
@@ -470,9 +474,9 @@ section{padding:110px 0; position:relative;}
    (data-speed) on top of a gentle parallax inside the image. */
 .works{padding:clamp(80px,9vw,150px) 0 clamp(90px,10vw,160px);}
 .works + .works{padding-top:0;}
-.works-head{display:grid; grid-template-columns:1fr auto; align-items:end; gap:24px; margin-bottom:clamp(40px,5vw,84px);}
+.works-head{display:grid; grid-template-columns:1fr; align-items:end; gap:8px; margin-bottom:clamp(40px,5vw,84px);}
 .works-label{font-size:13.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; align-self:start; padding-top:.6em; opacity:.72;}
-.works-title{font-size:clamp(56px,9vw,150px); line-height:.9; letter-spacing:-.045em; text-align:right;}
+.works-title{font-size:clamp(56px,9vw,150px); line-height:.9; letter-spacing:-.045em; text-align:left;}
 /* one group per project: tiles sit tight together inside a group, and the
    big gaps fall between projects */
 .col-grid{display:flex; flex-direction:column; gap:clamp(72px,9vw,170px);}
@@ -526,13 +530,45 @@ section{padding:110px 0; position:relative;}
    cropped shape and the image covers it, so --crop-pos decides what stays */
 .col-img.is-crop{aspect-ratio:var(--crop-ratio);}
 .col-img.is-crop img{height:100%; object-fit:cover; object-position:var(--crop-pos);}
-/* hover caption: the whole tile frosts over (heavy backdrop blur, only a
-   light tint) and the logo, name and one line of meta sit bottom left */
+/* hover caption: the image stays visible. Only its bottom edge takes a
+   progressive blur, strongest at the foot and fading to nothing about half
+   way up (a masked backdrop blur), with a dark tint on the same gradient so
+   the white logo and line of meta read on any photo.
+
+   The blur sits on .col-media rather than inside the caption on purpose.
+   The caption fades in with opacity, and anything with opacity below 1
+   isolates what is behind it, so a blur inside it would see nothing until
+   the fade finished and then pop in. On its own layer it fades in with the
+   caption instead. visibility (flipped after the fade out) means no tile
+   carries a live blur while it is not being hovered. */
+.col-media::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:max(55%, 190px);
+  pointer-events:none; opacity:0; visibility:hidden;
+  background:linear-gradient(to top, rgba(8,8,10,.62), rgba(8,8,10,.34) 45%, rgba(8,8,10,0));
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  -webkit-mask-image:linear-gradient(to top, #000 0%, #000 38%, transparent 100%);
+  mask-image:linear-gradient(to top, #000 0%, #000 38%, transparent 100%);
+  transition:opacity .45s ease, visibility 0s linear .45s;
+}
+.col-item:hover .col-media::after{opacity:1; visibility:visible; transition-delay:0s;}
+/* shaped shots (SHAPED in tools/build-work.mjs): the band is a real element
+   instead, covering the whole image box, masked by the gradient and by the
+   image itself (both inline, from the builder), so only the parts over the
+   cards survive and the gaps between them stay clear */
+.col-media.is-shaped::after{display:none;}
+.col-shade{
+  position:absolute; inset:0; pointer-events:none; opacity:0; visibility:hidden;
+  background:linear-gradient(to top, rgba(8,8,10,.62), rgba(8,8,10,.34) 25%, rgba(8,8,10,0) 55%);
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  -webkit-mask-size:100% 100%; -webkit-mask-repeat:no-repeat; -webkit-mask-composite:source-in;
+  mask-size:100% 100%; mask-repeat:no-repeat; mask-composite:intersect;
+  transition:opacity .45s ease, visibility 0s linear .45s;
+}
+.col-item:hover .col-shade{opacity:1; visibility:visible; transition-delay:0s;}
+.col-item:hover .col-media.is-shaped .col-img img{transform:scale(var(--zoom,1));}
 .col-cap{
   position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; align-items:flex-start;
-  text-align:left; gap:8px; padding:clamp(18px,2.4vw,36px); color:#fff; opacity:0; pointer-events:none;
-  background:rgba(8,8,10,.22);
-  -webkit-backdrop-filter:blur(26px) saturate(1.15); backdrop-filter:blur(26px) saturate(1.15);
+  text-align:left; gap:6px; padding:clamp(16px,1.8vw,26px); color:#fff; opacity:0; pointer-events:none;
   transition:opacity .45s ease;
 }
 .col-item:hover .col-cap{opacity:1;}
@@ -545,13 +581,13 @@ section{padding:110px 0; position:relative;}
      Aston Martin and Bentley wings run larger than heavy wordmarks so their
      visual weight matches. The mask scales by height and keeps its own
      aspect, left aligned, so wide lockups just run wider. */
-  --lh:clamp(22px,2vw,34px);
+  --lh:clamp(16px,1.4vw,22px);
   display:block; width:100%; height:calc(var(--lh) * var(--ls, 1)); background:#fff; margin-bottom:4px;
   -webkit-mask-repeat:no-repeat; -webkit-mask-position:left center; -webkit-mask-size:auto 100%;
   mask-repeat:no-repeat; mask-position:left center; mask-size:auto 100%;
 }
-.col-name{font-size:clamp(24px,2.4vw,40px); font-weight:500; letter-spacing:-.03em; line-height:1.02;}
-.col-meta{font-size:13.5px; line-height:1.5; opacity:.85; max-width:44ch;}
+.col-name{font-size:clamp(18px,1.6vw,24px); font-weight:500; letter-spacing:-.03em; line-height:1.02;}
+.col-meta{font-size:13px; font-weight:500; line-height:1.45; max-width:44ch;}
 .col-logo, .col-name, .col-meta{transform:translateY(14px); transition:transform .55s cubic-bezier(.2,.8,.2,1);}
 .col-item:hover .col-logo, .col-item:hover .col-name, .col-item:hover .col-meta{transform:none;}
 .col-item:hover .col-name{transition-delay:.05s;} .col-item:hover .col-meta{transition-delay:.1s;}
@@ -562,7 +598,7 @@ section{padding:110px 0; position:relative;}
    below it, and the grid gap does the spacing */
 .col-title{display:none; color:inherit; text-decoration:none;}
 @media (hover:none), (max-width:760px){
-  .col-cap{display:none;}
+  .col-cap, .col-media::after, .col-shade{display:none;}
   .col-title{
     display:flex; flex-direction:column; align-items:flex-start; gap:8px;
     grid-column:span 12; padding:0;
@@ -570,7 +606,7 @@ section{padding:110px 0; position:relative;}
   .col-title .col-logo{background:var(--ink); height:26px; transform:none;}
   .col-title .col-logo + .col-name{display:none;}
   .col-title .col-name{font-size:26px; transform:none;}
-  .col-title .col-meta{color:var(--ink-dim); opacity:1; transform:none;}
+  .col-title .col-meta{font-size:13.5px; font-weight:400; color:var(--ink-dim); opacity:1; transform:none;}
   .col-item:hover .col-img img{transform:scale(var(--zoom,1));}
 }
 @media (max-width:760px){

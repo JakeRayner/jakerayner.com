@@ -1,8 +1,8 @@
 /* Shared site JS for every page.
    Sections: theme system (day / night / colour + shuffle), custom cursor,
    hero dot field that reacts to the cursor, magnetic hovers, hide-on-scroll
-   header, mobile menu overlay, Lenis smooth scroll (kept very light),
-   GSAP ScrollTrigger animations.
+   header, mobile menu overlay, GSAP ScrollTrigger animations. Scrolling
+   itself is the browser's own: nothing eases or intercepts the wheel.
    All motion respects prefers-reduced-motion, and every feature degrades
    safely if a CDN script fails to load. */
 
@@ -13,8 +13,6 @@
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var hasGsap = typeof window.gsap !== 'undefined';
   var hasST = typeof window.ScrollTrigger !== 'undefined';
-  var hasLenis = typeof window.Lenis !== 'undefined';
-  var lenis = null;
 
   if (hasGsap && hasST) {
     gsap.registerPlugin(ScrollTrigger);
@@ -133,7 +131,8 @@
      `ctx.measureText('J').actualBoundingBoxAscent` at a shared font-size
      against Literata's, not by hand. */
   /* Anton, Pacifico, Luckiest Guy, Bebas Neue and Courier Prime were cut on
-     request in August 2026, then Prata, taking the pool from 16 to 10.
+     request in August 2026, then Prata, then Kaushan Script (the only
+     script face) in September 2026, taking the pool from 16 to 9.
 
      `kind` is the broad style class the adjacency rule runs on: serif, sans
      or script. It was re-tagged from eight fine-grained kinds (display, geo
@@ -144,7 +143,6 @@
     { css: "'Literata', Georgia, 'Times New Roman', serif", weight: 500, kind: 'serif',  scale: 1.000 },
     { css: "'Playfair Display', Georgia, serif",            weight: 700, kind: 'serif',  scale: 1.017 },
     { css: "'Archivo Black', Impact, sans-serif",           weight: 400, kind: 'sans',   scale: 1.034 },
-    { css: "'Kaushan Script', cursive",                     weight: 400, kind: 'script', scale: 0.993 },
     { css: "'Bungee', Impact, sans-serif",                  weight: 400, kind: 'sans',   scale: 1.008 },
     { css: "'Righteous', 'Trebuchet MS', sans-serif",       weight: 400, kind: 'sans',   scale: 1.024 },
     { css: "'Bowlby One', Impact, sans-serif",              weight: 400, kind: 'sans',   scale: 0.994 },
@@ -469,9 +467,14 @@
       /* a colour theme saved before colour stopped being remembered */
       var face = FACES.filter(function (f) { return f.css === saved.face; })[0] || DEFAULT_FACE;
       setTheme(MONO.night, face);
-    } else if (saved && saved.mode) {
+    } else if (saved && saved.mode && FACES.some(function (f) { return f.css === saved.face; })) {
       currentTheme = saved;
       setPressed(saved.mode);
+    } else if (saved && saved.mode) {
+      /* saved in a face that has since been cut from the pool (Kaushan
+         Script): its font no longer loads, so the name would fall back to
+         the system's cursive. Keep the mode, reset the face. */
+      setTheme(saved, DEFAULT_FACE, saved.mode);
     } else {
       setTheme(MONO.night, DEFAULT_FACE);
     }
@@ -690,7 +693,7 @@
            the photo (which is centred in the stage) and not on the whole
            overlay, footer included */
         '<div class="lb-stage">' +
-          '<div class="lb-track" tabindex="-1" data-lenis-prevent></div>' +
+          '<div class="lb-track" tabindex="-1"></div>' +
           '<button class="lb-nav lb-prev" type="button" aria-label="Previous image">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>' +
           '</button>' +
@@ -726,13 +729,10 @@
       });
       /* The track is moved by transform and the drag is driven here, rather
          than being a native scroll-snap carousel. Native scrolling looked
-         right on a desktop but would not page on a phone: Lenis listens for
-         touchmove on window with a non-passive listener and, while stopped,
-         which is exactly what the gallery does to lock the page behind it,
-         calls preventDefault on every one, so the gesture never reached the
-         scroller. data-lenis-prevent on the track is the documented way out
-         of that and is set above, but owning the drag outright also settles
-         iOS's own habits inside a fixed overlay. touch-action:pan-y (css)
+         right on a desktop but would not page on a phone (the smooth scroll
+         library the site used then swallowed touchmove while the page was
+         locked), and owning the drag outright also settles iOS's own habits
+         inside a fixed overlay. touch-action:pan-y (css)
          leaves vertical gestures to the browser and hands us the rest.
 
          A drag anywhere in the overlay pages, footer and arrows included,
@@ -854,7 +854,6 @@
       lb.classList.toggle('lb-single', shots.length < 2);
       lb.classList.add('open');
       document.documentElement.classList.add('lb-open');
-      if (lenis) lenis.stop();
       document.addEventListener('keydown', onKey);
       /* jump, do not glide, to the shot that was tapped */
       requestAnimationFrame(function () {
@@ -869,7 +868,6 @@
       if (!lb) return;
       lb.classList.remove('open');
       document.documentElement.classList.remove('lb-open');
-      if (lenis) lenis.start();
       document.removeEventListener('keydown', onKey);
       track.innerHTML = '';
       if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -985,7 +983,7 @@
           });
         }
       }
-      draw(performance.now());
+      draw(clock);
     }
 
     /* A slow pulse centred on the smoothed cursor position, always running
@@ -1038,21 +1036,47 @@
       ctx.globalAlpha = 1;
     }
 
-    var frame = 0;
+    /* Two things keep the field off the scroll's back. It holds still while
+       the page is scrolling (the content moving over it is the motion, and
+       nobody can see a few pixels of drift mid-scroll), resuming a moment
+       after the scroll stops, so the redraw never competes with scroll-linked
+       animation. And it draws at most 60 times a second: on a 120Hz screen
+       the drift is too slow for the extra frames to show, and they doubled
+       the cost. */
+    /* The field runs on its own clock, which only moves while the field
+       does. Every dot's position is a function of time, so drawing from the
+       real clock after a pause would move each dot straight to where it
+       would have drifted to meanwhile: the whole background jerked sideways
+       the moment a scroll stopped. On its own clock it carries on from
+       exactly where it froze. */
+    var frame = 0, lastDraw = 0, lastNow = 0, clock = performance.now();
+    var scrolling = false, scrollT;
+    window.addEventListener('scroll', function () {
+      scrolling = true;
+      clearTimeout(scrollT);
+      scrollT = setTimeout(function () { scrolling = false; }, 140);
+    }, { passive: true });
+
     function loop(now) {
       if (!running) return;
+      requestAnimationFrame(loop);
+      var dt = lastNow ? Math.min(now - lastNow, 50) : 0;
+      lastNow = now;
+      if (scrolling) return;
+      clock += dt;
+      if (now - lastDraw < 12) return;
+      lastDraw = now;
       /* re-read the ink colour every ~half second so the dots follow the
          body colour transition when the theme changes instead of vanishing */
       if (++frame % 30 === 0) resolveInk();
-      draw(now);
-      requestAnimationFrame(loop);
+      draw(clock);
     }
 
     resolveInk();
     build();
     themeListeners.push(function () {
-      requestAnimationFrame(function () { resolveInk(); if (!running) draw(performance.now()); });
-      setTimeout(function () { resolveInk(); if (!running) draw(performance.now()); }, 680);
+      requestAnimationFrame(function () { resolveInk(); if (!running) draw(clock); });
+      setTimeout(function () { resolveInk(); if (!running) draw(clock); }, 680);
     });
 
     if (animate) {
@@ -1064,7 +1088,7 @@
       requestAnimationFrame(loop);
       document.addEventListener('visibilitychange', function () {
         if (document.hidden) { running = false; }
-        else if (!running) { running = true; requestAnimationFrame(loop); }
+        else if (!running) { running = true; lastNow = 0; requestAnimationFrame(loop); }
       });
     }
 
@@ -1136,7 +1160,6 @@
       overlay.setAttribute('aria-hidden', 'false');
       menuBtn.setAttribute('aria-expanded', 'true');
       document.documentElement.classList.add('menu-open');
-      if (lenis) lenis.stop();
       if (menuTl) menuTl.timeScale(1).play();
       if (closeBtn) closeBtn.focus();
     };
@@ -1146,7 +1169,6 @@
       overlay.setAttribute('aria-hidden', 'true');
       menuBtn.setAttribute('aria-expanded', 'false');
       document.documentElement.classList.remove('menu-open');
-      if (lenis) lenis.start();
       if (menuTl) { menuTl.timeScale(1.5).reverse(); }
       else { overlay.classList.remove('is-open'); }
       menuBtn.focus();
@@ -1169,34 +1191,27 @@
     });
   }
 
-  /* ---------- 7. Lenis smooth scroll ----------
-     Kept deliberately light: a high lerp means native scrolling stays in
-     charge and the easing only rounds it off, no momentum takeover. */
-  if (hasLenis && !reduceMotion) {
-    lenis = new Lenis({ lerp: 0.28, smoothWheel: true, wheelMultiplier: 1 });
-    if (hasGsap && hasST) {
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
-      gsap.ticker.lagSmoothing(0);
-    } else {
-      var rafLoop = function (time) { lenis.raf(time); requestAnimationFrame(rafLoop); };
-      requestAnimationFrame(rafLoop);
-    }
+  /* ---------- 7. Native scrolling ----------
+     No smooth scroll library. Lenis was tried at several strengths and
+     every one put a lag between the trackpad and the page, which read as
+     scroll-jacking and, at the stronger settings, motion sickness. The
+     wheel and trackpad now move the page directly; things still animate as
+     they come into view, but the scroll itself is never eased.
 
-    /* Same-page anchor links (the header Work link on Home) scroll through
-       Lenis instead of jumping. The skip link is left alone: preventDefault
-       would stop it moving focus to the target, which is its whole job. */
-    document.querySelectorAll('a[href*="#"]:not(.skip-link)').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        var url = new URL(a.getAttribute('href'), location.href);
-        if (url.pathname !== location.pathname || !url.hash) return;
-        var target = document.querySelector(url.hash);
-        if (!target) return;
-        e.preventDefault();
-        lenis.scrollTo(target);
-      });
+     Same-page anchor links (the header Work link on Home) glide to their
+     target rather than jump, using the browser's own smooth scrolling. The
+     skip link is left alone: preventDefault would stop it moving focus to
+     the target, which is its whole job. */
+  document.querySelectorAll('a[href*="#"]:not(.skip-link)').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var url = new URL(a.getAttribute('href'), location.href);
+      if (url.pathname !== location.pathname || !url.hash) return;
+      var target = document.querySelector(url.hash);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
     });
-  }
+  });
 
   /* ---------- 8. Scroll animations ---------- */
   if (hasGsap && hasST && !reduceMotion) {
@@ -1300,12 +1315,12 @@
           end: '+=150%',
           pin: section,
           scrub: true,
-          /* On touch the scroll events arrive late, so without this the
-             section scrolls a frame past its mark before being pinned and
-             snaps back: that reads as a glitch. With a mouse, where events
-             are prompt and Lenis eases the scroll, the same setting made the
-             pin land a beat early instead, so it is touch only. */
-          anticipatePin: finePointer ? 0 : 1
+          /* With native scrolling the browser moves the page before the
+             script hears about it, so without this the section scrolls a
+             frame past its mark before being pinned and snaps back, which
+             reads as a glitch. (It was touch only while Lenis drove the
+             desktop scroll; with Lenis gone the wheel needs it too.) */
+          anticipatePin: 1
         }
       });
     });
