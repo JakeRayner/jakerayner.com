@@ -7,70 +7,199 @@
      paint a mismatched band behind its toolbar; kept in sync by applyTheme -->
 <meta name="theme-color" content="#0b0b0c">
 <title>The Co-operative Bank · Work · Jake Rayner</title>
-<meta name="robots" content="noindex" />
+<meta name="description" content="The Co-operative Bank case study. Leading the design of the mobile banking app MVP: bringing UX into a project that had started without it, re-launching it with research and design sprints, and shipping the app on iOS and Android." />
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500&display=swap" rel="stylesheet">
+<!-- display faces cycled on the wordmark and hero name, plus Chivo Black Italic for the STUDIO lockup -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Bungee&family=Chivo:ital,wght@1,900&family=Cormorant+Garamond:wght@600&family=Kanit:wght@700&family=Lexend+Deca:wght@600&family=Playfair+Display:wght@700&family=Righteous&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,701&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
 <script>
-/* same pre-paint theme snippet as the site, so the gate matches the saved vibe */
-(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t||t.mode==='colour')return;var r=document.documentElement.style;r.setProperty('--bg',t.bg);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);}catch(e){}})();
+/* re-apply the saved vibe before first paint so page loads don't flash the default theme */
+(function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t||t.mode==='colour')return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
 </script>
-<style>
-:root{--bg:#0b0b0c;--ink:#f6f6f7;--accent:#f6f6f7;--accent-2:var(--accent);--accent-ink:#0b0b0c;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--ink);font-family:'Satoshi',system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
-.gate{max-width:420px;width:100%;}
-.gate-mark{font-size:17px;font-weight:500;color:var(--ink);text-decoration:none;display:inline-block;margin-bottom:42px;}
-.gate h1{font-size:26px;font-weight:500;letter-spacing:-.02em;margin-bottom:12px;}
-.gate p{font-size:14.5px;line-height:1.6;color:color-mix(in srgb,var(--ink) 62%,transparent);margin-bottom:26px;}
-.gate form{display:flex;gap:8px;}
-.gate input{flex:1;background:color-mix(in srgb,var(--ink) 6%,transparent);border:none;color:var(--ink);font:inherit;font-size:15px;padding:13px 14px;outline:none;}
-.gate input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-.gate button{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--accent-ink);border:none;font:inherit;font-size:14.5px;font-weight:500;padding:13px 22px;cursor:pointer;}
-.gate .err{color:var(--ink);margin-top:14px;font-size:13.5px;}
-[hidden]{display:none;}
-</style>
 </head>
 <body>
-<main class="gate">
-  <a class="gate-mark" href="../index.html">Jake Rayner.</a>
-  <h1>Protected</h1>
-  <p>This case study covers work I can't publish openly. Get in touch and I'll
-  share the password.</p>
-  <form id="f">
-    <input id="p" type="password" placeholder="Password" autocomplete="current-password" autofocus aria-label="Password" />
-    <button type="submit">Unlock</button>
-  </form>
-  <p class="err" id="e" hidden>That password isn't right, try again.</p>
-  <p style="margin-top:18px;margin-bottom:0;"><a href="mailto:jake.rayner.96@gmail.com" style="color:var(--ink)">Request access →</a></p>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="cursor"></div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="mark magnetic" href="../index.html">Jake Rayner<span class="dot"></span></a>
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button class="tt-btn" id="ttDay" type="button" aria-label="Day mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.57 4.57l2.12 2.12M17.31 17.31l2.12 2.12M1.5 12h3M19.5 12h3M4.57 19.43l2.12-2.12M17.31 6.69l2.12-2.12"/></svg></button>
+      <button class="tt-btn" id="ttNight" type="button" aria-label="Night mode" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg></button>
+      <button class="tt-btn" id="ttColour" type="button" aria-label="Colour mode" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.3 0 2.1-.86 2.1-1.9 0-.55-.22-1-.58-1.4-.35-.4-.57-.85-.57-1.4 0-1.05.9-1.9 2-1.9h2.15A3.9 3.9 0 0 0 21 10.5C21 6.36 16.97 3 12 3z"/><circle cx="7.6" cy="10.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="11.2" cy="7.2" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.9" cy="8.9" r="1.15" fill="currentColor" stroke="none"/></svg></button>
+      <button class="tt-btn tt-rand" id="ttRand" type="button" aria-label="New random palette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 5v6h-6"/><path d="M4 19v-6h6"/><path d="M20 11a8 8 0 0 0-14-5"/><path d="M4 13a8 8 0 0 0 14 5"/></svg></button>
+    </div>
+    <div class="nav-right">
+      <nav class="nav-links" aria-label="Primary">
+        <a class="lnk" href="../index.html">Home</a>
+        <a class="lnk" href="../index.html#work">Work</a>
+        <a class="lnk" href="../about.html">About</a>
+        <a class="lnk studio-brand" href="../freelance.html">Studio</a>
+      </nav>
+      <button class="menu-btn magnetic" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+        <span class="menu-ico" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="overlay" id="menu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+  <div class="wrap ov-top">
+    <span class="mark">Jake Rayner<span class="dot"></span></span>
+    <button class="menu-btn" id="menuClose" type="button" aria-label="Close menu">
+      <span class="menu-ico is-x" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+  <nav class="wrap ov-nav" aria-label="Menu">
+    <a class="ov-item" href="../index.html"><span class="ov-num">01</span><span class="ov-mask"><span class="ov-txt">Home</span></span></a>
+    <a class="ov-item" href="../index.html#work"><span class="ov-num">02</span><span class="ov-mask"><span class="ov-txt">Work</span></span></a>
+    <a class="ov-item" href="../about.html"><span class="ov-num">03</span><span class="ov-mask"><span class="ov-txt">About</span></span></a>
+    <a class="ov-item" href="../freelance.html"><span class="ov-num">04</span><span class="ov-mask"><span class="ov-txt studio-brand">Studio</span></span></a>
+  </nav>
+  <div class="wrap ov-foot">
+    <a href="mailto:jake.rayner.96@gmail.com">jake.rayner.96@gmail.com</a>
+    <a href="tel:+447733361372">07733 361372</a>
+    <span>Manchester, UK</span>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="case-hero">
+    <div class="wrap">
+      <a class="case-back" href="../index.html#work">← All work</a>
+      <h1 class="line"><span style="animation-delay:.1s">The Co-operative Bank</span></h1>
+      <div class="case-role">UX Designer · The 'V' in MVP</div>
+      <div class="meta-grid" data-anim="rise">
+        <div class="meta"><span class="k">Role</span><span class="v">UX Designer</span></div>
+        <div class="meta"><span class="k">Sector</span><span class="v">Finance</span></div>
+        <div class="meta"><span class="k">Focus</span><span class="v">Mobile banking, MVP recovery, research &amp; validation</span></div>
+        <div class="meta"><span class="k">Outcome</span><span class="v">MVP re-launched with UX, app shipped on iOS &amp; Android</span></div>
+      </div>
+      <div class="case-media">
+        <img src="../assets/images/case-coop.jpg" alt="Four screens from The Co-operative Bank mobile app: statements, payments, account details and scheduled payments">
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">Introduction</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>I was hired at The Co-operative Bank to lead the design of a new mobile banking app MVP project.</p>
+        <p>My brief was to help enhance their mobile banking offering in order for the business to remain competitive and relevant following some struggles it had faced in recent years.</p>
+      </div>
+      <div class="case-lists" data-anim="rise">
+        <div><h3>Projects</h3><ul class="case-ul"><li>Mobile Banking native iOS and Android app</li><li>Mobile Banking web product pages</li><li>Mobile Banking marketing material and communications</li><li>Corporate identity refresh</li></ul></div>
+        <div><h3>Responsibilities</h3><ul class="case-ul"><li>Lead mobile app UX/UI and research</li><li>Ensure dev team, agency partners and internal design team alignment and collaboration</li><li>Work closely with the product owner to refine the backlog and plan sprints</li><li>Define and deliver the design system and components</li><li>Initiate and support research activities</li><li>Design solutions that meet requirements</li><li>Design solutions to resolve identified customer pain points</li><li>Present research findings and design solutions to senior leadership</li></ul></div>
+      </div>
+    </div>
+  </section>
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">The problem</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>Shortly after starting in my role, I quickly realised that the MVP project was ploughing ahead at a significant pace and that the UX team had not yet been engaged.</p>
+        <p>Requirements had already been defined and development of the new app had started, using outdated and sub-optimal technology, without any design input.</p>
+        <p>From my knowledge and experience, my assessment was that the product being developed was heavily flawed, both in its functionality and usability, and wasn't a viable product to release to customers. The 'V' in MVP didn't stand up, which could have resulted in an exodus of customers and further challenges for the bank to tackle.</p>
+      </div>
+    </div>
+  </section>
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">Discovery</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>My first course of action was to plan a series of UX activities in collaboration with the research team, gathering quantitative and qualitative data about the proposed MVP and the impact it would have on customers if it was to go live, as well as capturing insights regarding customer needs and priority of requirements for a mobile banking application.</p>
+      </div>
+      <div class="values" data-anim="rise">
+        <div class="value"><img src="../assets/images/case/coop-interviews.jpg" alt="Customer testing room" loading="lazy"><h4>Moderated customer interviews</h4><p>Actual bank customers, invited to test the proposed product. Task driven observations followed by interviews about their experience.</p></div>
+        <div class="value"><img src="../assets/images/case/coop-internal-testing.jpg" alt="A phone being used one handed" loading="lazy"><h4>Unmoderated internal testing</h4><p>Colleagues from various departments invited to test the proposed product. Task driven observations, with data captured through a tool, followed by a survey.</p></div>
+        <div class="value"><img src="../assets/images/case/coop-workshops.jpg" alt="Value proposition canvas template" loading="lazy" class="contain"><h4>Design thinking workshops</h4><p>Multiple small groups of mixed participants from different departments, collaborating in small teams to create value proposition canvases.</p></div>
+      </div>
+      <figure class="case-fig pair" data-anim="rise"><img src="../assets/images/case/coop-talking-shop-1.jpg" alt="Observation room with a two-way mirror and screens" loading="lazy"><img src="../assets/images/case/coop-talking-shop-2.jpg" alt="Customer testing room with a desk, computer and flip chart" loading="lazy"><figcaption>Customer testing sessions, focus groups and workshops held at The Talking Shop in Manchester.</figcaption></figure>
+    </div>
+  </section>
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">Analyse and align</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>I started to cluster insights and analyse the findings from the research, and also documented my own UX/UI analysis of the app as it stood.</p>
+      </div>
+      <figure class="case-fig white" data-anim="rise"><img src="../assets/images/case/coop-ux-analysis.jpg" alt="Journey map of the app's accounts, navigation and profile journeys, annotated with UX concerns" loading="lazy"><figcaption>Your accounts, navigation and profile journeys, mapped and annotated. Concerns included no tab bar (the only way to other features was a side menu), all text at 16pt or lower, CTAs styled inconsistently from screen to screen, and end-of-journey CTAs that didn't tell people what would happen next.</figcaption></figure>
+      <div class="case-prose" data-anim="rise">
+        <p>I also proactively reached out to build strong relationships with the product owner and development lead for the project. I wanted to better understand the proposed requirements and technological constraints in detail, as well as ensure UX engagement in the project moving forwards.</p>
+      </div>
+    </div>
+  </section>
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">Re-launch sign off</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>With insights in hand, and a strong level of alignment and understanding between the UX team, product owner and the development team, we had several discussions on how we might proceed differently with the project.</p>
+        <p>We then collectively presented to senior leadership a proposal for a project re-launch, using the data captured to validate our reasoning. We presented the problem space and where we were, the data to support and rationalise the need for a re-launch, and an aligned solution and new approach to the project for their feedback. Problem and solution, hand in hand, so all leadership needed to do was approve.</p>
+      </div>
+      <div class="values two" data-anim="rise">
+        <div class="value"><h4>Design sprint, 2 weeks</h4><ol class="case-ul"><li>Discover (research and workshops)</li><li>Design (ideation, concepts, wireframes, prototypes)</li><li>Validate (user testing)</li><li>Deliver (final UI and dev handover)</li><li>End of sprint demo to senior leadership</li><li>Backlog refinement and next sprint planning</li></ol></div>
+        <div class="value"><h4>Development sprint, 2 weeks</h4><ol class="case-ul"><li>Build</li><li>Peer review</li><li>Deliver to UX</li><li>UAT test, feedback and sign off</li><li>End of sprint demo to senior leadership</li><li>Backlog refinement and next sprint planning</li></ol></div>
+      </div>
+      <p class="case-note">The team: UX lead, product owner, dev lead, researcher, business analysts and developers, reporting to senior leadership. Each design sprint fed the development sprint that followed, with the next design sprint running alongside it.</p>
+    </div>
+  </section>
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">Delivery</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>The bank's senior leadership approved the project re-launch, with a strong emphasis on the need to move quickly. I collaborated further with the project team to put our product team and new way of working into action, and began working on design solutions within design sprints.</p>
+        <p>Two-week design sprints began within one week. They included ideation and discovery activities with project team members and key stakeholders, rapid design and prototyping, and validation testing with real customers. Design sprints fed two-week development sprints, so a robust pipeline of delivery was in place.</p>
+        <p>Design, development and product stayed closely aligned and communication was strong. The whole product team took over an entire floor of the office and worked shoulder to shoulder, and everyone took part in each other's stand ups, workshops and planning sessions.</p>
+        <p>My focus was not only on building the product, but also on launching it and migrating and onboarding users. Close to launch, I brought the web and marketing team into our project team, sprints and process, so an onboarding and migration plan was in place for existing online banking customers to download the new app and set it up with minimal disruption to their financial management, and so that everything new or existing customers needed to start using the app was available online.</p>
+      </div>
+      <h3 class="case-h3" data-anim="rise">Before and after</h3>
+      <div class="case-screens" style="--n:6" data-anim="rise"><img src="../assets/images/case/coop-before-1.jpg" alt="Your accounts screen before UX involvement" loading="lazy"><img src="../assets/images/case/coop-before-2.jpg" alt="Current account screen before UX involvement" loading="lazy"><img src="../assets/images/case/coop-before-3.jpg" alt="Contact us screen before UX involvement" loading="lazy"><img src="../assets/images/case/coop-after-1.jpg" alt="Redesigned My accounts screen" loading="lazy"><img src="../assets/images/case/coop-after-2.jpg" alt="Redesigned account details screen" loading="lazy"><img src="../assets/images/case/coop-after-3.jpg" alt="Redesigned contact us screen" loading="lazy"></div>
+      <p class="case-screens-cap">Left three: the application before UX involvement. Right three: the initial redesign concepts.</p>
+      <figure class="case-fig" data-anim="rise"><img src="../assets/images/case/coop-app-1.jpg" alt="App Store screens: fuss-free banking, manage your accounts anywhere, and keep an eye on your credit card spending" loading="lazy"><figcaption>The shipped app, as it appears on the App Store.</figcaption></figure>
+      <figure class="case-fig" data-anim="rise"><img src="../assets/images/case/coop-app-2.jpg" alt="App Store screens: paperless statements, payments and transfers, sharing account details and scheduled payments" loading="lazy"></figure>
+      <figure class="case-fig white narrow" data-anim="rise"><img src="../assets/images/case/../coop-live-site.jpg" alt="The mobile banking app page on the bank's website" loading="lazy"><figcaption>The Mobile Banking web product pages.</figcaption></figure>
+      <div class="case-prose"><div class="case-tags"><span>Mobile banking</span><span>MVP recovery</span><span>Research &amp; validation</span><span>Design sprints</span></div></div>
+    </div>
+  </section>
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">Gallery</h2>
+      <div class="case-gallery" data-anim="rise">
+        <img src="../assets/my-work/Coop%20Bank/01-co-operative-bank-1.jpg" width="1600" height="1200" alt="The Co-operative Bank work, image 1 of 3" loading="lazy" decoding="async">
+        <img src="../assets/my-work/Coop%20Bank/02-Fraud%2Bhub.png" width="1146" height="764" alt="The Co-operative Bank work, image 2 of 3" loading="lazy" decoding="async">
+        <img src="../assets/my-work/Coop%20Bank/03-media_13a709da7ab4a7be8233fb93f5a70460ff84e53c9.png" width="750" height="515" alt="The Co-operative Bank work, image 3 of 3" loading="lazy" decoding="async" class="wide">
+      </div>
+    </div>
+  </section>
+
+  <a class="case-next" href="bet365.html">
+    <div class="wrap case-next-in">
+      <span class="nl">Next project</span>
+      <h2>bet365 →</h2>
+    </div>
+  </a>
+
 </main>
-<script type="application/json" id="payload">{"salt":"ztR9hw5B9U6JbuMXEgx0CA==","iv":"6JLR+O2UFwhgzplq","data":"/u0Lc56CDPa18egwfASK/UaLaHHOnWeNmiTotvku4jP/6PB3wBxh0rP1Rb5roDPAqsBr+IVY596qIaOKJzXiHBTfVvLOIcXLCcJ9TNPdGx6PP7ocdrMq2u4jTNO67ISAFqOXjfXWR0OxbESGf4ULoyV/upIDq30Z/ua7yT6hXKcZJmQoJejl2rGonxcmByUuS2HRNTBFb+5vWh78qo6iv4RJz9vePpRsUCiwKq3Df7+oDEGyL/dXjXNkbzJAFMnWRHUmzB7TMJjorNJ6i3HsN9yRpgnwyPCzhF9oHKG9wv4SCLZdtVZ2MaYzIotD16sF6OjchJPejicp9wqh+5l3ZINHa45oBXktUDbtv+LUl/gj4imGQU9xWfgpEmimR4ULUPCv5UT8Oiq5YM+ePIe+DxRSlcmrSusTK9yVJw0xUka2urPOsxH6pSmEs2ihpEd0f9tm8KM/uCEMguMBgdF3Dt12+RF4iGORMr9VIFnCHILckazvjxwM7bHOemOat8wEn7OZSvXDANY1Rw6XCYsSc3CUdNAghcBgg4j9NWMfYUFYNrDJU/8+nyVuQ6ZFhleX6zNFN7sV5jfcr2fMHUKPE5u4O7ptqEP11fp/48Gz4TNOvzg5U4WrVGqjBL+880HY6Vtvqxtba2ea9F5cBFmqqExMHEHQcD1o+5d2RjH36L0coGvutZTWahTCAdNGP/7y4OkQZ7gF0fjP2zeK9VqGrtLZvnihxuy5LiHP1pl76Qpj+BBrtxVNt/cDPhZqSI9rKFO3QTM4uiJkgHD5j5NuYR+Omec0LJt3Q7A7qBf/RpE4BirxGQve8FCw6ZVWP9STHoKsKd0ZrZZB087+g3+3MxzlDO+irqWhmkTP0CWZC0VZrFFfG9lertzKj2dduAnwG97Qi2EgQonv0C4zGTH1t/V/527s+OD+fiG5P2jtAVHUFXpRUx0RNjzcqoIWPbuQzMenkeBb6GECS1WEpl/uSrlDc9B6Ycm4hlraSjLEKqyxglZhynY9aW8cIWkpAV+z2lE9Rwcx89ZhviyNd96v2p5J0Vm45oaWnkM86wbg/kqDuIxoXsZc8dKYyJR7834UkO7RzONjraNWGm3HPBMMn27MjaPG2DYkrIDq/sxtpjLohpd+kn2nBr0KjEMjIcHST0JflHQjw0plM+1wL70Kuz02NE4RzOhNKW5y7XH0C7f+pudWN87blik5la2WYA4+4gqwB1F9hZkSywmazhrhYKMJq+T3WC2E/URGJJANGXq/UPWBPNdKr5G8OxzVUjL73xCeh43BUCbOGIA17M2BLDB1XX+mOSKHzOsBdlnZVUeFBYryNyBrYU+XcIXfU6khmGHoM1+a/hqC4s0/ymb0G5X5pbTUQyacRql+/8DlAzPxgRj4vOlMO5rgazRx1kIilojGeQixEANtKyH8azKcI/94DPLFOTzYXylsspfo5mG1XhtspkMzveTTOwGYlafsmZXP2ezbIppKJCaKj4999H8/Xadjh45DPxOzqgN8KpXXZWibdj5MZhscqqCMJaUCewrRQYhhksblWYMcsESYY1QnqwhpXO4armA9E1OOTLxh8DRCHOeuDLR95tMsLIorodgjxHvlU2D7Yz/YmBm+etJdztc+vRZQ4UG+X+1MMOwtFq8VWw/FZ7OGku1B+ZnqkeR+0iodLqUtAbQHmAaU6azIHC6VfMz9/t8rF04YLJa5eNGQNUbi7JUfZsYj/UNmjgEe5VuFBUzGw4WRhtpivQChLYnej7aqn0wvtrQN7S+15xztqTpG80EzvPxeqEUC1x8ubBajfTUl6ghs/ldkPZmERaQhgs0xah21fE2nK3OVX8UCQwkeVqQ9xVwcUkf9XbgIpkwmjz8ouFq+6xnAMCOv+LjkkDHV6ZudWAMedODynT6QSb5CqbQcB35XNA8UJnqIgpBW8NaPYMsssak3e64TNHLL8xKQ+HCfOookQy3Ydho+7O7Mm6J3nYRIac8CLdoWn9XdUoSyMbnDMF4odmJ2ZFRaS/KOQK9mCjPAXibS0PLta5bUk8IurUJjSPB2pEDlIq1ICKwwTe5FkoDPskZvEcJarwF7ddafYsJ2TT/x2ggiXYdnsZ1bXPiqMPV/ZacuvlCqzkvAkUpgC+YuNYM+5ajo7sWTUqd0AQyXo3Dr0U7q4cMNzQi4AunmnvHGFmOIC6hxCK7wpJYA+2Ho+n0iPvFwpPZPC65AXMQYzFlM6HZVMamNfgzpJ1L8GoA4Fm24OXGeQyVXdStYKm2tO9rDKaraVcdSJCUuI6R70Jdl9TST1FLRFyu0HpebjtJVOIFKNiG3ml7SrckUwsN+ghyW7JloP6GjgUl47hxXkJBuU5kXCpGcUI83bmfsJOEbCR3NIDmtfd3wKNJgSABpuOYj6L04JBVbkYLNu9BbzE07tsNcuBgRqGoEMmUbHT3VAsQZ44FzGOh1c+qIQmUMlUWKsr6YtCwf99PFBnvmz4g9jvbsNppLdmvbWOHhTI/qEi8T++PLDrChUGxjbzjWpy4bnxKZeJ5lGqvdzeSGHY0k12qMTixSxt3p1nD55CdLNhjzbelJdheDbnjZ2x6OYI+b1KcIqmc6VGVYN5gDSNlN/tG5gdsrgDU4E799CC5UWG7UbnVb6enxXyApapNWpDlniQBb5fauKRD0TvYxkynd4W0kmpQXvF9nym3yp8LfsLURMHQTgdKzLRKk6BmOQ3BcsZweIABwq3eIRC8Yba1N8TDpTUrCVfVhDMsWDORJOPJGdOUKq1NVOPa8VEX3+gOTc0IwGtY2NP32wvWZjdinFYWG56dWMctA1VEFHOyhPkseNQuU3i94IKagFfde7/U2mj62dmV3SAPppau4MFgZltZaoiccJ7ls4S8MbqrA+B/hTl4i6gKAO7SbP7UUegDoeb7cBQk/s4I/WZDv8KRlrAAzDz7evvGMPtRaTZ+3ztCodebRh3Drc3zK0uHDTGuX9bYt6YjQLa7VekoQeLfQOdujSTt1gPavGmlQD9ny29PWw8NeCWEM2nNQ3dz4RIHzjtgDO/qYWu2GarnXOffxYI86/al4kw1PROnQiEc91MJfg+6mjSeV971vAO3lR21saJ4vq0u3t9zRmUTFQFYTxtUGbiffjRk/SHCbw1msbnCLnTp7fu5HDSxZDm9xpinEOItjbi4VEWyVsUV6bG1ReVLcq+xm+BEfICW9LO4ksQKc8x29hz7J9RYXfK+MzYqA3kk99w3MR4pAMJnMYTDxRx4emX0O9W0BEeVrYjCGDGlby/z8mUgSLID7Q7asin4n8ZoSRzMtREWVABaRiXCOyvd/k8M2Dz3OZcob/EqGArFIgBi573ofxSvP+DBC5vaqa1FLLPWQZtprJaPBTB0CChRqJ7+VcSGPvrZb5QTo6IQpieY/zp6Ms39tWzey86BAAVFzaUla3EOKm40WaWoYxQRhJ9jsc7FOoI/zCXBdaUM/ECprXPeWBfOlfsL/slYcnBTaVQ5Q52GPtHVXYQxmKa0+nxYEDKHkYh1Bk2tO+5o2kV19N0Api8aJuWj+AgT3byBh36N7trJdKN2kzCcehZ/vrs65EC5AlPuB14g/4quRNOuzwsTiBnbdNmcRaaFX8IAi5drYSOSkawthuvipCK85bgL+2aec41m3wy+PuciqABo/aJTCGuM6EC6kXUSDLjfMoQW1H4TywY+y9+q6L2q0L/orcDAGTaW+XC/iA0ZLmVwA0WK+I87GyvsRQ9FP/g5fMm+i16QxUNnPht4+AkiaBYy89nf9yUAEuPxQcygsj6jd8NDHiq4jZUK7wQd92Kc89C2Bp+KS3g9O7etNASkaUYw+r2m01uTEhn87Vsyo/TtbkovoXhqNuS9Ej53i8oGxIglxvPyG5mCHQImEwZpbYflrmxNH87E81vByTpZWjCEollhyr+Fneo30MHOcsJtaCskU11M3n54brV+BtM4HgBvMdaNxSoH/qeRb/AFa31ujqdzeCP539hnCWkdMHyXwQ3oQMPIFEwxyHw7vTwyfBfXhKF0WpkTJUqipAHkHklvUAC9tdrw1yx7h6cTS8S9NarF5t7AHFVIF9i9koTfnAfFDHuxXnsjctdB60F5lcPcW4Y9POXubm15KQWE89VoswHqgcIywTecgIzLh11mWMztynPqly0AYwIFIhC+iS6uOChFRMdBRZK/5u0a4um4wSOm51nHDFUL48LwIY+baEeH+R/UzstJLsQjhr3joeUtHHchsWkM4/pG5zRAIUkeP+V+q9ks2BdrcnXb8zKhngYpZsu3fiTU1k3r2A9uSveOxhf++udQXaFg0mITBphMy9Cs+lFRhzzCiB7mdrkQre4znt868vOoTeLgLDOce6vkTNrV6RLVcT4BmuzL0sw1AEUombloJDXDt4QFDixUXNPibILWuC8+8HH1e8/OSF4oqk6mKDJIj9Oa45sZTkIvLkL6Of8ZycbsIg8GfMfOxqbGeWqjgUEnlLBMmLMMfSokP4raMjyGkupsZLLRV3++T3aOLg/eEY3kw+XLT+XxFAKvZtqrLW0AohkxUkgCJK0dzsNmigwTutqCzCroOvwi01H7OmhZo0hxyjzUBvEKpNX0ryFMg/DCuwIt5SPUrtfa9jqjMCVT21w1Da6k5wYK04n2b9pUJ37BhjHlLSBDbARB4hZXgYUEWnbZTeGDP5WP2tDLunUMasPkCGAbWxBUref2Yw28JHHWhGxyDLqKFmd2ZvB0EzoMCgmfW8lxVvdQWLmilA/IGJP8g4UghpLzY6M+NtWhME2LNadjNK/bhrdTmWyTILCgwOxpZETR82iKJDKP2cXSHriJ30Or4KGNM3F10v0UY8Ot+qdKiiL0BKCryE2uas0r5ftAOHtKqRk3DrAvYcMKFRLX2LZzUbqy4fPrCedvoMRMyCWbs75+i8Fsrn7E2hRKkLrrSZDGyX91NyaxgvICmJ7ZY94BRkS0eSO4ZFlOJjiDHZhzkmXl2bdMxh0szDVAEa1EzPDQdaiHz1T8B+/rmp4pFxLsKqszWX6ihAtE7QBSq8HJEXXj7ql56mlAgo9aaGVCh9mJJ2D+aBc7Rxy6Qtpmcniu+6FoZJnrgnWP0S+mKt3+7wdF7hUxoxwN2l/qozEJawjASRt+MuqJGLfppvyAf4RqLbhGkduIohBrGJwEtsmxtkIr+HIEdz/KRk0/YNzLh8U5WBHQmfmKZOkgkP8sLAByGCi9IZcmPRvmOkpGt3GFbtvNZljSj7I/Rn62okL6vFM+RSz5qSi/vdRbiCha26amgs6b32zi+Iwe/gzpEQUss+LFUtQnqDtZc16ncSNnCQh2zAcqhW4BHxuWevxgmieAvo6b/kQYujAHeg3dtTI2F5T61vaq8r/bILm17VMQuNbM7NVWzXyMAg8qwSIjrSl8eiNVJ4ZB2AYbVoZQBWsZ1h6L73J6hmdvwjlGROhK3V8XYAZA2+Yj8e9qQJT5QI84XQlFDpWxiKuljKmsHXf3HHrK9XreaVgXAv/vFmkISfonT9F/Z0Hbvf6IutBulkHzXQu3N2F0IGHjnIj/iDTEvTIhxgv3IYXQaQKFZXBDg/g1zjqPPinnq+2r7TM19Ks97uinabO0UEMXxCnLJaAgqJXWhADBs4VFEll8Q62gQM69ua0ALuh3EbbRS5h7qJtwMGnOVeV8rQz6cfndwgKWFVfjuWCL+zBFCWs30MUmMP+VXG3YHjl+E/74o5UBqyOX7zPBVYfjmXS67mGTFoaKtcUIvkIfblNmZGnU6NJKbrgOGsQTFIwKZozgFz43mLcANTyXNyejaxag7RijEY28/KiqV7/pe3k2GyOG6j+WJ45WJrf1uoCpxq8HNO9KN1DIrYDUjdHuka0NLrenPPFr+yzvOwKEBfJI4qRkxhKM7yIj72W9ZHDDm+E5sN7xlYylAwn00B3EYMK68JJdfHVhFfmNsl/XPTUa0F8AtABZhkqo/ce0aHw0WPxT0VnsorOMlRrIV2+c9YYh0vwvEwQAkzGbR4bqJzn3c/1N9I9APREMDX7EkcUf1usSYWqYvB47o9cucQ5dlvObsy9daBasqn+cKTKXAwkznwerUL6tB+GaGJpiJxp+VZEiNPKKoGZFcozO8HjposVV+F4pxPlQq2X+0YmwwxwHc8MV41An7Fr41f/PMDDsSJKfEQJI8MOx+0m+Q12ELduRywVRTwPsfTqL6XwtZywTRpZeeO9mMhFZ7Leq+h0KIcP8nIo1GhkjJ2HsZmWsDoP+D6MInhul7/7TjrFNq7pRbrmO17d4UCszZkXMD23ZlOfZGdixDm78mTpO2eQK3tX+jfy+rZgm6CAMfAdfV2Igpp8JfzZ1sPYlJMhcKzlBS/n7NsVBDflLtFoNI9g9Hh+1F3MRalC2X2bQcBYMN8zcr08tjRJbczTxVQ2Mbon17uWqG8r9eKuUHh7vn4PAaPQWgVYiLGlGNQp241fky80KZ9eCWK4NkZRt0nU/R26ucaoRAU1SBDi9E9vEOVtgyYpIWkv39eol21qWyPFZ/KhBb7APNcDrcnhavfMrPDUJg1vgTeBJhVG5KQoTRYKCDqjBXtHUk7XDt14VRyUmuMW947u5i1ejXNs8Gms+eWZr8Tn2lcs1mU0LQ4adsFSwyoBoTbTPCwQa5l7OVZ9k/vOI0zaEpipBe6l11LqgIdQqd2E51V5uYQY1i8s5kMkSgE5HSrdu3O4Vi0KOWswwQBPb9mziWjhCSwdub/JVCf80Wl+9Rbgv62c3SAcyBSx5mATjEQKriG398923yNKGuzVte243xwHxyA47PlCx2q9i/G/BndYzSE0iZT9GgegLQ0flu8ZuQ6AJSMjiLMTy2lmleRSDwTASe0teRe3lsiO5FF7Rdl3/z5ZdjTyJQPawLPePblUC0BKTyDR4RC3FHc7jLiDDvYEl5CqPMXCSAKw7YpGPl0XqQ/TrZ4j7T251pDSJ+U9hAVbz2u/w7edKCaPnB1ivDVLOrSKeIZdBckd8tkn/CQKoTVUF8dv/6nRTNyrrwopFANqMMJ0AkrldfeKo551hKvTWlGi/OnwOAilfQZZP6ZCAUlfTagdA041dQGYqIYzJETPZLvDouLH7on91etUiJEjo6+0ukscDbUDzjBwSWPoinQeR567Nc0oya68C1odpRp6K6VkuuGg79r99fIloGNPJr/pZCcm2VtZByKIwRwONdJoqQ9sjmLDmnAAJlaAykmjOBIAQsE7coGPjTEdxgnBGtPDkeL1nQkOxk6Ruc8ewYP5mD5RuGojBNPq9IRKO4nUeXSb+ThP3b5JZ1keyWCDcXjQVlqpw7YSmlyszAbwg4QveoDy7HhzynOUsuNyToQRamGLNAEMl30KDpr9nqxDgfc8E2N6Hhq7SYFzKipOYXxC9zcVGH8Qb61Fdgoy0/ZxhFxJfFqeUjz06ALF1MjNaU11uY40loAq53TH3f/riwO+mfk5+d6+O/uPYlMXd10Wk6n6iSF9T0elp7zsvx/fbJ/0ijEAQNqJ9iYahiQVsrSDnqwB/XUNJfXYeCkrNezCFFXPR+kSN8cNMUDVjsR6bxO+/mpkqmd4Wvh+3c6Lk5QlFeyMmcNJequ6WB8z71bISqZHEn0mHq1gdPIpRUYwdlgF99WQrVyZ96Q664taQdmLgHBRvzjZmxo84QBhpSTVvdXt3AX1V7okhIbPJoCitE0tqFEt+XHyZLKaPcex2pNNJopImdH9GZB1rrwGSS5/njOxozkELp0EDquaxKBnbUv/aAeXCGlzSJr2QnrKd4CQgdFXMwNalsie2jXgLcL64dsqkA2E81VBm0eed2oLskjMUTWcFM2NK2zc7RXOKhYqTkE5PkDGPoZchLeRlEji/PwopKU6eO7Wi/6MVXONzrbP06GjEAKGgMtNb6rg3yKlncCR8JHpteYXgDU1QzLvVWwVoEHxOpRyGhZe1oIl5/TnHk2WvRI3Um8Sux/dR1UXXqM3p4I5YgSI2BO/QZw4Csl4D6VJYo31ghh/TDoCHfjP2MuqD5G3GUbyU+TAqj5NohYoXgW8FORkfIm7DpSr7XUN1MxfCug0XHZqhskGQtLypjV0X+imlZCRV684cUHyxXFo9cM2ShQB0mgQDPUkxwJ19XF/4d0oa0cif6Ql/8GerO4YLq68Vn3hxtpQqby37Kq5el/aOs0BJ4iGt0xoktuKtrNmEWUOG5n+auuubI4fA3jbyl3rUp2rSajGnHtWZGRSxSElt4g6CN6Xp00Q4WyXAPFtJ03JKP6LygUbWiDAeXRDUDwAVOehij1wRQlIyIYEghuE/wLCwWI9N/Bhi+GEQRJ7FbqXLuaiL1yyubLKV13JwtHwgKq4NF7IW9yg4W2ZwqFtcgtt7iHhd1vpF27oHaiIcJx+3tLKiFZ2hx4nG3TyX4uSYdaJTYjJSaFhsjcmd4Rlgr2Wl4sYtMLV7YpZ0Ifg+SLzGKt2zFrgsKS5/tTLNy6w34Z6+1gmCrtwJDJcW3C3eam5zxD9lXDNleBJryDcBj4KpS8J3SIXg6v1xMpKakgSVixkGrsG87Xq4BKgNJqSrAkpuKOyHfwwpkmD9uevKRETnti6mESr3fyFULewnO6jo8j4wJFhPJWpmsyyyq6t5iXXdVjbhSsqmhmxZPs3vGD2FnOstsEcANM41K/ePdwAE3dJF44+1raY/4lwENQd3Ek3JgImVLOTBdRx87WlqLYsBbK4nQ94wZC2WOW8UfdsGD5jfomZsjX9MLEZLJkEg85Q8uBRmNQ8IH4fq4+s6NNW4pdspllm/YC6HUsZqrMmrRBhSkcxUlZCJUkSN3hIcAz1kCLFi10w/bs7TmTLa9x6bjDpYmaF8zqcOWIebGxzp+FMh1Yu11H7AidS/D6aBeMdSiymtwgVWE+JBVMeY4Pg3VRtdpeyI5r5bk4KjWEnNacxu7GHusI/quY+KFc6FOS4ak4u0r6PQGTao34/+5v26qxchwIeRIdF8ftaAOVwcZXBAj1d9eZiT6nQ2m/dzOAhzK1RWXAYxOfhWGbp75jXxbZs7MR9r7BvvgXmpwwjesMuLbHappEyM2kPXIet/PTnRJtSM4vMwyqqW4Eux9Zb3UsNlE/yNx7Eaki9bxa8RZYaDah85wzJJM6Wc8vI9bs83/mxq9iiUBiXKuU0i5ReMQ6jbnvyDaH8yKBwuA9t5xeXDUuwYdt5bAJQ8foGoyY/RKWJYfqtM5uGGuxoVuDKnT0myvsZg6GhVN7UqU90C2LIX/h7R4AJNAYOMUX7SSvF3ymeREuH5nhKIByzDTxmAuCoJt4gesMyBoeBE9bvuhLM8cp/k452D9Tg4++i4yqpd8xUk3m0BmN0YxnK3k8u07IymUfsbSG/D/fV0z02yAv4XpwbEhzL9zaLFERnfsG7SU+0JKDpqew2VE5nrGvvRR79oEhfK/eMTXWBHRhD0HzawcMaZey/I3BNOKYudlsHbPeE0SsSpv9FmoCF/XNTQd9nChU0uF840ay7IrmpT+cf0KfmniTIdPnCmoXuw9bkGIRe4+QawZueY78qbEDO3kz9/LXjKPc8RuVqcAQYkkwK6vZBQg+kw+nmRiobef2+xCkZpwd6qBfQKqxAsNYysSH233+IR177p6y5hTIgSGVpBucYtpGwInb0RIKHk//0tUGKy5r4H+H8dkPiNgqS6lRYYMMcxVQKGHg59+Ijc9guf97sH5TxRS8ns1d9jkI5xPvr21f1nomErr30rDacop30hC/vVqhWJHRubhLnIlB0zB624L+gd2rxGjjvScAyxLXmeHEv8tfYGd4cXAFcPg0vOYGSbkI6EXqMDC23oSvcorKoFBO4mJaaPhZYip2z/k33ty7X1LsB3+7m05pNnQs6h973Rp2NE9qZim3O+jpJ7GDAvcFs9kTgLj5jY5J6MKNFLTcimqzoW3/0yMXQgbL+HN4JNE85pfPJrAeqYYt0XE4oAI9Tb9dqZ4/t3VtiTJTwQPg7CfJq9HEKIY7NSp9pIPd0jTZnJtNCrVbM/sC7R9dCMbNu5K41dyoWoat8Bxsn1CLYSv9mRk74afbhJWK/AvAwpHdoRna3mHXoAjyQRVYNPRYk5FU1ZmO9l8gFXql/yzAVGYgrtz7apjxfdPCj9259Imob4WQUpcLeA7SsAJRuwAqRM/GeOH9N3WotxA3cWYornUbF19syDGcaDt0jpCnMMD2ZDh+T44AC3xHKP/coHne2JgTm/kRLqCbxTZJcEdCYo9C+sEHHbnZ/HeXsM7UNx8WOumgnuz3gEqSSMsUgxM5wlq5AG7ra1UBpc3Gltn+nXp2RwLkCS+gyd+cUOlvgiKAfl5vxuYqi/bRrLFgczZV0BcJDw33QpGqwLREwvTBFMCdMuurVe7Y/0CULSk05oo/eOP6wG8XW2FT1zsi3w3PqNZhPbnZ0bXMH4u0Z3CV/KKS8KI+/fRuoBCNnTMC95yK9G2jP9Wyjhf31OYXRxYy4bBq5D8mMBtvN10sF9lLPVUavujoUuNhJn67PJWopARp3NFWLE6By+ICSjEN8Y6VIbDGzVmyRQ8MIL+gQ2PuQ+D2pN+bZBtp2hCZFKDFi3DopPBhGKSjJQJemMNcJ+ci5peYNguyyGvdXzB+QkI8zUqMT9MZYuD6mp0k52k6NgMz24emtxhm7vWMSgEtRuOhFrbXZ/iojbI3pD0b2NrL9Sf1zR7BzzYz5tfj10/pa4IWrZZRa3YXOq2NxagXs2kvNMrFjDrlZjRSeYAIOvWjNpO5D/tr33vPt0mQ4x7Jy74lfgYau5F3w/Kob/vZih+k3gJDSGVWoDwQgZ6jg6t+0Tdp+iABzjFwLE6CH+10sO2D2MYm2h3mD5KN3Rn2ooqjgBHdkZQV9MUPV+WmBxwYkJgcV6RSFgkkEYylI77Qt7ZNfxXui4hRLST8Kvh/0LX8Sgm6sOZsL9PYFJ10Dkkxv5Zpa/yVfOLMmBiZcH6LnyBPcEWqKpMzDxRkXFe5H7OicgOKOq/+VDVXuPGF4GwCAuyGGqJr9cW23OBIqy7cMBX5puXRWdQOn/onYi2rmBAQnl5FBR7fZPiaVpObcJeX6NBYZxpWbiDOtd1H1mTezqLVnKd4B34ghvnSGI+6SmypC/CUQTBs9E4cfgQ5c0x7HpW9bNP24hOaUErseraLhNfk7tWanPaOUtpuu6VksXbuX5L3yba1qQCs5Pk4/3hDwWYNq9P8RBn/s2Iv6ujXUWe5EjLGz8RaaZ1GIpqhijm5hH1wNAUbhVt3nagPbpzOLhowBZ14qK8BsmroQvs+t0aLw0zUpmA0HAjrXZLyJRTt7LE1B8ObafBmnzB5obR1T6nRHn8X0BioqAI+mLbWOB367oCC6T4Ms0uDHSzU09Wx51FdtSnL2RL87VqcBR0TmZ/Re/CIqOQRpdI5/EwhlnI1MdBxo3/Wppds7kC8I6F/+TlMhn08HtfAYLi2n5YBJ6Q/5cMO7kXU/oU/XH6+KXYBisGyobJy9cUgmDYz2pXyrxzy9QGLfI7ML3mJaHLCv2SYMcD+NfyoTRPTJjjmTcyuv83Rh4WkXq2iOd18dAu8xJuwal5MuS+sLtS+BeRQS6lo1xJL2cFxDjwHX4lVkOdxtnoJ9uhC4ywq4BUPAPTsRO8DifMa6QIx6kDmmgKfLKbpSrEdTGFzaX3M7ygr/2lyzFmjynmiU/LuIzrfoyjpfJTfsLB"}</script>
-<script>
-(function(){
-  var payload = JSON.parse(document.getElementById('payload').textContent);
-  var un = function(b){var s=atob(b),a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a;};
-  async function tryUnlock(pass){
-    try{
-      var baseKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
-      var key = await crypto.subtle.deriveKey(
-        { name:'PBKDF2', salt:un(payload.salt), iterations:310000, hash:'SHA-256' },
-        baseKey, { name:'AES-GCM', length:256 }, false, ['decrypt']);
-      var plain = await crypto.subtle.decrypt({ name:'AES-GCM', iv:un(payload.iv) }, key, un(payload.data));
-      var html = new TextDecoder().decode(plain);
-      try{ sessionStorage.setItem('jr-case-pass', pass); }catch(err){}
-      document.open(); document.write(html); document.close();
-      return true;
-    }catch(err){ return false; }
-  }
-  var saved = null;
-  try{ saved = sessionStorage.getItem('jr-case-pass'); }catch(err){}
-  if (saved) tryUnlock(saved);
-  document.getElementById('f').addEventListener('submit', async function(ev){
-    ev.preventDefault();
-    var ok = await tryUnlock(document.getElementById('p').value);
-    if (!ok) document.getElementById('e').hidden = false;
-  });
-})();
-</script>
+
+<footer>
+  <div class="wrap foot">
+    <span>Jake Rayner, Product Design &amp; Studio</span>
+    <span>Manchester, UK</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

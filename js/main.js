@@ -516,6 +516,13 @@
      by the title cards. Null where the browser has no WebCrypto, in which
      case openCase just follows the link. */
   var requestCase = null;
+
+  /* The case study password. Off for now (September 2026) so the case
+     studies can be built and checked without unlocking each time; the gate
+     code below is untouched. To turn it back on: set this to true and
+     encrypt the pages again with tools/protect-work.mjs (see its header). */
+  var CASE_GATE = false;
+
   function openCase(url) {
     if (!url) return;
     if (requestCase) requestCase(url); else location.href = url;
@@ -524,7 +531,7 @@
   (function caseGate() {
     var titles = document.querySelectorAll('.col-title[data-gated]');
     var gated = document.querySelectorAll('[data-gated]');
-    if (!gated.length || !window.crypto || !crypto.subtle || !window.fetch) return;
+    if (!CASE_GATE || !gated.length || !window.crypto || !crypto.subtle || !window.fetch) return;
 
     var veil = null, input = null, err = null, button = null;
     var pendingUrl = null, pendingPayload = null;
@@ -658,26 +665,21 @@
   });
 
   /* ---------- 1c. Work gallery ----------
-     Tapping a work photo opens that project's photos full screen. Swipe or
-     arrow between them; the project's logo and its one line of caption sit
-     at the bottom next to a View project button, and that button is what
-     asks for the case study password. The tiles stay real links, so with no
-     JS (or no WebCrypto) a tap still goes to the case study. */
+     Tapping a work photo opens it full screen. Swipe or arrow through every
+     photo on the page, not just the project tapped: the last shot of one
+     project runs on into the first of the next, and the end wraps back to
+     the start, so the whole body of work can be flicked through in one go
+     (asked for explicitly). The project's logo and its one line of caption
+     sit at the bottom next to a View project button, and both follow the
+     shot showing. The tiles stay real links, so with no JS a tap still goes
+     to the case study. */
   (function workGallery() {
     var tiles = Array.prototype.slice.call(document.querySelectorAll('.col-item'));
     if (!tiles.length) return;
 
-    /* Group by case study url, not by .col-group: a group can hold several
-       projects (the four retail brands share one), and a gallery should only
-       ever page through the project you tapped. */
-    var groups = {};
-    tiles.forEach(function (tile) {
-      var key = tile.getAttribute('href') || tile.getAttribute('data-href') || '#';
-      (groups[key] = groups[key] || []).push(tile);
-    });
-
-    var lb, track, foot, logoEl, nameEl, metaEl, goBtn, prevBtn, nextBtn;
-    var shots = [], index = 0, url = null, lastFocus = null;
+    var lb, track, foot, capEl, logoEl, nameEl, metaEl, goBtn, prevBtn, nextBtn;
+    var shots = tiles, index = 0, url = null, lastFocus = null, slidesBuilt = false;
+    function tileUrl(tile) { return tile.getAttribute('href') || tile.getAttribute('data-href') || '#'; }
 
     function build() {
       lb = document.createElement('div');
@@ -712,6 +714,7 @@
       document.body.appendChild(lb);
       track = lb.querySelector('.lb-track');
       foot = lb.querySelector('.lb-foot');
+      capEl = lb.querySelector('.lb-cap');
       logoEl = lb.querySelector('.lb-logo');
       nameEl = lb.querySelector('.lb-name');
       metaEl = lb.querySelector('.lb-meta');
@@ -764,7 +767,8 @@
         }
         /* the gesture is ours now: stop the page or a parent taking it */
         if (e.cancelable) e.preventDefault();
-        /* resist at the two ends, so the carousel feels bounded */
+        /* resist at the two ends (there is no neighbouring slide to drag
+           into there); letting go past a fifth still wraps round */
         if ((index === 0 && dx > 0) || (index === shots.length - 1 && dx < 0)) dx *= 0.32;
         place(dragAt + dx, false);
       }, { passive: false });
@@ -787,32 +791,14 @@
       });
     }
 
-    function paint() {
-      prevBtn.disabled = index === 0;
-      nextBtn.disabled = index === shots.length - 1;
-    }
-
-    function go(to) {
-      index = Math.max(0, Math.min(shots.length - 1, to));
-      track.style.transition = 'transform .42s cubic-bezier(.22,.75,.2,1)';
-      track.style.transform = 'translate3d(' + (-index * track.clientWidth) + 'px,0,0)';
-      paint();
-    }
-
-    function onKey(e) {
-      if (e.key === 'Escape') { close(); return; }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
-    }
-
-    function open(tile) {
-      if (!lb) build();
-      url = tile.getAttribute('href') || tile.getAttribute('data-href');
-      shots = groups[url || '#'] || [tile];
-      index = Math.max(0, shots.indexOf(tile));
-
-      /* the caption is the tile's own hover caption, logo and all: one
-         project per gallery, so it is fixed for as long as this one is open */
+    /* the caption, logo and View project button for the shot showing. Only
+       touched when the project changes, with a short fade so crossing from
+       one project into the next reads as a change of project. */
+    function caption(tile, fade) {
+      var next = tileUrl(tile);
+      if (next === url && !fade) return;
+      var changed = next !== url;
+      url = next;
       var cap = tile.querySelector('.col-cap');
       var logo = cap && cap.querySelector('.col-logo');
       var name = cap && cap.querySelector('.col-name');
@@ -823,7 +809,56 @@
       nameEl.hidden = !!logo;
       metaEl.textContent = meta ? meta.textContent : '';
       goBtn.hidden = !url || url === '#';
+      if (changed && fade && capEl.animate && !reduceMotion) {
+        capEl.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 360, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      }
+    }
 
+    /* Every photo on the page is a slide, around 120MB of them, so a slide
+       only gets its image when it is showing or next to the one showing. */
+    function hydrate(i) {
+      var n = shots.length;
+      [i - 1, i, i + 1].forEach(function (k) {
+        var slide = track.children[(k + n) % n];
+        var img = slide && slide.querySelector('img[data-src]');
+        if (!img) return;
+        var box = img.parentNode;
+        img.addEventListener('load', function () { box.classList.add('is-loaded'); }, { once: true });
+        img.src = img.getAttribute('data-src');
+        img.removeAttribute('data-src');
+        if (img.complete && img.naturalWidth) box.classList.add('is-loaded');
+      });
+    }
+
+    function paint() {
+      var single = shots.length < 2;
+      prevBtn.disabled = single;
+      nextBtn.disabled = single;
+    }
+
+    function go(to) {
+      var n = shots.length;
+      if (n < 2) return;
+      /* past either end wraps round. The track is one long strip, so a wrap
+         jumps rather than sliding the whole way back across it */
+      var wrap = to < 0 || to >= n;
+      index = (to + n) % n;
+      track.style.transition = wrap ? 'none' : 'transform .42s cubic-bezier(.22,.75,.2,1)';
+      track.style.transform = 'translate3d(' + (-index * track.clientWidth) + 'px,0,0)';
+      if (wrap && track.animate && !reduceMotion) track.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 320, easing: 'ease-out' });
+      hydrate(index);
+      caption(shots[index], true);
+      paint();
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    }
+
+    function buildSlides() {
       track.innerHTML = '';
       shots.forEach(function (shot) {
         var slide = document.createElement('div');
@@ -833,22 +868,36 @@
           var box = src.cloneNode(true);
           var img = box.querySelector('img');
           if (img) {
-            img.loading = 'eager';
+            /* the real src waits in data-src until hydrate() */
+            var tileImg = src.querySelector('img');
+            img.setAttribute('data-src', img.getAttribute('src'));
+            img.removeAttribute('src');
+            img.removeAttribute('loading');
             img.decoding = 'async';
-            box.classList.toggle('is-loaded', !!(img.complete && img.naturalWidth));
-            if (!img.complete) img.addEventListener('load', function () { box.classList.add('is-loaded'); }, { once: true });
+            box.classList.remove('is-loaded');
             /* the box keeps the shape of the shot so the photo fills it
                exactly, and a zoomed one is clipped by it just as the tile
-               clips it. A crop overrides the ratio with its own. */
-            var natural = img.naturalWidth && img.naturalHeight
-              ? img.naturalWidth / img.naturalHeight
-              : shot.offsetWidth / Math.max(1, shot.offsetHeight);
+               clips it. A crop overrides the ratio with its own. The width
+               and height attributes carry the file's own shape, so this
+               holds before the image has loaded. */
+            var w = +tileImg.getAttribute('width'), h = +tileImg.getAttribute('height');
+            var natural = w && h ? w / h : shot.offsetWidth / Math.max(1, shot.offsetHeight);
             box.style.setProperty('--nat-ratio', String(natural));
           }
           slide.appendChild(box);
         }
         track.appendChild(slide);
       });
+      slidesBuilt = true;
+    }
+
+    function open(tile) {
+      if (!lb) build();
+      if (!slidesBuilt) buildSlides();
+      index = Math.max(0, shots.indexOf(tile));
+      url = null;
+      caption(tile, false);
+      hydrate(index);
 
       lastFocus = document.activeElement;
       lb.classList.toggle('lb-single', shots.length < 2);
@@ -869,7 +918,6 @@
       lb.classList.remove('open');
       document.documentElement.classList.remove('lb-open');
       document.removeEventListener('keydown', onKey);
-      track.innerHTML = '';
       if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
     }
 

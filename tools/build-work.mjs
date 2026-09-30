@@ -186,12 +186,13 @@ function imgStyle(img) {
   return bits.length ? ` style="${bits.join('; ')}"` : '';
 }
 
-/* the hover band for a shaped shot. Its mask is written inline, not passed
-   through a custom property, because a relative url() inside a custom
-   property resolves against the stylesheet (css/) in some browsers and the
-   page in others; inline it always resolves against the page. */
+/* the hover band for a shaped shot, masked by the image. The mask is
+   written inline, not passed through a custom property, because a relative
+   url() inside a custom property resolves against the stylesheet (css/) in
+   some browsers and the page in others; inline it always resolves against
+   the page. */
 function shade(src) {
-  const mask = `linear-gradient(to top, #000 0%, #000 21%, transparent 55%), url('${src}')`;
+  const mask = `url('${src}')`;
   return `\n              <span class="col-shade" aria-hidden="true" style="-webkit-mask-image:${mask}; mask-image:${mask}"></span>`;
 }
 
