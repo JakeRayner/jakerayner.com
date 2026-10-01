@@ -110,13 +110,14 @@ def collect(page):
 def build(page):
     path, s, items = collect(page)
     lis = []
+    n_film = 0
     for it in items:
         if it['type'] == 'image':
             f = os.path.normpath(os.path.join(ROOT, 'work', unquote(it['src'])))
             th = thumb_for(f, slug(it['src']))
             lis.append(f'<li><a class="thumb" href="{it["src"]}" data-kind="image"><img src="{th}" width="480" height="360" alt="{html.escape(it["alt"], quote=True)}" loading="lazy" decoding="async"></a></li>')
         elif it['type'] == 'video':
-            name = 'film-' + page
+            name = 'film-' + page + ('' if n_film == 0 else f'-{n_film + 1}'); n_film += 1
             src_file = it['src'] if it['src'].startswith('http') else os.path.normpath(os.path.join(ROOT, 'work', it['src']))
             th = thumb_for(still(src_file, name, at=14 if src_file.startswith('http') else 3), name)
             lis.append(f'<li><a class="thumb is-video" href="{html.escape(it["src"], quote=True)}" data-kind="video"><img src="{th}" width="480" height="270" alt="Film: the hero video from this page" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span></a></li>')

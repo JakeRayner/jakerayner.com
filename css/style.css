@@ -1584,3 +1584,5 @@ html.glb-open{overflow:hidden;}
 .hmi-ctrl svg{stroke:var(--ink);}
 /* Scope gets a double-width column so it wraps onto fewer lines */
 @media (min-width:901px){ .facts{max-width:none; grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,2fr);} }
+/* a full-width film opening a section, then its text below */
+.cs .app-film{margin-top:0;}
