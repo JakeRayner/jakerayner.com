@@ -32,6 +32,7 @@ IMG_EXT = ('.jpg', '.jpeg', '.png', '.webp')
 EXCLUDE = {
     'aston-martin': {'app-phone-and-watch.webp'},
     'bentley-motors': {'infotainment-navigation.jpg'},
+    'debenhams': {'design-system-brand-centre.jpg'},
 }
 
 def slug(path):
