@@ -72,7 +72,7 @@ const HOME = [
     tags: ['Multi-Brand Design System', 'App', 'Responsive Web'],
     images: [
       ['case/dg/design-system-laptop.jpg', 'Group design system · The design system site on a laptop', { span: 12 }],
-      ['case/dg/design-system-component-library.jpg', 'Group design system · The component library', { span: 12 }],
+      ['case/dg/design-system-component-library.webp', 'Group design system · The component library', { span: 12 }],
       ['case/dg/boohooman-product-page-mobile.jpg', 'boohooMAN · Product page', { span: 7 }],
       ['case/dg/boohoo-listing-mobile.jpg', 'boohoo · Mobile shopping', { span: 5, crop: '662.67 / 703' }],
       ['case/dg/plt-app-screens.jpg', 'PrettyLittleThing · App screens', { span: 12 }],
