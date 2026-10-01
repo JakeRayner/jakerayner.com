@@ -31,6 +31,7 @@ IMG_EXT = ('.jpg', '.jpeg', '.png', '.webp')
 # pictures kept out of a page's gallery even though Home uses them (asked for)
 EXCLUDE = {
     'aston-martin': {'app-phone-and-watch.webp'},
+    'bentley-motors': {'infotainment-navigation.jpg'},
 }
 
 def slug(path):
