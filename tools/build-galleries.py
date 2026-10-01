@@ -28,6 +28,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 THUMBS = os.path.join(ROOT, 'assets', 'images', 'thumbs')
 PAGES = ['aston-martin', 'bentley-motors', 'debenhams', 'co-operative-bank', 'bet365', 'barclays']
 IMG_EXT = ('.jpg', '.jpeg', '.png', '.webp')
+# pictures kept out of a page's gallery even though Home uses them (asked for)
+EXCLUDE = {
+    'aston-martin': {'app-phone-and-watch.webp'},
+}
 
 def slug(path):
     base = re.sub(r'\.[a-z0-9]+$', '', path.split('?')[0], flags=re.I)
@@ -70,6 +74,8 @@ def collect(page):
     main = main[:main.index('class="case-next"')] if 'class="case-next"' in main else main
     items, seen = [], set()
     def add(key, item):
+        if os.path.basename(item.get('src', '')) in EXCLUDE.get(page, set()):
+            return
         if key not in seen:
             seen.add(key); items.append(item)
     # the page, in reading order: films, YouTube videos and pictures
