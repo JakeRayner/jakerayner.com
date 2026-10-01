@@ -1417,7 +1417,9 @@
   Array.prototype.forEach.call(document.querySelectorAll('.video-btn[data-yt]'), function (btn) {
     btn.addEventListener('click', function () {
       var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + btn.getAttribute('data-yt') + '?autoplay=1&mute=1&controls=1&rel=0&playsinline=1';
+      /* data-start: seconds into the film to begin from */
+      var start = parseInt(btn.getAttribute('data-start'), 10);
+      f.src = 'https://www.youtube-nocookie.com/embed/' + btn.getAttribute('data-yt') + '?autoplay=1&mute=1&controls=1&rel=0&playsinline=1' + (start > 0 ? '&start=' + start : '');
       f.title = btn.getAttribute('data-title') || 'Video';
       f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
       f.allowFullscreen = true;
