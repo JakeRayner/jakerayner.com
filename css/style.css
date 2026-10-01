@@ -1236,7 +1236,7 @@ footer{
   mask-repeat:no-repeat; mask-position:left center; mask-size:auto 100%;}
 .proj-name{font-size:clamp(22px,2vw,30px); font-weight:500; letter-spacing:-.03em; line-height:1.05; margin:0;}
 .proj-when{font-size:13px; font-weight:500; color:var(--ink-dim);}
-.proj-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; max-width:820px;}
+.proj-meta{display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; max-width:1000px;}
 .proj-tags{display:contents; list-style:none; margin:0; padding:0;}
 .proj-tags li{font-size:12px; line-height:1.5; padding:7px 11px; background:var(--glass); color:var(--ink-dim);}
 /* the case study link: a tag-sized solid button, white on the dark themes,
@@ -1522,9 +1522,12 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
   .split{grid-template-columns:1fr;}
   .split.flip > .split-media{order:0;}
 }
-/* Home project tags and View details button, a size up (asked for) */
-.proj-tags li{font-size:13.5px; padding:9px 14px;}
-.proj-go{font-size:14px; padding:9px 16px;}
+/* Home project tags and View case study button: one size and one fixed
+   height, so the button sits in line with the tags (asked for) */
+.proj-tags li, .proj-go{
+  box-sizing:border-box; display:inline-flex; align-items:center;
+  height:38px; padding:0 14px; font-size:13.5px; line-height:1;
+}
 @media (max-width:620px){ .split-media .dg-cta-row{grid-template-columns:repeat(2,minmax(0,1fr));} }
 
 /* Home, matched to the Figma frame (October 2026): ten and eleven column
