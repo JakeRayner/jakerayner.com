@@ -476,7 +476,7 @@ section{padding:110px 0; position:relative;}
 .works + .works{padding-top:0;}
 .works-head{display:grid; grid-template-columns:1fr; align-items:end; gap:8px; margin-bottom:clamp(40px,5vw,84px);}
 .works-label{font-size:13.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; align-self:start; padding-top:.6em; opacity:.72;}
-.works-title{font-size:clamp(56px,9vw,150px); line-height:.9; letter-spacing:-.045em; text-align:left;}
+.works-title{font-size:clamp(44px,6.5vw,104px); line-height:.9; letter-spacing:-.045em; text-align:left;}
 /* one group per project: tiles sit tight together inside a group, and the
    big gaps fall between projects */
 .col-grid{display:flex; flex-direction:column; gap:clamp(72px,9vw,170px);}
