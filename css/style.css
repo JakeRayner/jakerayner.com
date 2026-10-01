@@ -1509,7 +1509,6 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .split > .cs-grid, .split-text > .cs-grid{max-width:none; margin:0;}
 .split-text > .cs-grid + .cs-grid{margin-top:clamp(40px,4vw,56px);}
 .split-media .dg-ctas{margin:0;}
-.split-media .dg-cta-row{grid-template-columns:repeat(4,minmax(0,1fr));}
 .split.flip > .split-media{order:-1;}
 .split-media{display:grid; gap:16px; min-width:0;}
 .split-media > figure{margin:0;}
@@ -1528,7 +1527,6 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
   box-sizing:border-box; display:inline-flex; align-items:center;
   height:38px; padding:0 14px; font-size:13.5px; line-height:1;
 }
-@media (max-width:620px){ .split-media .dg-cta-row{grid-template-columns:repeat(2,minmax(0,1fr));} }
 
 /* Home, matched to the Figma frame (October 2026): ten and eleven column
    pictures, the eleven against the right edge, and the earlier projects
