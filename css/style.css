@@ -1434,3 +1434,11 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .hv-toggle::before{content:""; width:12px; height:14px; border-left:4px solid #fff; border-right:4px solid #fff;}
 .hv-toggle.is-paused::before{width:0; height:0; margin-left:4px; border-right:0; border-left:14px solid #fff; border-top:8px solid transparent; border-bottom:8px solid transparent;}
 @media (max-width:760px){ .hv.r43-small{aspect-ratio:4/3;} }
+/* sound on and off, beside the pause button (only on films with audio) */
+.hv-sound{position:absolute; right:64px; bottom:14px; z-index:2; width:44px; height:44px; padding:0; border:0; cursor:pointer; background:rgba(11,11,12,.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:grid; place-items:center;}
+.hv-sound::before{content:""; width:22px; height:22px; background:#fff;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 9.5h3.5L12 5.5v13l-4.5-4H4z' fill='black'/%3E%3Cpath d='M16 9l5 6M21 9l-5 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 9.5h3.5L12 5.5v13l-4.5-4H4z' fill='black'/%3E%3Cpath d='M16 9l5 6M21 9l-5 6'/%3E%3C/svg%3E") center/contain no-repeat;}
+.hv-sound[aria-pressed="true"]::before{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 9.5h3.5L12 5.5v13l-4.5-4H4z' fill='black'/%3E%3Cpath d='M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M4 9.5h3.5L12 5.5v13l-4.5-4H4z' fill='black'/%3E%3Cpath d='M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11'/%3E%3C/svg%3E");}

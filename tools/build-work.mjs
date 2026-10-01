@@ -40,7 +40,7 @@ const INDEX = join(ROOT, 'index.html');
    earlier: true lays a project out small, three across at 4:3. */
 const HOME = [
   { label: 'Featured work', name: 'Aston Martin', href: 'work/aston-martin.html', logo: 'AstonMartin', ls: 1.45, when: '2021 to July 2023',
-    tags: ['Infotainment & HMI', 'Switchgear', 'Connected car app', 'Design system', 'Configurator'],
+    tags: ['Infotainment & HMI', 'Switchgear', 'Connected Car App', 'Design System', 'Configurator'],
     images: [
       ['case/am/db12-interior.jpg', 'DB12 · Interior HMI, digital cluster and switchgear'],
       ['case/am/dbx707-instrument-cluster.jpg', 'DBX707 · Digital instrument cluster'],
@@ -54,7 +54,7 @@ const HOME = [
       ['case/am/configurator-interior.webp', 'Configurator · Interior environment'],
     ] },
   { name: 'Bentley Motors', href: 'work/bentley-motors.html', logo: 'Bentley', ls: 1.45, when: '2018 to 2021',
-    tags: ['UX playbook', 'Design system', 'Owner apps', 'Enterprise apps', 'Mentoring'],
+    tags: ['UX Playbook / Design System', 'Connected Car App', 'Owner Apps', 'Enterprise Apps'],
     images: [
       ['case/bentley/continental-gt-interior.jpg', 'Continental GT · Cabin, cluster and infotainment'],
       ['case/bentley/bentley-interior.jpg', 'Infotainment and digital instrument cluster'],
@@ -65,7 +65,7 @@ const HOME = [
       ['case/bentley/my-bentley-app-with-key.jpg', 'My Bentley app · Connected car'],
     ] },
   { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present',
-    tags: ['Multi-brand design system', 'Design tokens', 'E-commerce', 'CRO and A/B testing', 'Accessibility'],
+    tags: ['Multi-Brand Design System', 'Design Tokens', 'E-Commerce', 'CRO and A/B Testing', 'Accessibility'],
     images: [
       ['case/dg/debenhams-group-design-system-4x3.jpg', 'Group design system · 21 brands, one system'],
       ['case/dg/plt-product-page-mobile.jpg', 'PrettyLittleThing · Product page'],
@@ -75,21 +75,21 @@ const HOME = [
       ['case/dg/boohooman-product-page-mobile.jpg', 'boohooMAN · Product page'],
     ] },
   { label: 'Earlier work', earlier: true, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9, when: '2017 to 2018',
-    tags: ['Mobile banking', 'MVP recovery', 'Research & validation'],
+    tags: ['Mobile Banking', 'MVP Recovery', 'Research & Validation'],
     images: [
       ['case/coop/app-accounts.jpg', 'Mobile banking app · Accounts'],
       ['case/coop/app-fraud-hub.png', 'Mobile banking app · Fraud and security'],
       ['case/coop/website-mobile.jpg', 'Website · Mobile'],
     ] },
   { earlier: true, name: 'bet365', href: 'work/bet365.html', logo: 'bet365', ls: 1.0, when: '2016 to 2017',
-    tags: ['Search & discovery', 'Payments', 'In-play'],
+    tags: ['Search & Discovery', 'Payments', 'In-Play'],
     images: [
       ['case/bet365/sportsbook-mobile.jpg', 'Mobile sportsbook · Web'],
       ['case/bet365/in-play-cricket.jpg', 'App · In-play'],
       ['case/bet365/campaign-building-wrap.jpg', 'Brand campaign · Out of home'],
     ] },
   { earlier: true, name: 'Barclays', href: 'work/barclays.html', logo: 'Barclays', ls: 1.05, when: '2014 to 2016',
-    tags: ['Mobile design language', 'Component library', 'Registration'],
+    tags: ['Mobile Design Language', 'Component Library', 'Registration'],
     images: [
       ['case/barclays/mobile-banking-app.jpg', 'Barclays Mobile Banking app'],
       ['case/barclays/windows-phone-app.jpg', 'Mobile Banking for Windows Phone'],

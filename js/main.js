@@ -1452,10 +1452,11 @@
 
     Array.prototype.forEach.call(heroes, function (hv) {
       var btn = hv.querySelector('.hv-toggle');
+      var snd = hv.querySelector('.hv-sound');
       var video = hv.querySelector('video');
       var yt = hv.getAttribute('data-yt');
       var auto = !reduceMotion && !saveData;
-      var userPaused = false, onScreen = false, player = null, ready = false;
+      var userPaused = false, onScreen = false, player = null, ready = false, soundOn = false;
 
       function setBtn(playing) {
         if (!btn) return;
@@ -1489,7 +1490,7 @@
                 var f = e.target.getIframe();
                 f.setAttribute('tabindex', '-1');
                 f.setAttribute('aria-hidden', 'true');
-                e.target.mute();
+                if (soundOn) { e.target.unMute(); e.target.setVolume(100); } else e.target.mute();
                 if (userPaused || !onScreen) e.target.pauseVideo(); else e.target.playVideo();
               },
               onStateChange: function (e) {
@@ -1513,6 +1514,23 @@
         /* phones get the 4:3 poster to match the 4:3 file */
         var smallPoster = hv.getAttribute('data-poster-small');
         if (smallPoster && window.matchMedia('(max-width:760px)').matches) video.poster = smallPoster;
+      }
+      /* sound starts off (browsers only autoplay muted); the speaker button
+         turns it on and off, and turning it on also starts a paused film */
+      if (snd) {
+        snd.hidden = false;
+        var setSnd = function () {
+          snd.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+          snd.setAttribute('aria-label', soundOn ? 'Turn the sound off' : 'Turn the sound on');
+        };
+        setSnd();
+        snd.addEventListener('click', function () {
+          soundOn = !soundOn;
+          setSnd();
+          if (video) video.muted = !soundOn;
+          else if (player && ready) { if (soundOn) { player.unMute(); player.setVolume(100); } else player.mute(); }
+          if (soundOn && !hv.classList.contains('is-playing')) { userPaused = false; play(); }
+        });
       }
       if (btn) {
         btn.hidden = false;
