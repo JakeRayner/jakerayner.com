@@ -1500,3 +1500,26 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .facts{grid-template-columns:repeat(4,minmax(0,1fr)); max-width:var(--read);}
 @media (max-width:900px){ .facts{grid-template-columns:1fr 1fr;} }
 @media (min-width:901px){ .facts div:nth-child(3):last-child{grid-column:3 / -1;} }
+
+/* ---------- side by side (1 October 2026) ----------
+   .split: a section's text beside its pictures or stats, alternating
+   sides with .flip. .duo: two short text sections as two columns. Both
+   stack on phones, text first. */
+.split, .duo{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(32px,4.5vw,80px); align-items:start;}
+.cs .wrap > * + .split, .cs .wrap > * + .duo, .cs .wrap > .split + *, .cs .wrap > .duo + *{margin-top:clamp(40px,4.5vw,64px);}
+.split > .cs-grid, .duo > .cs-grid{max-width:none; margin:0;}
+.split.flip > .split-media{order:-1;}
+.split-media{display:grid; gap:16px; min-width:0;}
+.split-media > figure{margin:0;}
+.split-media img{width:100%; height:auto;}
+.split-media .pics{grid-template-columns:repeat(2,minmax(0,1fr));}
+.split-media.stack .pics{grid-template-columns:1fr;}
+.split-media.stack .pics img{aspect-ratio:auto;}
+.split-media .stats{margin:0; grid-template-columns:1fr 1fr; row-gap:36px;}
+@media (max-width:900px){
+  .split, .duo{grid-template-columns:1fr;}
+  .split.flip > .split-media{order:0;}
+}
+/* Home project tags and View details button, a size up (asked for) */
+.proj-tags li{font-size:13.5px; padding:9px 14px;}
+.proj-go{font-size:14px; padding:9px 16px;}

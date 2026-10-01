@@ -428,7 +428,7 @@ function projectHead(p) {
             </a>
             <div class="proj-meta">
               <ul class="proj-tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-              <a class="proj-go" href="${p.href}" data-gated>View case study <i aria-hidden="true">→</i></a>
+              <a class="proj-go" href="${p.href}" data-gated>View details <i aria-hidden="true">→</i></a>
             </div>
           </div>
 `;
