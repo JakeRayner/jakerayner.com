@@ -512,7 +512,7 @@
      opens straight through. Direct links to a protected page hit the
      standalone gate that protect-work.mjs builds, this veil is the front
      door. */
-  /* set by caseGate below, called by the gallery's View project button and
+  /* set by caseGate below, called by the gallery's View case study button and
      by the title cards. Null where the browser has no WebCrypto, in which
      case openCase just follows the link. */
   var requestCase = null;
@@ -641,7 +641,7 @@
 
     /* The title card above a project on phones still goes straight to the
        case study. The photo tiles no longer do: tapping one opens the
-       gallery, and the View project button in there is what asks for the
+       gallery, and the View case study button in there is what asks for the
        password. That wiring lives in the gallery below. */
     Array.prototype.forEach.call(titles, function (tile) {
       tile.addEventListener('click', function (e) {
@@ -670,7 +670,7 @@
      project runs on into the first of the next, and the end wraps back to
      the start, so the whole body of work can be flicked through in one go
      (asked for explicitly). The project's logo and its one line of caption
-     sit at the bottom next to a View project button, and both follow the
+     sit at the bottom next to a View case study button, and both follow the
      shot showing. The tiles stay real links, so with no JS a tap still goes
      to the case study. */
   (function workGallery() {
@@ -709,7 +709,7 @@
             '<span class="lb-name"></span>' +
             '<span class="lb-meta"></span>' +
           '</div>' +
-          '<button class="lb-go" type="button">View project</button>' +
+          '<button class="lb-go" type="button">View case study</button>' +
         '</div>';
       document.body.appendChild(lb);
       track = lb.querySelector('.lb-track');
@@ -791,7 +791,7 @@
       });
     }
 
-    /* the caption, logo and View project button for the shot showing. Only
+    /* the caption, logo and View case study button for the shot showing. Only
        touched when the project changes, with a short fade so crossing from
        one project into the next reads as a change of project. */
     function caption(tile, fade) {

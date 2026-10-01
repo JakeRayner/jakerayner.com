@@ -1587,3 +1587,18 @@ html.glb-open{overflow:hidden;}
 /* a full-width film opening a section, then its text below */
 .cs .app-film{margin-top:0;}
 .cs-body p.cs-lede + p.cs-lede{margin-top:18px;}
+
+/* ---------- press quotes (Aston Martin outcome) ----------
+   Large pull quotes in the site's display face, the publication in small
+   caps beneath, each linking to its review. A grid on desktop, stacked
+   on phones. */
+.press-quotes{list-style:none; margin:clamp(48px,5vw,80px) 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px;}
+.press-quotes li{display:flex;}
+.pq{display:flex; flex-direction:column; justify-content:space-between; gap:28px; width:100%; padding:clamp(24px,2.4vw,36px); background:var(--glass); color:var(--ink); text-decoration:none; transition:background-color .25s ease;}
+.pq:hover{background:var(--glass-strong);}
+.pq blockquote{margin:0;}
+.pq p{margin:0; font-family:var(--display); font-weight:var(--display-weight); font-size:calc(clamp(24px,2.3vw,34px) * var(--display-scale)); line-height:1.15; letter-spacing:-.01em; text-wrap:balance;}
+.pq p::before{content:"\201C";} .pq p::after{content:"\201D";}
+.pq cite{font-style:normal; font-size:15px; font-weight:500; font-variant-caps:all-small-caps; letter-spacing:.08em; color:var(--ink-dim);}
+.pq:hover cite{color:var(--ink);}
+@media (max-width:620px){ .press-quotes{grid-template-columns:1fr;} }

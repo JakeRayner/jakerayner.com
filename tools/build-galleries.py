@@ -61,6 +61,15 @@ def yt_still(vid, name):
         urllib.request.urlretrieve(f'https://i.ytimg.com/vi/{vid}/maxresdefault.jpg', tmp)
     return tmp
 
+def yt_title(vid):
+    """the video's own title from YouTube, for alt text when the page gives none"""
+    import json
+    try:
+        with urllib.request.urlopen(f'https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json', timeout=20) as r:
+            return json.load(r)['title']
+    except Exception:
+        return 'YouTube video'
+
 def attr(tag, name):
     m = re.search(r'\b' + name + r'="([^"]*)"', tag)
     return html.unescape(m.group(1)) if m else ''
@@ -85,12 +94,12 @@ def collect(page):
         if t.startswith('<div'):
             src, yt = attr(t, 'data-src'), attr(t, 'data-yt')
             if yt:
-                add('yt:' + yt, {'type': 'youtube', 'id': yt, 'alt': 'Video'})
+                add('yt:' + yt, {'type': 'youtube', 'id': yt, 'alt': attr(t, 'data-title') or yt_title(yt)})
             elif src:
-                add(src, {'type': 'video', 'src': src, 'alt': 'Film'})
+                add(src, {'type': 'video', 'src': src, 'alt': attr(t, 'data-title') or 'Film from this page'})
         elif t.startswith('<button'):
             yt = attr(t, 'data-yt')
-            add('yt:' + yt, {'type': 'youtube', 'id': yt, 'alt': attr(t, 'data-title') or 'Video'})
+            add('yt:' + yt, {'type': 'youtube', 'id': yt, 'alt': attr(t, 'data-title') or yt_title(yt)})
         else:
             src = attr(t, 'src')
             if not src.lower().split('?')[0].endswith(IMG_EXT) or src.startswith('http'):
@@ -121,7 +130,7 @@ def build(page):
             name = 'film-' + page + ('' if n_film == 0 else f'-{n_film + 1}'); n_film += 1
             src_file = it['src'] if it['src'].startswith('http') else os.path.normpath(os.path.join(ROOT, 'work', it['src']))
             th = thumb_for(still(src_file, name, at=14 if src_file.startswith('http') else 3), name)
-            lis.append(f'<li><a class="thumb is-video" href="{html.escape(it["src"], quote=True)}" data-kind="video"><img src="{th}" width="480" height="270" alt="Film: the hero video from this page" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span></a></li>')
+            lis.append(f'<li><a class="thumb is-video" href="{html.escape(it["src"], quote=True)}" data-kind="video"><img src="{th}" width="480" height="270" alt="Film: {html.escape(it["alt"], quote=True)}" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span></a></li>')
         else:
             name = 'yt-' + it['id']
             th = thumb_for(yt_still(it['id'], name), name)

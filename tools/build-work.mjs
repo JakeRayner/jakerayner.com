@@ -45,7 +45,7 @@ const INDEX = join(ROOT, 'index.html');
    screen readers but shows only the logo. earlier: true lays a project out
    small, three across at 4:3. */
 const HOME = [
-  { name: 'Aston Martin', href: 'work/aston-martin.html', logo: 'AstonMartin', ls: 1.45, when: '2021 to July 2023', cta: 'View details',
+  { name: 'Aston Martin', href: 'work/aston-martin.html', logo: 'AstonMartin', ls: 1.45, when: '2021 to July 2023', cta: 'View case study',
     tags: ['Infotainment & HMI', 'Switchgear', 'Connected Car App', 'Design System', 'Configurator'],
     images: [
       ['case/am/db12-interior.jpg', 'DB12 · Interior HMI, digital cluster and switchgear', { span: 7 }],
@@ -59,16 +59,16 @@ const HOME = [
       ['case/am/configurator-interior.webp', 'Configurator · Interior environment', { span: 11, end: true }],
       ['case/am/configurator-exterior.webp', 'Configurator · Exterior', { span: 10 }],
     ] },
-  { name: 'Bentley Motors', href: 'work/bentley-motors.html', logo: 'Bentley', ls: 1.45, when: '2018 to 2021', cta: 'View details',
+  { name: 'Bentley Motors', href: 'work/bentley-motors.html', logo: 'Bentley', ls: 1.45, when: '2018 to 2021', cta: 'View case study',
     tags: ['UX Playbook / Design System', 'Connected Car App', 'Owner Apps', 'Enterprise Apps'],
     images: [
       ['case/bentley/my-bentley-app-on-seat.jpg', 'My Bentley app · Vehicle status', { span: 12 }],
       ['case/bentley/continental-gt-interior.jpg', 'Continental GT · Cabin, cluster and infotainment', { span: 12 }],
       ['case/bentley/my-bentley-app-with-key.jpg', 'My Bentley app · Connected car', { span: 12, crop: '1624 / 806' }],
-      ['case/bentley/owners-app-discover.webp', 'Owners app · Discover', { span: 5, crop: '662.67 / 365.56' }],
-      ['case/bentley/owners-app-news-feed.jpg', 'Owners app · News feed', { span: 7, crop: '937.33 / 365.56' }],
+      ['case/bentley/owners-app-discover.webp', 'The Bentley Network App · Discover', { span: 5, crop: '662.67 / 365.56' }],
+      ['case/bentley/owners-app-news-feed.jpg', 'The Bentley Network App · News feed', { span: 7, crop: '937.33 / 365.56' }],
     ] },
-  { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present', cta: 'Learn More',
+  { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present', cta: 'View case study',
     tags: ['Multi-Brand Design System', 'App', 'Responsive Web'],
     images: [
       ['case/dg/design-system-laptop.jpg', 'Group design system · The design system site on a laptop', { span: 12 }],
@@ -78,21 +78,21 @@ const HOME = [
       ['case/dg/plt-app-screens.jpg', 'PrettyLittleThing · App screens', { span: 12 }],
       ['case/dg/plt-product-page-mobile.jpg', 'PrettyLittleThing · Product page', { span: 12, crop: '1624 / 768' }],
     ] },
-  { earlier: true, hideName: true, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9, when: '2017 to 2018', cta: 'Learn More',
+  { earlier: true, hideName: true, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9, when: '2017 to 2018', cta: 'View case study',
     tags: [],
     images: [
       ['case/coop/app-accounts.jpg', 'Mobile banking app · Accounts'],
       ['case/coop/website-mobile.jpg', 'Website · Mobile'],
       ['case/coop/app-fraud-hub.png', 'Mobile banking app · Fraud and security'],
     ] },
-  { earlier: true, hideName: true, name: 'bet365', href: 'work/bet365.html', logo: 'bet365', ls: 1.0, when: '2016 to 2017', cta: 'Learn More',
+  { earlier: true, hideName: true, name: 'bet365', href: 'work/bet365.html', logo: 'bet365', ls: 1.0, when: '2016 to 2017', cta: 'View case study',
     tags: [],
     images: [
       ['case/bet365/campaign-bus-shelter.jpg', 'Brand campaign · Bus shelter'],
       ['case/bet365/in-play-cricket.jpg', 'App · In-play'],
       ['case/bet365/campaign-building-wrap.jpg', 'Brand campaign · Out of home'],
     ] },
-  { earlier: true, hideName: true, name: 'Barclays', href: 'work/barclays.html', logo: 'Barclays', ls: 1.05, when: '2014 to 2016', cta: 'Learn More',
+  { earlier: true, hideName: true, name: 'Barclays', href: 'work/barclays.html', logo: 'Barclays', ls: 1.05, when: '2014 to 2016', cta: 'View case study',
     tags: [],
     images: [
       ['case/barclays/mobile-banking-app.jpg', 'Barclays Mobile Banking app'],
