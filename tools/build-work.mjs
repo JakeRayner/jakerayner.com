@@ -429,7 +429,6 @@ function projectHead(p) {
             <a class="proj-id" href="${p.href}" data-gated>
               <span class="proj-logo" aria-hidden="true" style="--ls:${p.ls}; -webkit-mask-image:${mask}; mask-image:${mask}"></span>
               <h4 class="proj-name${p.hideName ? ' sr-only' : ''}">${esc(p.name)}</h4>
-              <span class="proj-when">${esc(p.when)}</span>
             </a>
             <div class="proj-meta">${tags}
               <a class="proj-go" href="${p.href}" data-gated>${esc(p.cta)} <i aria-hidden="true">→</i></a>
