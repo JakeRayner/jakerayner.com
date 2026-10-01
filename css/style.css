@@ -1264,16 +1264,8 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    view while the text runs (sticky, native scroll), the text on the right
    at a comfortable measure. Pictures, diagrams and stats break out to the
    full width underneath. A strip of chapter links sits under the hero. */
-.case-toc{display:flex; flex-wrap:wrap; gap:8px; margin:28px 0 0; padding:0; list-style:none;}
-.case-toc a{display:inline-block; font-size:13px; font-weight:500; padding:9px 13px; background:var(--glass-soft); color:var(--ink-dim); text-decoration:none; transition:background-color .2s ease, color .2s ease;}
-.case-toc a:hover{background:var(--glass); color:var(--ink);}
-.case-toc b{font-weight:500; opacity:.6; margin-right:6px;}
 .cs{padding:clamp(80px,8.5vw,140px) 0 0; scroll-margin-top:80px;}
 .cs:last-of-type{padding-bottom:clamp(80px,8vw,120px);}
-.cs-grid{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,8fr); gap:clamp(24px,4vw,80px); align-items:start;}
-.cs-head{position:sticky; top:104px;}
-.cs-num{display:block; font-size:12.5px; font-weight:500; letter-spacing:.08em; color:var(--ink-dim); margin-bottom:12px;}
-.cs-head h2{font-size:clamp(28px,3vw,44px); line-height:1.05; letter-spacing:-.035em;}
 .cs-body{max-width:70ch;}
 .cs-body p{font-size:17px; line-height:1.72; margin:0 0 18px;}
 .cs-body p.cs-lede{font-size:clamp(19px,1.6vw,22px); line-height:1.55; letter-spacing:-.01em;}
@@ -1288,8 +1280,6 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .cs .values{margin-top:clamp(40px,4.5vw,64px);}
 .cs-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px;}
 @media (max-width:900px){
-  .cs-grid{grid-template-columns:1fr; gap:18px;}
-  .cs-head{position:static;}
   .cs-body p{font-size:16.5px;}
 }
 
@@ -1458,3 +1448,43 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
   .sait{display:none;}
   .cycle.sait-small{display:grid;}
 }
+
+/* ============================================================
+   Case study pages, distilled (1 October 2026, asked for).
+   One column: each heading sits straight above its text, nothing sticks
+   while scrolling, and pictures get the same air above and below. The
+   header is the title, a one-line outcome and a compact row of facts in
+   place of the six glass tiles. Stats are plain numbers with short labels.
+   ============================================================ */
+.case-hero h1{margin-bottom:0;}
+.case-sum{font-size:clamp(20px,1.9vw,28px); line-height:1.35; letter-spacing:-.015em; max-width:40ch; margin:22px 0 0; text-wrap:pretty;}
+.facts{display:grid; grid-template-columns:repeat(3,max-content) minmax(0,1fr); gap:18px clamp(28px,3.5vw,56px); margin:clamp(32px,3.5vw,48px) 0 0;}
+.facts div{min-width:0;}
+.facts dt{font-size:12px; font-weight:500; color:var(--ink-dim); margin:0 0 6px;}
+.facts dd{margin:0; font-size:14.5px; line-height:1.5; max-width:44ch;}
+.case-hero .case-media{margin-top:clamp(40px,4.5vw,64px);}
+@media (max-width:900px){
+  .facts{grid-template-columns:1fr 1fr;}
+  .facts div:last-child{grid-column:1 / -1;}
+}
+
+.cs{padding-top:clamp(72px,7.5vw,128px);}
+.cs-grid{display:block;}
+.cs-head{position:static; margin:0 0 20px;}
+.cs-head h2{font-size:clamp(26px,2.6vw,38px); line-height:1.08; max-width:26ch; text-wrap:balance;}
+.cs-body{max-width:68ch;}
+.cs-body h3{margin-top:36px;}
+/* text that carries on after a picture or diagram gets the same gap back */
+.cs .wrap > * + .cs-grid{margin-top:clamp(40px,4.5vw,64px);}
+.cs-full, .cs-full.case-fig{margin-top:clamp(40px,4.5vw,64px);}
+
+.stats{list-style:none; padding:0; margin:clamp(40px,4.5vw,64px) 0 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:28px clamp(24px,3vw,48px);}
+.cs-body + .stats, .cs-grid + .stats{margin-top:clamp(32px,3.5vw,48px);}
+.stats b{display:block; font-size:clamp(30px,3.2vw,46px); font-weight:500; letter-spacing:-.035em; line-height:1; font-variant-numeric:tabular-nums;}
+.stats span{display:block; font-size:13.5px; line-height:1.45; color:var(--ink-dim); margin-top:10px; max-width:26ch;}
+
+.outcome-list{max-width:68ch;}
+.outcome-list li{font-size:16.5px; line-height:1.7;}
+.press-h{font-size:13.5px; font-weight:500; color:var(--ink-dim); margin:clamp(56px,6vw,88px) 0 16px;}
+.press-h + .press{margin-top:0;}
+.cs-tags{margin-top:clamp(40px,4.5vw,56px);}
