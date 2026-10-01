@@ -35,61 +35,65 @@ const WORK_DIR = join(ROOT, 'assets', 'my-work');
 const STUDIO_PAGE = join(ROOT, 'freelance.html');
 const INDEX = join(ROOT, 'index.html');
 
-/* Home: projects in page order. images are [path under assets/images/,
-   hover caption]; the caption is also the alt text after the project name.
-   earlier: true lays a project out small, three across at 4:3. */
+/* Home: projects in page order, laid out to match the Figma frame
+   "1728w light" (JAKE-26, node 289:9296), October 2026.
+   images are [path under assets/images/, hover caption, layout]; the
+   caption is also the alt text after the project name. layout gives each
+   picture its width on the 12 column grid (span), whether it sits against
+   the right edge (end), and an optional crop ratio, so rows come out
+   exactly as drawn. cta is the button label; hideName keeps the name for
+   screen readers but shows only the logo. earlier: true lays a project out
+   small, three across at 4:3. */
 const HOME = [
-  { label: 'Featured work', name: 'Aston Martin', href: 'work/aston-martin.html', logo: 'AstonMartin', ls: 1.45, when: '2021 to July 2023',
+  { name: 'Aston Martin', href: 'work/aston-martin.html', logo: 'AstonMartin', ls: 1.45, when: '2021 to July 2023', cta: 'View details',
     tags: ['Infotainment & HMI', 'Switchgear', 'Connected Car App', 'Design System', 'Configurator'],
     images: [
-      ['case/am/db12-interior.jpg', 'DB12 · Interior HMI, digital cluster and switchgear'],
-      ['case/am/dbx707-instrument-cluster.jpg', 'DBX707 · Digital instrument cluster'],
-      ['case/am/dbx707-infotainment.jpg', 'DBX707 · Infotainment touchscreen'],
-      ['case/am/dbx707-drive-modes.jpg', 'DBX707 · Drive modes on the touchscreen'],
-      ['case/am/app-db12-volante.jpg', 'Connected car app · DB12 Volante'],
-      ['case/am/app-phone-and-watch.webp', 'Connected car app · Phone and Apple Watch'],
-      ['case/am/app-store-screens.webp', 'Connected car app · App Store screens'],
-      ['case/am/vantage-centre-console.jpg', 'Vantage · Centre console and infotainment'],
-      ['case/am/configurator-exterior.webp', 'Configurator · Exterior'],
-      ['case/am/configurator-interior.webp', 'Configurator · Interior environment'],
+      ['case/am/db12-interior.jpg', 'DB12 · Interior HMI, digital cluster and switchgear', { span: 7 }],
+      ['case/am/dbx707-instrument-cluster.jpg', 'DBX707 · Digital instrument cluster', { span: 5 }],
+      ['case/am/dbx707-infotainment.jpg', 'DBX707 · Infotainment touchscreen', { span: 5 }],
+      ['case/am/dbx707-drive-modes.jpg', 'DBX707 · Drive modes on the touchscreen', { span: 7 }],
+      ['case/am/vantage-centre-console.jpg', 'Vantage · Centre console and infotainment', { span: 12, crop: '1624 / 811' }],
+      ['case/am/app-db12-volante.jpg', 'Connected car app · DB12 Volante', { span: 7, crop: '937 / 804' }],
+      ['case/am/app-phone-and-watch.webp', 'Connected car app · Phone and Apple Watch', { span: 5 }],
+      ['case/am/app-store-screens.webp', 'Connected car app · App Store screens', { span: 12 }],
+      ['case/am/configurator-interior.webp', 'Configurator · Interior environment', { span: 11, end: true }],
+      ['case/am/configurator-exterior.webp', 'Configurator · Exterior', { span: 10 }],
     ] },
-  { name: 'Bentley Motors', href: 'work/bentley-motors.html', logo: 'Bentley', ls: 1.45, when: '2018 to 2021',
+  { name: 'Bentley Motors', href: 'work/bentley-motors.html', logo: 'Bentley', ls: 1.45, when: '2018 to 2021', cta: 'View details',
     tags: ['UX Playbook / Design System', 'Connected Car App', 'Owner Apps', 'Enterprise Apps'],
     images: [
-      ['case/bentley/continental-gt-interior.jpg', 'Continental GT · Cabin, cluster and infotainment'],
-      ['case/bentley/bentley-interior.jpg', 'Infotainment and digital instrument cluster'],
-      ['case/bentley/infotainment-navigation.jpg', 'Infotainment · Navigation'],
-      ['case/bentley/my-bentley-app-on-seat.jpg', 'My Bentley app · Vehicle status'],
-      ['case/bentley/owners-app-news-feed.jpg', 'Owners app · News feed'],
-      ['case/bentley/owners-app-discover.webp', 'Owners app · Discover'],
-      ['case/bentley/my-bentley-app-with-key.jpg', 'My Bentley app · Connected car'],
+      ['case/bentley/my-bentley-app-on-seat.jpg', 'My Bentley app · Vehicle status', { span: 12 }],
+      ['case/bentley/continental-gt-interior.jpg', 'Continental GT · Cabin, cluster and infotainment', { span: 12 }],
+      ['case/bentley/my-bentley-app-with-key.jpg', 'My Bentley app · Connected car', { span: 12, crop: '1624 / 806' }],
+      ['case/bentley/owners-app-discover.webp', 'Owners app · Discover', { span: 5, crop: '662.67 / 365.56' }],
+      ['case/bentley/owners-app-news-feed.jpg', 'Owners app · News feed', { span: 7, crop: '937.33 / 365.56' }],
     ] },
-  { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present',
-    tags: ['Multi-Brand Design System', 'Design Tokens', 'E-Commerce', 'CRO and A/B Testing', 'Accessibility'],
+  { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present', cta: 'Learn More',
+    tags: ['Multi-Brand Design System', 'App', 'Responsive Web'],
     images: [
-      ['case/dg/debenhams-group-design-system-4x3.jpg', 'Group design system · 21 brands, one system'],
-      ['case/dg/plt-product-page-mobile.jpg', 'PrettyLittleThing · Product page'],
-      ['case/dg/design-system-brand-centre.jpg', 'Group design system · The brand centre, all 21 brands'],
-      ['case/dg/plt-app-screens.jpg', 'PrettyLittleThing · App screens'],
-      ['case/dg/boohoo-listing-mobile.jpg', 'boohoo · Mobile shopping'],
-      ['case/dg/boohooman-product-page-mobile.jpg', 'boohooMAN · Product page'],
+      ['case/dg/design-system-laptop.jpg', 'Group design system · The design system site on a laptop', { span: 12 }],
+      ['case/dg/design-system-component-library.jpg', 'Group design system · The component library', { span: 12 }],
+      ['case/dg/boohooman-product-page-mobile.jpg', 'boohooMAN · Product page', { span: 7 }],
+      ['case/dg/boohoo-listing-mobile.jpg', 'boohoo · Mobile shopping', { span: 5, crop: '662.67 / 703' }],
+      ['case/dg/plt-app-screens.jpg', 'PrettyLittleThing · App screens', { span: 12 }],
+      ['case/dg/plt-product-page-mobile.jpg', 'PrettyLittleThing · Product page', { span: 12, crop: '1624 / 768' }],
     ] },
-  { label: 'Earlier work', earlier: true, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9, when: '2017 to 2018',
-    tags: ['Mobile Banking', 'MVP Recovery', 'Research & Validation'],
+  { earlier: true, hideName: true, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9, when: '2017 to 2018', cta: 'Learn More',
+    tags: [],
     images: [
       ['case/coop/app-accounts.jpg', 'Mobile banking app · Accounts'],
-      ['case/coop/app-fraud-hub.png', 'Mobile banking app · Fraud and security'],
       ['case/coop/website-mobile.jpg', 'Website · Mobile'],
+      ['case/coop/app-fraud-hub.png', 'Mobile banking app · Fraud and security'],
     ] },
-  { earlier: true, name: 'bet365', href: 'work/bet365.html', logo: 'bet365', ls: 1.0, when: '2016 to 2017',
-    tags: ['Search & Discovery', 'Payments', 'In-Play'],
+  { earlier: true, hideName: true, name: 'bet365', href: 'work/bet365.html', logo: 'bet365', ls: 1.0, when: '2016 to 2017', cta: 'Learn More',
+    tags: [],
     images: [
-      ['case/bet365/sportsbook-mobile.jpg', 'Mobile sportsbook · Web'],
+      ['case/bet365/campaign-bus-shelter.jpg', 'Brand campaign · Bus shelter'],
       ['case/bet365/in-play-cricket.jpg', 'App · In-play'],
       ['case/bet365/campaign-building-wrap.jpg', 'Brand campaign · Out of home'],
     ] },
-  { earlier: true, name: 'Barclays', href: 'work/barclays.html', logo: 'Barclays', ls: 1.05, when: '2014 to 2016',
-    tags: ['Mobile Design Language', 'Component Library', 'Registration'],
+  { earlier: true, hideName: true, name: 'Barclays', href: 'work/barclays.html', logo: 'Barclays', ls: 1.05, when: '2014 to 2016', cta: 'Learn More',
+    tags: [],
     images: [
       ['case/barclays/mobile-banking-app.jpg', 'Barclays Mobile Banking app'],
       ['case/barclays/windows-phone-app.jpg', 'Mobile Banking for Windows Phone'],
@@ -408,27 +412,27 @@ function replaceBetween(html, startMark, endMark, body, file) {
 }
 
 /* ---- Home ---- */
-function homeImage(p, [file, cap]) {
+function homeImage(p, [file, cap, lay = {}]) {
   const { w, h } = dimensions(join(ROOT, 'assets', 'images', file));
-  const crop = p.earlier ? { ratio: '4 / 3', pos: '50% 50%' } : cropFor(file);
-  const ratio = crop ? eval(crop.ratio.replace(/\s/g, '')) : w / h;
-  return { file, cap, src: `assets/images/${urlPath(file)}`, w, h, landscape: ratio > 1.15,
-    zoom: zoomFor(file), feature: p.earlier ? 0 : featureFor(file), crop, shaped: shapedFor(file) };
+  const crop = p.earlier ? { ratio: '4 / 3', pos: '50% 50%' }
+    : lay.crop ? { ratio: lay.crop, pos: '50% 50%' } : null;
+  const [rw, rh] = crop ? crop.ratio.split('/').map(Number) : [w, h];
+  return { file, cap, src: `assets/images/${urlPath(file)}`, w, h, landscape: rw / rh > 1.15,
+    zoom: zoomFor(file), feature: 0, crop, shaped: shapedFor(file), span: lay.span, end: lay.end };
 }
 
 function projectHead(p) {
   const base = p.href.replace(/^.*\//, '').replace(/\.html$/, '');
-  const label = p.label ? `          <h3 class="work-label">${esc(p.label)}</h3>\n` : '';
   const mask = `url('assets/logos/${p.logo}.svg')`;
-  return `${label}          <div class="proj-head" id="work-${base}">
+  const tags = p.tags.length ? `\n              <ul class="proj-tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '';
+  return `          <div class="proj-head" id="work-${base}">
             <a class="proj-id" href="${p.href}" data-gated>
               <span class="proj-logo" aria-hidden="true" style="--ls:${p.ls}; -webkit-mask-image:${mask}; mask-image:${mask}"></span>
-              <h4 class="proj-name">${esc(p.name)}</h4>
+              <h4 class="proj-name${p.hideName ? ' sr-only' : ''}">${esc(p.name)}</h4>
               <span class="proj-when">${esc(p.when)}</span>
             </a>
-            <div class="proj-meta">
-              <ul class="proj-tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-              <a class="proj-go" href="${p.href}" data-gated>View details <i aria-hidden="true">→</i></a>
+            <div class="proj-meta">${tags}
+              <a class="proj-go" href="${p.href}" data-gated>${esc(p.cta)} <i aria-hidden="true">→</i></a>
             </div>
           </div>
 `;
@@ -441,7 +445,8 @@ function homeSection() {
   let out = '';
   featured.forEach(p => {
     let tiles = '';
-    layout(p.images).forEach((t, i) => { tiles += tile(p, t, i, p.images.length, false); });
+    const rows = p.images.every(img => img.span) ? p.images.map(img => ({ img, span: img.span, end: img.end })) : layout(p.images);
+    rows.forEach((t, i) => { tiles += tile(p, t, i, p.images.length, false); });
     out += `        <div class="col-group">\n${projectHead(p)}${tiles}        </div>\n`;
   });
   if (earlier.length) {

@@ -1527,3 +1527,12 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .proj-tags li{font-size:13.5px; padding:9px 14px;}
 .proj-go{font-size:14px; padding:9px 16px;}
 @media (max-width:620px){ .split-media .dg-cta-row{grid-template-columns:repeat(2,minmax(0,1fr));} }
+
+/* Home, matched to the Figma frame (October 2026): ten and eleven column
+   pictures, the eleven against the right edge, and the earlier projects
+   sitting 48px apart. */
+@media (min-width:761px){
+  .span-10{grid-column:span 10;} .span-11{grid-column:span 11;}
+  .end.span-11{grid-column:2 / 13;} .end.span-10{grid-column:3 / 13;}
+}
+.col-group.is-earlier > .proj-head ~ .proj-head{margin-top:24px;}
