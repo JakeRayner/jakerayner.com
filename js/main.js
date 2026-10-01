@@ -1425,4 +1425,115 @@
       f.focus();
     });
   });
+
+  /* ---------- 11. Case study hero videos ----------
+     .hv holds a muted, looping film over its poster: a <video> whose file
+     waits in data-src (data-src-small for phones), or a YouTube id in
+     data-yt. It plays while on screen and stops off screen. Under reduced
+     motion or data saver it waits for the corner button. */
+  var heroes = document.querySelectorAll('.hv');
+  if (heroes.length) {
+    var saveData = !!(navigator.connection && navigator.connection.saveData);
+    var ytQueue = [];
+    var loadYT = function (cb) {
+      if (window.YT && window.YT.Player) { cb(); return; }
+      ytQueue.push(cb);
+      if (document.getElementById('yt-api')) return;
+      var prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (prev) prev();
+        ytQueue.splice(0).forEach(function (f) { f(); });
+      };
+      var tag = document.createElement('script');
+      tag.id = 'yt-api';
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    };
+
+    Array.prototype.forEach.call(heroes, function (hv) {
+      var btn = hv.querySelector('.hv-toggle');
+      var video = hv.querySelector('video');
+      var yt = hv.getAttribute('data-yt');
+      var auto = !reduceMotion && !saveData;
+      var userPaused = false, onScreen = false, player = null, ready = false;
+
+      function setBtn(playing) {
+        if (!btn) return;
+        btn.classList.toggle('is-paused', !playing);
+        btn.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video');
+      }
+      function playing(on) { hv.classList.toggle('is-playing', on); setBtn(on); }
+
+      function play() {
+        if (video) {
+          if (!video.getAttribute('src')) {
+            var small = hv.getAttribute('data-src-small') && window.matchMedia('(max-width:760px)').matches;
+            video.src = hv.getAttribute(small ? 'data-src-small' : 'data-src');
+          }
+          var pr = video.play();
+          if (pr && pr.catch) pr.catch(function () {});
+          return;
+        }
+        if (player && ready) { player.playVideo(); return; }
+        if (player) return;
+        loadYT(function () {
+          var slot = document.createElement('div');
+          hv.insertBefore(slot, btn);
+          player = new YT.Player(slot, {
+            host: 'https://www.youtube-nocookie.com',
+            videoId: yt,
+            playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: yt, playsinline: 1, rel: 0, iv_load_policy: 3, disablekb: 1, fs: 0 },
+            events: {
+              onReady: function (e) {
+                ready = true;
+                var f = e.target.getIframe();
+                f.setAttribute('tabindex', '-1');
+                f.setAttribute('aria-hidden', 'true');
+                e.target.mute();
+                if (userPaused || !onScreen) e.target.pauseVideo(); else e.target.playVideo();
+              },
+              onStateChange: function (e) {
+                if (e.data === 1) playing(true);
+                else if (e.data === 2) playing(false);
+                else if (e.data === 0) { e.target.seekTo(0); e.target.playVideo(); }
+              }
+            }
+          });
+        });
+      }
+      function pause() {
+        if (video) video.pause();
+        else if (player && ready) player.pauseVideo();
+      }
+
+      if (video) {
+        video.muted = true;
+        video.addEventListener('playing', function () { playing(true); });
+        video.addEventListener('pause', function () { playing(false); });
+        /* phones get the 4:3 poster to match the 4:3 file */
+        var smallPoster = hv.getAttribute('data-poster-small');
+        if (smallPoster && window.matchMedia('(max-width:760px)').matches) video.poster = smallPoster;
+      }
+      if (btn) {
+        btn.hidden = false;
+        setBtn(false);
+        btn.addEventListener('click', function () {
+          if (hv.classList.contains('is-playing')) { userPaused = true; pause(); }
+          else { userPaused = false; play(); }
+        });
+      }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            onScreen = e.isIntersecting;
+            if (onScreen && auto && !userPaused) play();
+            else if (!onScreen) pause();
+          });
+        }, { threshold: 0.05 }).observe(hv);
+      } else if (auto) {
+        onScreen = true;
+        play();
+      }
+    });
+  }
 })();

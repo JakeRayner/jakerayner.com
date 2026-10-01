@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /*
-  build-work.mjs: writes the "Studio Work" tiles on freelance.html (the
-  Studio page) from the folders in assets/my-work/.
+  build-work.mjs: writes two things.
 
-  Home no longer comes from here. Since October 2026 its work section is
-  six hand-written project cards in index.html (three featured, three
-  earlier), and each case study keeps its own images under
-  assets/images/case/. Only The Loose Lead folder is left in my-work.
+  1. Home's work section (index.html, between <!-- work:start --> and
+     <!-- work:end -->) from HOME below: one block per project, a header
+     (logo, name, years, tags, case study link) over a collage of its
+     pictures. Featured projects lay out in mixed pairs; earlier work runs
+     smaller, three across at one shape. Pictures come from each case
+     study's own folder under assets/images/, picked and captioned in HOME.
+  2. The "Studio Work" tiles on freelance.html (the Studio page) from the
+     folders in assets/my-work/ (only The Loose Lead is left there).
 
   One folder per company. Drop any jpg / jpeg / png / webp / avif into a folder and
   run:
@@ -19,8 +22,8 @@
   page grows as images load while you scroll, and anything measured against
   the page beforehand, the pinned studio pitch above all, lands in the wrong
   place on a phone.
-  Everything between the <!-- studio:start --> / <!-- studio:end --> markers
-  in freelance.html is regenerated; nothing outside them is touched. Folders with "do not use" in
+  Everything between those markers is regenerated; nothing outside them is
+  touched. Folders with "do not use" in
   the name are ignored. No dependencies.
 */
 import { readFileSync, writeFileSync, readdirSync, statSync, openSync, readSync, closeSync } from 'node:fs';
@@ -30,6 +33,69 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WORK_DIR = join(ROOT, 'assets', 'my-work');
 const STUDIO_PAGE = join(ROOT, 'freelance.html');
+const INDEX = join(ROOT, 'index.html');
+
+/* Home: projects in page order. images are [path under assets/images/,
+   hover caption]; the caption is also the alt text after the project name.
+   earlier: true lays a project out small, three across at 4:3. */
+const HOME = [
+  { label: 'Featured work', name: 'Aston Martin', href: 'work/aston-martin.html', logo: 'AstonMartin', ls: 1.45, when: '2021 to July 2023',
+    tags: ['Infotainment & HMI', 'Switchgear', 'Connected car app', 'Design system', 'Configurator'],
+    images: [
+      ['case/am/db12-interior.jpg', 'DB12 · Interior HMI, digital cluster and switchgear'],
+      ['case/am/dbx707-instrument-cluster.jpg', 'DBX707 · Digital instrument cluster'],
+      ['case/am/dbx707-infotainment.jpg', 'DBX707 · Infotainment touchscreen'],
+      ['case/am/dbx707-drive-modes.jpg', 'DBX707 · Drive modes on the touchscreen'],
+      ['case/am/app-db12-volante.jpg', 'Connected car app · DB12 Volante'],
+      ['case/am/app-phone-and-watch.webp', 'Connected car app · Phone and Apple Watch'],
+      ['case/am/app-store-screens.webp', 'Connected car app · App Store screens'],
+      ['case/am/vantage-centre-console.jpg', 'Vantage · Centre console and infotainment'],
+      ['case/am/configurator-exterior.webp', 'Configurator · Exterior'],
+      ['case/am/configurator-interior.webp', 'Configurator · Interior environment'],
+    ] },
+  { name: 'Bentley Motors', href: 'work/bentley-motors.html', logo: 'Bentley', ls: 1.45, when: '2018 to 2021',
+    tags: ['UX playbook', 'Design system', 'Owner apps', 'Enterprise apps', 'Mentoring'],
+    images: [
+      ['case/bentley/continental-gt-interior.jpg', 'Continental GT · Cabin, cluster and infotainment'],
+      ['case/bentley/bentley-interior.jpg', 'Infotainment and digital instrument cluster'],
+      ['case/bentley/infotainment-navigation.jpg', 'Infotainment · Navigation'],
+      ['case/bentley/my-bentley-app-on-seat.jpg', 'My Bentley app · Vehicle status'],
+      ['case/bentley/owners-app-news-feed.jpg', 'Owners app · News feed'],
+      ['case/bentley/owners-app-discover.webp', 'Owners app · Discover'],
+      ['case/bentley/my-bentley-app-with-key.jpg', 'My Bentley app · Connected car'],
+    ] },
+  { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present',
+    tags: ['Multi-brand design system', 'Design tokens', 'E-commerce', 'CRO and A/B testing', 'Accessibility'],
+    images: [
+      ['case/dg/debenhams-group-design-system-4x3.jpg', 'Group design system · 21 brands, one system'],
+      ['case/dg/plt-product-page-mobile.jpg', 'PrettyLittleThing · Product page'],
+      ['case/dg/design-system-brand-centre.jpg', 'Group design system · The brand centre, all 21 brands'],
+      ['case/dg/plt-app-screens.jpg', 'PrettyLittleThing · App screens'],
+      ['case/dg/boohoo-listing-mobile.jpg', 'boohoo · Mobile shopping'],
+      ['case/dg/boohooman-product-page-mobile.jpg', 'boohooMAN · Product page'],
+    ] },
+  { label: 'Earlier work', earlier: true, name: 'The Co-operative Bank', href: 'work/co-operative-bank.html', logo: 'TheCoOpBank-long', ls: 0.9, when: '2017 to 2018',
+    tags: ['Mobile banking', 'MVP recovery', 'Research & validation'],
+    images: [
+      ['case/coop/app-accounts.jpg', 'Mobile banking app · Accounts'],
+      ['case/coop/app-fraud-hub.png', 'Mobile banking app · Fraud and security'],
+      ['case/coop/website-mobile.jpg', 'Website · Mobile'],
+    ] },
+  { earlier: true, name: 'bet365', href: 'work/bet365.html', logo: 'bet365', ls: 1.0, when: '2016 to 2017',
+    tags: ['Search & discovery', 'Payments', 'In-play'],
+    images: [
+      ['case/bet365/sportsbook-mobile.jpg', 'Mobile sportsbook · Web'],
+      ['case/bet365/in-play-cricket.jpg', 'App · In-play'],
+      ['case/bet365/campaign-building-wrap.jpg', 'Brand campaign · Out of home'],
+    ] },
+  { earlier: true, name: 'Barclays', href: 'work/barclays.html', logo: 'Barclays', ls: 1.05, when: '2014 to 2016',
+    tags: ['Mobile design language', 'Component library', 'Registration'],
+    images: [
+      ['case/barclays/mobile-banking-app.jpg', 'Barclays Mobile Banking app'],
+      ['case/barclays/windows-phone-app.jpg', 'Mobile Banking for Windows Phone'],
+      ['case/barclays/barclaycard-app.webp', 'Barclaycard app'],
+    ] },
+];
 
 /* Folder name (case-insensitive) -> project. Add a line here when a new
    company folder appears; unknown folders still render, titled by folder
@@ -134,7 +200,7 @@ const CROP = {
   // Bentley: the top third of this one is blurred sky and windscreen above
   // the dash. Anchoring to the bottom keeps the clock, the vents and the
   // nav screen and takes the sky off the top.
-  'image 3': { ratio: '15 / 14', pos: '50% 100%' },
+  'infotainment-navigation': { ratio: '15 / 14', pos: '50% 100%' },
 };
 const cropFor = f => { for (const k in CROP) if (f.includes(k)) return CROP[k]; return null; };
 
@@ -143,8 +209,9 @@ const cropFor = f => { for (const k in CROP) if (f.includes(k)) return CROP[k]; 
    at the given width (8 = centred two thirds, 12 = full width). Matched on
    part of the filename. */
 const FEATURE = {
-  'Mockups.png': 8,            // PLT mockup grid
-  'Frame 1000004097': 12,      // Aston Martin five-screen strip
+  'plt-app-screens': 8,        // PLT mockup grid
+  'app-store-screens': 12,     // Aston Martin five-screen strip
+  'brand-centre': 12,          // the design system's 21-brand wall
 };
 const featureFor = f => { for (const k in FEATURE) if (f.includes(k)) return FEATURE[k]; return 0; };
 
@@ -154,7 +221,7 @@ const featureFor = f => { for (const k in FEATURE) if (f.includes(k)) return FEA
    and clip them, so it is off, and the hover caption's blurred band is
    masked by the image itself so it tints the cards and not the gaps.
    Matched on part of the filename. */
-const SHAPED = ['Frame 1000004098', 'Frame 1000004097'];
+const SHAPED = ['app-phone-and-watch', 'app-store-screens'];
 const shapedFor = f => SHAPED.some(k => f.includes(k));
 
 /* ---- image dimensions, read from the file header (no libraries) ---- */
@@ -267,12 +334,13 @@ function shade(src) {
 }
 
 function tile(g, t, idx, total, endAlone) {
-  // ids follow the case study filename so the hero logo strip's #work-… links land here
+  // ids follow the case study filename so the hero logo strip's #work-… links land here;
+  // on Home the project header carries the bare id, so every tile is numbered
   const base = g.href ? g.href.replace(/^.*\//, '').replace(/\.html$/, '') : slug(g.name);
-  const id = idx === 0 ? `work-${base}` : `work-${base}-${idx + 1}`;
+  const id = idx === 0 && !g.headed ? `work-${base}` : `work-${base}-${idx + 1}`;
   const cls = ['col-item', `span-${t.span}`, t.start ? `c${t.start}` : '', t.centre ? 'centre' : '', t.drop ? 'drop' : '', (t.end || endAlone) ? 'end' : ''].filter(Boolean).join(' ');
   const speed = t.span <= 5 ? '1.0' : '0.55';
-  const cap = captionFor(t.img.file);
+  const cap = t.img.cap || captionFor(t.img.file);
   const alt = cap ? `${g.name}: ${cap}` : `${g.name} work, image ${idx + 1} of ${total}`;
   const gate = g.href ? ` data-gated` : '';
   const href = g.href || '#';
@@ -336,6 +404,58 @@ function replaceBetween(html, startMark, endMark, body, file) {
   return html.slice(0, a + startMark.length) + '\n' + body + '        ' + html.slice(b);
 }
 
+/* ---- Home ---- */
+function homeImage(p, [file, cap]) {
+  const { w, h } = dimensions(join(ROOT, 'assets', 'images', file));
+  const crop = p.earlier ? { ratio: '4 / 3', pos: '50% 50%' } : cropFor(file);
+  const ratio = crop ? eval(crop.ratio.replace(/\s/g, '')) : w / h;
+  return { file, cap, src: `assets/images/${urlPath(file)}`, w, h, landscape: ratio > 1.15,
+    zoom: zoomFor(file), feature: p.earlier ? 0 : featureFor(file), crop, shaped: shapedFor(file) };
+}
+
+function projectHead(p) {
+  const base = p.href.replace(/^.*\//, '').replace(/\.html$/, '');
+  const label = p.label ? `          <h3 class="work-label">${esc(p.label)}</h3>\n` : '';
+  const mask = `url('assets/logos/${p.logo}.svg')`;
+  return `${label}          <div class="proj-head" id="work-${base}">
+            <a class="proj-id" href="${p.href}" data-gated>
+              <span class="proj-logo" aria-hidden="true" style="--ls:${p.ls}; -webkit-mask-image:${mask}; mask-image:${mask}"></span>
+              <h4 class="proj-name">${esc(p.name)}</h4>
+              <span class="proj-when">${esc(p.when)}</span>
+            </a>
+            <ul class="proj-tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+            <a class="go proj-go" href="${p.href}" data-gated>View case study <i aria-hidden="true">→</i></a>
+          </div>
+`;
+}
+
+function homeSection() {
+  const projects = HOME.map(p => ({ ...p, headed: true, images: p.images.map(i => homeImage(p, i)) }));
+  const featured = projects.filter(p => !p.earlier);
+  const earlier = projects.filter(p => p.earlier);
+  let out = '';
+  featured.forEach(p => {
+    let tiles = '';
+    layout(p.images).forEach((t, i) => { tiles += tile(p, t, i, p.images.length, false); });
+    out += `        <div class="col-group">\n${projectHead(p)}${tiles}        </div>\n`;
+  });
+  if (earlier.length) {
+    let inner = '';
+    earlier.forEach(p => {
+      inner += projectHead(p);
+      p.images.forEach((img, i) => { inner += tile(p, { img, span: 4 }, i, p.images.length, false); });
+    });
+    out += `        <div class="col-group is-earlier">\n${inner}        </div>\n`;
+  }
+  return out;
+}
+
+let indexHtml = readFileSync(INDEX, 'utf8');
+indexHtml = replaceBetween(indexHtml, '<!-- work:start -->', '<!-- work:end -->', homeSection(), 'index.html');
+writeFileSync(INDEX, indexHtml);
+for (const p of HOME) console.log(`home    ${p.name.padEnd(22)} ${p.images.length} images`);
+
+/* ---- Studio ---- */
 const groups = readGroups();
 const studio = groups.filter(g => g.studio);
 let studioHtml = readFileSync(STUDIO_PAGE, 'utf8');

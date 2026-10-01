@@ -486,9 +486,9 @@ section{padding:110px 0; position:relative;}
    layer it wants is too: 42 promoted tiles of full-size photos is real
    memory on a phone, for an animation that never runs there */
 @media (min-width:761px){ .col-item{will-change:transform;} }
-.span-4{grid-column:span 4;} .span-5{grid-column:span 5;} .span-7{grid-column:span 7;} .span-8{grid-column:span 8;} .span-12{grid-column:span 12;}
+.span-4{grid-column:span 4;} .span-5{grid-column:span 5;} .span-6{grid-column:span 6;} .span-7{grid-column:span 7;} .span-8{grid-column:span 8;} .span-12{grid-column:span 12;}
 /* single tiles can sit against the right edge instead of the left */
-.end.span-4{grid-column:9 / 13;} .end.span-5{grid-column:8 / 13;} .end.span-7{grid-column:6 / 13;} .end.span-8{grid-column:5 / 13;}
+.end.span-4{grid-column:9 / 13;} .end.span-5{grid-column:8 / 13;} .end.span-6{grid-column:7 / 13;} .end.span-7{grid-column:6 / 13;} .end.span-8{grid-column:5 / 13;}
 .col-item.centre{grid-column:3 / span 8;}
 /* a pair of portrait shots sits centred */
 .span-5.c2{grid-column:2 / span 5;} .span-5.c7{grid-column:7 / span 5;}
@@ -1225,55 +1225,32 @@ footer{
 .foot a{color:var(--ink-dim); text-decoration:none; transition:color .2s;}
 .foot a:hover{color:var(--ink);}
 
-/* ---------- Home: project cards ----------
-   Featured work is one large card per project, image and text side by
-   side, alternating sides down the page. Earlier work is a row of three
-   smaller cards. Each card is a single link to its case study. */
-.work-group + .work-group{margin-top:clamp(90px,10vw,170px);}
-.work-label{display:flex; align-items:baseline; gap:14px; font-size:13.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 clamp(28px,3vw,44px);}
-.work-label span{letter-spacing:0; text-transform:none; font-weight:400;}
-.feat{display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:clamp(24px,3.4vw,64px); align-items:center; color:inherit; text-decoration:none;}
-.feat + .feat{margin-top:clamp(64px,7vw,120px);}
-.feat.flip{grid-template-columns:minmax(0,5fr) minmax(0,7fr);}
-.feat.flip .feat-media{order:2;}
-.feat-media{position:relative; overflow:hidden; aspect-ratio:16/9; background:var(--glass);}
-.feat-media img{width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.8,.2,1);}
-.feat:hover .feat-media img{transform:scale(1.03);}
-.feat-logo{display:block; height:calc(26px * var(--ls,1)); width:100%; background:var(--ink); margin-bottom:22px;
+/* ---------- Home: project header over each collage ----------
+   Logo, name and years on the left, the project's tags and the case study
+   link on the right; phones stack them. The earlier work shares one group,
+   so each of its headers after the first gets air above it. */
+.proj-head{grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:flex-end; gap:14px 28px; margin-bottom:clamp(2px,.6vw,8px); scroll-margin-top:96px;}
+.proj-id{display:flex; flex-direction:column; align-items:flex-start; gap:8px; color:inherit; text-decoration:none; margin-right:auto;}
+.proj-logo{display:block; height:calc(22px * var(--ls,1)); width:clamp(160px,18vw,260px); background:var(--ink); margin-bottom:6px;
   -webkit-mask-repeat:no-repeat; -webkit-mask-position:left center; -webkit-mask-size:auto 100%;
   mask-repeat:no-repeat; mask-position:left center; mask-size:auto 100%;}
-.feat-name{font-size:clamp(28px,2.8vw,44px); font-weight:500; letter-spacing:-.03em; line-height:1.04; margin:0;}
-.feat-role{display:block; font-size:13.5px; font-weight:500; color:var(--accent); margin-top:12px; transition:color .6s ease;}
-.feat-sum{font-size:16.5px; line-height:1.65; color:var(--ink); margin:18px 0 0; max-width:46ch;}
-.feat-stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:26px 0 28px; padding:0; list-style:none;}
-.feat-stats li{background:var(--glass); padding:16px 16px 18px;}
-.feat-stats b{display:block; font-size:clamp(22px,2vw,30px); font-weight:500; letter-spacing:-.03em; line-height:1;}
-.feat-stats span{display:block; font-size:12.5px; line-height:1.45; color:var(--ink-dim); margin-top:8px;}
+.proj-name{font-size:clamp(22px,2vw,30px); font-weight:500; letter-spacing:-.03em; line-height:1.05; margin:0;}
+.proj-when{font-size:13px; font-weight:500; color:var(--ink-dim);}
+.proj-tags{display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px; list-style:none; margin:0; padding:0; max-width:640px;}
+.proj-tags li{font-size:12px; padding:7px 11px; background:var(--glass); color:var(--ink-dim);}
+.proj-go{color:inherit; text-decoration:none; white-space:nowrap;}
+.col-group > .work-label{grid-column:1 / -1; margin-bottom:clamp(8px,1.4vw,20px);}
+.col-group.is-earlier > .proj-head ~ .proj-head{margin-top:clamp(40px,4.5vw,72px);}
+.is-earlier .proj-logo{height:calc(18px * var(--ls,1));}
+.is-earlier .proj-name{font-size:clamp(20px,1.6vw,24px);}
+@media (max-width:760px){
+  .proj-head{flex-direction:column; align-items:flex-start; gap:12px;}
+  .proj-tags{justify-content:flex-start;}
+}
 .go{font-size:14.5px; font-weight:500; display:inline-flex; gap:8px; align-items:center;}
 .go i{font-style:normal; transition:transform .25s ease;}
-a:hover .go i{transform:translateX(4px);}
-.earlier{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px;}
-.ecard{display:flex; flex-direction:column; background:var(--glass-soft); color:inherit; text-decoration:none; transition:background-color .3s ease;}
-.ecard:hover{background:var(--glass);}
-.ecard-media{aspect-ratio:4/3; overflow:hidden;}
-.ecard-media img{width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.8,.2,1);}
-.ecard:hover .ecard-media img{transform:scale(1.03);}
-.ecard-body{padding:22px 22px 26px; display:flex; flex-direction:column; gap:8px; flex:1;}
-.ecard-name{font-size:21px; font-weight:500; letter-spacing:-.02em; margin:0;}
-.ecard-role{font-size:12.5px; font-weight:500; color:var(--ink-dim);}
-.ecard-sum{font-size:14.5px; line-height:1.6; margin:4px 0 14px;}
-.ecard .go{margin-top:auto;}
-@media (max-width:980px){
-  .feat, .feat.flip{grid-template-columns:1fr; gap:22px;}
-  .feat.flip .feat-media{order:0;}
-  .earlier{grid-template-columns:1fr 1fr;}
-}
-@media (max-width:620px){
-  .earlier{grid-template-columns:1fr;}
-  .feat-logo{height:calc(19px * var(--ls,1)); margin-bottom:16px;}
-  .feat-stats{grid-template-columns:1fr 1fr 1fr; gap:8px;}
-  .feat-stats li{padding:12px 12px 14px;}
-}
+a:hover .go i, a.go:hover i{transform:translateX(4px);}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
 
 /* ---------- featured case study layout ----------
    Each chapter is two columns: its number and title on the left, held in
@@ -1441,3 +1418,19 @@ a:hover .go i{transform:translateX(4px);}
 /* "Earlier work" over the title on the older case studies */
 .case-back + .case-earlier{margin:26px 0 0;}
 .case-earlier + h1{margin-top:6px;}
+
+/* ---------- case study hero video ----------
+   Full width, muted, looping, no player chrome, over its poster: a video
+   file (.hv video) or a YouTube film (.hv[data-yt], the player scaled up a
+   little so its own title bar sits outside the frame). It starts when it
+   comes into view, stops when it leaves, and never starts by itself under
+   reduced motion or data saver; the button in the corner pauses and plays
+   it either way (main.js). */
+.hv{position:relative; aspect-ratio:16/9; overflow:hidden; background:#000;}
+.case-media .hv > img, .hv video{position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; object-fit:cover;}
+.hv iframe{position:absolute; top:50%; left:50%; width:100%; height:100%; border:0; pointer-events:none; transform:translate(-50%,-50%) scale(1.19); opacity:0; transition:opacity .8s ease;}
+.hv.is-playing iframe{opacity:1;}
+.hv-toggle{position:absolute; right:14px; bottom:14px; z-index:2; width:44px; height:44px; padding:0; border:0; cursor:pointer; background:rgba(11,11,12,.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:grid; place-items:center;}
+.hv-toggle::before{content:""; width:12px; height:14px; border-left:4px solid #fff; border-right:4px solid #fff;}
+.hv-toggle.is-paused::before{width:0; height:0; margin-left:4px; border-right:0; border-left:14px solid #fff; border-top:8px solid transparent; border-bottom:8px solid transparent;}
+@media (max-width:760px){ .hv.r43-small{aspect-ratio:4/3;} }
