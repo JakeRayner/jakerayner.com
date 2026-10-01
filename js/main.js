@@ -1508,4 +1508,86 @@
       }
     });
   }
+
+  /* ---------- 12. Gallery lightbox ----------
+     The thumbnails at the end of a case study open full size here, with
+     previous and next across the whole gallery. Pictures show the full
+     file, films play with their controls, YouTube videos load the player
+     only when opened. The thumbnails stay plain links, so without this the
+     file itself opens instead. */
+  (function galleryLightbox() {
+    var thumbs = Array.prototype.slice.call(document.querySelectorAll('.thumbs .thumb'));
+    if (!thumbs.length) return;
+    var box, stage, count, index = 0, lastFocus = null;
+    function build() {
+      box = document.createElement('div');
+      box.className = 'glb';
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.setAttribute('aria-label', 'Gallery');
+      box.innerHTML = '<div class="glb-stage"></div>' +
+        '<button class="glb-x" type="button" aria-label="Close gallery">×</button>' +
+        '<button class="glb-prev" type="button" aria-label="Previous">‹</button>' +
+        '<button class="glb-next" type="button" aria-label="Next">›</button>' +
+        '<span class="glb-count" aria-live="polite"></span>';
+      document.body.appendChild(box);
+      stage = box.querySelector('.glb-stage');
+      count = box.querySelector('.glb-count');
+      box.querySelector('.glb-x').addEventListener('click', close);
+      box.querySelector('.glb-prev').addEventListener('click', function () { show(index - 1); });
+      box.querySelector('.glb-next').addEventListener('click', function () { show(index + 1); });
+      box.addEventListener('click', function (e) { if (e.target === box) close(); });
+    }
+    function show(i) {
+      index = (i + thumbs.length) % thumbs.length;
+      var a = thumbs[index], kind = a.getAttribute('data-kind'), el;
+      if (kind === 'youtube') {
+        el = document.createElement('iframe');
+        el.src = 'https://www.youtube-nocookie.com/embed/' + a.getAttribute('data-yt') + '?autoplay=1&rel=0&playsinline=1';
+        el.title = a.querySelector('img').alt;
+        el.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        el.allowFullscreen = true;
+      } else if (kind === 'video') {
+        el = document.createElement('video');
+        el.src = a.getAttribute('href');
+        el.controls = true; el.muted = true; el.playsInline = true; el.loop = true;
+        if (!reduceMotion) el.autoplay = true;
+      } else {
+        el = document.createElement('img');
+        el.src = a.getAttribute('href');
+        el.alt = a.querySelector('img').alt;
+      }
+      stage.innerHTML = '';
+      stage.appendChild(el);
+      count.textContent = (index + 1) + ' of ' + thumbs.length;
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') show(index - 1);
+      else if (e.key === 'ArrowRight') show(index + 1);
+    }
+    function open(i) {
+      if (!box) build();
+      lastFocus = document.activeElement;
+      show(i);
+      box.classList.add('open');
+      document.documentElement.classList.add('glb-open');
+      document.addEventListener('keydown', onKey);
+      box.querySelector('.glb-x').focus();
+    }
+    function close() {
+      box.classList.remove('open');
+      document.documentElement.classList.remove('glb-open');
+      document.removeEventListener('keydown', onKey);
+      stage.innerHTML = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    thumbs.forEach(function (a, i) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        open(i);
+      });
+    });
+  })();
 })();
