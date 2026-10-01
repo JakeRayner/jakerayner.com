@@ -128,7 +128,7 @@ a{color:inherit;}
    page, work gallery included, sits inside this. */
 .wrap{max-width:calc(2000px + var(--pad) * 2); margin:0 auto; padding:0 var(--pad);}
 .wrap.full{max-width:none;}
-img{max-width:100%; display:block;}
+img{max-width:100%; height:auto; display:block;}
 
 h1,h2,h3{font-family:var(--sans); font-weight:500; margin:0; letter-spacing:-.03em;}
 .serif{font-family:var(--serif); font-weight:500; letter-spacing:-.01em; font-optical-sizing:auto;}
@@ -1214,3 +1214,230 @@ footer{
   .magnetic, .btn, .ov-txt, header.nav, .col-img img, a.case-full{transition:none;}
   .col-img::before{animation:none;}
 }
+
+/* ============================================================
+   Portfolio refresh, October 2026: Home project cards, the featured case
+   study layout, press quotes, video embeds and the case diagrams.
+   ============================================================ */
+
+/* ---------- footer: contact on every page ---------- */
+.foot-links{display:flex; flex-wrap:wrap; gap:6px 22px;}
+.foot a{color:var(--ink-dim); text-decoration:none; transition:color .2s;}
+.foot a:hover{color:var(--ink);}
+
+/* ---------- Home: project cards ----------
+   Featured work is one large card per project, image and text side by
+   side, alternating sides down the page. Earlier work is a row of three
+   smaller cards. Each card is a single link to its case study. */
+.work-group + .work-group{margin-top:clamp(90px,10vw,170px);}
+.work-label{display:flex; align-items:baseline; gap:14px; font-size:13.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 clamp(28px,3vw,44px);}
+.work-label span{letter-spacing:0; text-transform:none; font-weight:400;}
+.feat{display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:clamp(24px,3.4vw,64px); align-items:center; color:inherit; text-decoration:none;}
+.feat + .feat{margin-top:clamp(64px,7vw,120px);}
+.feat.flip{grid-template-columns:minmax(0,5fr) minmax(0,7fr);}
+.feat.flip .feat-media{order:2;}
+.feat-media{position:relative; overflow:hidden; aspect-ratio:16/9; background:var(--glass);}
+.feat-media img{width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.8,.2,1);}
+.feat:hover .feat-media img{transform:scale(1.03);}
+.feat-logo{display:block; height:calc(26px * var(--ls,1)); width:100%; background:var(--ink); margin-bottom:22px;
+  -webkit-mask-repeat:no-repeat; -webkit-mask-position:left center; -webkit-mask-size:auto 100%;
+  mask-repeat:no-repeat; mask-position:left center; mask-size:auto 100%;}
+.feat-name{font-size:clamp(28px,2.8vw,44px); font-weight:500; letter-spacing:-.03em; line-height:1.04; margin:0;}
+.feat-role{display:block; font-size:13.5px; font-weight:500; color:var(--accent); margin-top:12px; transition:color .6s ease;}
+.feat-sum{font-size:16.5px; line-height:1.65; color:var(--ink); margin:18px 0 0; max-width:46ch;}
+.feat-stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:26px 0 28px; padding:0; list-style:none;}
+.feat-stats li{background:var(--glass); padding:16px 16px 18px;}
+.feat-stats b{display:block; font-size:clamp(22px,2vw,30px); font-weight:500; letter-spacing:-.03em; line-height:1;}
+.feat-stats span{display:block; font-size:12.5px; line-height:1.45; color:var(--ink-dim); margin-top:8px;}
+.go{font-size:14.5px; font-weight:500; display:inline-flex; gap:8px; align-items:center;}
+.go i{font-style:normal; transition:transform .25s ease;}
+a:hover .go i{transform:translateX(4px);}
+.earlier{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px;}
+.ecard{display:flex; flex-direction:column; background:var(--glass-soft); color:inherit; text-decoration:none; transition:background-color .3s ease;}
+.ecard:hover{background:var(--glass);}
+.ecard-media{aspect-ratio:4/3; overflow:hidden;}
+.ecard-media img{width:100%; height:100%; object-fit:cover; transition:transform .9s cubic-bezier(.2,.8,.2,1);}
+.ecard:hover .ecard-media img{transform:scale(1.03);}
+.ecard-body{padding:22px 22px 26px; display:flex; flex-direction:column; gap:8px; flex:1;}
+.ecard-name{font-size:21px; font-weight:500; letter-spacing:-.02em; margin:0;}
+.ecard-role{font-size:12.5px; font-weight:500; color:var(--ink-dim);}
+.ecard-sum{font-size:14.5px; line-height:1.6; margin:4px 0 14px;}
+.ecard .go{margin-top:auto;}
+@media (max-width:980px){
+  .feat, .feat.flip{grid-template-columns:1fr; gap:22px;}
+  .feat.flip .feat-media{order:0;}
+  .earlier{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:620px){
+  .earlier{grid-template-columns:1fr;}
+  .feat-logo{height:calc(19px * var(--ls,1)); margin-bottom:16px;}
+  .feat-stats{grid-template-columns:1fr 1fr 1fr; gap:8px;}
+  .feat-stats li{padding:12px 12px 14px;}
+}
+
+/* ---------- featured case study layout ----------
+   Each chapter is two columns: its number and title on the left, held in
+   view while the text runs (sticky, native scroll), the text on the right
+   at a comfortable measure. Pictures, diagrams and stats break out to the
+   full width underneath. A strip of chapter links sits under the hero. */
+.case-toc{display:flex; flex-wrap:wrap; gap:8px; margin:28px 0 0; padding:0; list-style:none;}
+.case-toc a{display:inline-block; font-size:13px; font-weight:500; padding:9px 13px; background:var(--glass-soft); color:var(--ink-dim); text-decoration:none; transition:background-color .2s ease, color .2s ease;}
+.case-toc a:hover{background:var(--glass); color:var(--ink);}
+.case-toc b{font-weight:500; opacity:.6; margin-right:6px;}
+.cs{padding:clamp(80px,8.5vw,140px) 0 0; scroll-margin-top:80px;}
+.cs:last-of-type{padding-bottom:clamp(80px,8vw,120px);}
+.cs-grid{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,8fr); gap:clamp(24px,4vw,80px); align-items:start;}
+.cs-head{position:sticky; top:104px;}
+.cs-num{display:block; font-size:12.5px; font-weight:500; letter-spacing:.08em; color:var(--ink-dim); margin-bottom:12px;}
+.cs-head h2{font-size:clamp(28px,3vw,44px); line-height:1.05; letter-spacing:-.035em;}
+.cs-body{max-width:70ch;}
+.cs-body p{font-size:17px; line-height:1.72; margin:0 0 18px;}
+.cs-body p.cs-lede{font-size:clamp(19px,1.6vw,22px); line-height:1.55; letter-spacing:-.01em;}
+.cs-body h3{font-size:clamp(19px,1.6vw,22px); font-weight:500; letter-spacing:-.02em; margin:42px 0 12px;}
+.cs-body h3:first-child{margin-top:0;}
+.cs-body a{text-underline-offset:3px;}
+.cs-body .case-ul-prose{max-width:none; margin:6px 0 22px;}
+.cs-full{margin:clamp(40px,4.5vw,64px) 0 0;}
+.cs-full + .cs-full{margin-top:16px;}
+.cs-full.diagram, .cs-full.pics{margin-left:0; margin-right:0;}
+.cs-full.case-fig{margin-top:clamp(40px,4.5vw,64px);}
+.cs .values{margin-top:clamp(40px,4.5vw,64px);}
+.cs-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px;}
+@media (max-width:900px){
+  .cs-grid{grid-template-columns:1fr; gap:18px;}
+  .cs-head{position:static;}
+  .cs-body p{font-size:16.5px;}
+}
+
+/* pictures in a case study: two or three side by side at one height */
+.pics{display:grid; grid-template-columns:repeat(var(--n,2), minmax(0,1fr)); gap:16px; margin:0;}
+.pics img{width:100%; height:100%; aspect-ratio:var(--ar,3/2); object-fit:cover;}
+.pics figcaption, .cs-full figcaption{grid-column:1 / -1; font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:2px; max-width:75ch;}
+.cs-full > img{width:100%; height:auto;}
+.cs-full > figcaption{margin-top:10px;}
+@media (max-width:700px){ .pics{grid-template-columns:1fr;} .pics.keep{grid-template-columns:repeat(var(--n,2), minmax(0,1fr)); gap:8px;} }
+
+/* ---------- press quotes ---------- */
+.press{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:clamp(40px,4.5vw,64px) 0 0;}
+.press blockquote{margin:0; padding:30px 30px 28px; background:var(--glass); display:flex; flex-direction:column; justify-content:space-between; gap:22px;}
+.press q{font-size:clamp(28px,3.2vw,48px); font-weight:500; letter-spacing:-.035em; line-height:1.02; quotes:"\201C" "\201D";}
+.press cite{font-style:normal; font-size:13.5px; color:var(--ink-dim);}
+.press cite a{color:var(--ink); text-underline-offset:3px;}
+@media (max-width:620px){ .press{grid-template-columns:1fr;} }
+
+/* ---------- video: poster first, the player only on request ----------
+   A button with the video's own poster; pressing it swaps in the YouTube
+   player, muted, controls on (main.js). Nothing plays until it is asked
+   to, so reduced motion never sees anything move by itself. */
+.video{position:relative; aspect-ratio:16/9; background:#000; overflow:hidden;}
+.video-btn{position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; background:#000; cursor:pointer; color:#fff;}
+.video-btn img{width:100%; height:100%; object-fit:cover; opacity:.82; transition:opacity .3s ease;}
+.video-btn:hover img{opacity:1;}
+.video-btn .play{position:absolute; left:50%; top:50%; width:76px; height:76px; transform:translate(-50%,-50%); background:rgba(11,11,12,.72); display:grid; place-items:center; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);}
+.video-btn .play::before{content:""; margin-left:5px; border-left:20px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent;}
+.video iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+
+/* ---------- case diagrams: shared parts ----------
+   Boxes are glass tiles like every other surface. Arrows are a short line
+   with a chevron head, drawn in the dim ink, and point with .r .l .u .d. */
+.diagram{margin:clamp(40px,4.5vw,64px) 0 0;}
+.diagram figcaption{font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:12px; max-width:75ch;}
+.d-box{background:var(--glass); padding:18px 18px 20px; min-width:0;}
+.d-box b{display:block; font-size:16px; font-weight:500; letter-spacing:-.01em; line-height:1.3;}
+.d-box span{display:block; font-size:13px; line-height:1.5; color:var(--ink-dim); margin-top:6px;}
+.d-box.solid{background:var(--ink); color:var(--bg);}
+.d-box.solid span{color:color-mix(in srgb, var(--bg) 70%, transparent);}
+.arw{position:relative; display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; font-weight:500; color:var(--ink-dim); min-width:28px; min-height:28px;}
+.arw::before{content:""; flex:none; width:18px; height:18px; border-top:1.5px solid var(--ink-dim); border-right:1.5px solid var(--ink-dim); transform:rotate(45deg); margin-right:6px;}
+.arw.l::before{transform:rotate(-135deg); margin:0 0 0 6px;}
+.arw.u::before{transform:rotate(-45deg); margin:6px 0 0;}
+.arw.d::before{transform:rotate(135deg); margin:0 0 6px;}
+.arw.u, .arw.d{flex-direction:column; gap:4px;}
+.diagram.is-anim .d-part{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1); transition-delay:calc(var(--i,0) * 90ms);}
+.diagram.is-anim.is-in .d-part{opacity:1; transform:none;}
+@media (prefers-reduced-motion: reduce){ .diagram.is-anim .d-part{opacity:1; transform:none; transition:none;} }
+
+/* D1: Scout, Analyse, Implement, Transfer. Four steps round a loop with
+   arrows in the gaps, and a way out from Transfer to the owning department. */
+.cycle{display:grid; grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr); grid-template-rows:auto 64px auto 56px auto; max-width:880px;}
+.cycle .c-a{grid-area:1/1;} .cycle .c-ab{grid-area:1/2;} .cycle .c-b{grid-area:1/3;}
+.cycle .c-bc{grid-area:2/3;} .cycle .c-c{grid-area:3/3;} .cycle .c-cd{grid-area:3/2;}
+.cycle .c-d{grid-area:3/1;} .cycle .c-da{grid-area:2/1;} .cycle .c-de{grid-area:4/1;} .cycle .c-e{grid-area:5/1;}
+.cycle .c-e{align-self:start;}
+@media (max-width:620px){
+  .cycle{grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);}
+  .cycle .arw{font-size:11px; text-align:center;}
+  .cycle .d-box{padding:14px;}
+  .cycle .d-box b{font-size:15px;}
+}
+
+/* D2: the delivery loop. Business forum into a backlog, three sprint lanes
+   staggered one sprint apart, test findings back into design, then the
+   sign-off gate before production. */
+.loop{display:grid; gap:14px;}
+.loop-row{display:grid; grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr) 44px minmax(0,1fr); align-items:stretch;}
+.loop-down{justify-self:start; margin-left:24px;}
+.lanes{background:var(--glass-soft); padding:20px; display:grid; gap:10px;}
+.lanes-axis{display:flex; justify-content:space-between; font-size:12px; font-weight:500; color:var(--ink-dim); margin-bottom:4px;}
+.lane{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px;}
+.lane .d-box{grid-column:1 / span 3;}
+.lane.off1 .d-box{grid-column:2 / span 3;}
+.lane.off2 .d-box{grid-column:3 / span 3;}
+.lane-back{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px;}
+.lane-back .arw{grid-column:2 / span 3; justify-content:flex-start;}
+@media (max-width:760px){
+  .loop-row{grid-template-columns:1fr; gap:6px;}
+  .loop-row .arw{transform:rotate(90deg); justify-self:start; margin-left:20px;}
+  .loop-row .arw::before{margin:0;}
+  .lanes{padding:12px;}
+  .lane{gap:6px;}
+  .lane .d-box{padding:12px;}
+  .lane .d-box b{font-size:14px;}
+  .lane .d-box span{font-size:12px;}
+}
+
+/* D3: the HMI interaction model. One wide screen in three zones, the
+   physical controls under it, and the two drive mode themes. */
+.hmi{display:grid; gap:16px;}
+.hmi-screen{background:var(--glass); padding:16px; display:grid; grid-template-columns:minmax(0,1fr) 34px minmax(0,1.35fr) 34px minmax(0,1fr); align-items:stretch;}
+.hmi-zone{background:var(--glass); padding:18px; display:flex; flex-direction:column; gap:6px; min-height:150px;}
+.hmi-zone b{font-size:16px; font-weight:500;}
+.hmi-zone span{font-size:13px; line-height:1.5; color:var(--ink-dim);}
+.hmi-zone.home{background:var(--glass-strong);}
+.hmi-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto;}
+.hmi-chips i{font-style:normal; font-size:12.5px; font-weight:500; padding:8px 11px; background:var(--ink); color:var(--bg);}
+.hmi-swipe{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:16px; color:var(--ink-dim);}
+.hmi-swipe small{font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; writing-mode:vertical-rl; transform:rotate(180deg);}
+.hmi-under{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:16px;}
+.hmi-controls, .hmi-modes{background:var(--glass-soft); padding:18px;}
+.hmi-row{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px;}
+.hmi-ctrl{background:var(--glass); padding:16px 12px; text-align:center; font-size:13.5px; font-weight:500;}
+.hmi-ctrl svg{display:block; width:28px; height:28px; margin:0 auto 10px; fill:none; stroke:var(--ink-dim); stroke-width:1.6; stroke-linecap:square;}
+.hmi-note{display:block; font-size:12.5px; color:var(--ink-dim); margin-top:12px;}
+.hmi-modes .hmi-row{grid-template-columns:1fr 1fr;}
+.hmi-mode{height:62px; display:flex; align-items:flex-end; padding:10px 12px; font-size:13px; font-weight:500; color:#fff;}
+.hmi-mode.gt{background:linear-gradient(120deg,#0f2a2a,#2f6e6a);}
+.hmi-mode.sport{background:linear-gradient(120deg,#2a0f0b,#b23a1e);}
+@media (max-width:760px){
+  .hmi-screen{grid-template-columns:1fr; gap:8px;}
+  .hmi-swipe{flex-direction:row;}
+  .hmi-swipe small{writing-mode:horizontal-tb; transform:none;}
+  .hmi-zone{min-height:0;}
+  .hmi-under{grid-template-columns:1fr;}
+}
+
+/* five header tiles (no team given): the last one takes the spare column */
+.meta-grid.six .meta:nth-child(5):last-child{grid-column:span 2;}
+@media (max-width:520px){ .meta-grid.six .meta:nth-child(5):last-child{grid-column:auto;} }
+
+/* a tall picture beside two stacked ones, so mixed shapes sit together
+   without gaps; one caption under the set */
+.bento{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); grid-template-rows:1fr 1fr; gap:16px; margin:0;}
+.bento img{width:100%; height:100%; object-fit:cover; min-height:0;}
+.bento img:first-child{grid-row:span 2;}
+.bento figcaption{grid-column:1 / -1; font-size:12.5px; line-height:1.5; color:var(--ink-dim); max-width:75ch;}
+@media (max-width:700px){ .bento{grid-template-columns:1fr; grid-template-rows:none;} .bento img:first-child{grid-row:auto;} }
+
+/* "Earlier work" over the title on the older case studies */
+.case-back + .case-earlier{margin:26px 0 0;}
+.case-earlier + h1{margin-top:6px;}

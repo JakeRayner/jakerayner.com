@@ -44,7 +44,6 @@
         <a class="lnk" href="../index.html">Home</a>
         <a class="lnk" href="../index.html#work">Work</a>
         <a class="lnk" href="../about.html">About</a>
-        <a class="lnk studio-brand" href="../freelance.html">Studio</a>
       </nav>
       <button class="menu-btn magnetic" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
         <span class="menu-ico" aria-hidden="true"><i></i><i></i></span>
@@ -64,11 +63,11 @@
     <a class="ov-item" href="../index.html"><span class="ov-num">01</span><span class="ov-mask"><span class="ov-txt">Home</span></span></a>
     <a class="ov-item" href="../index.html#work"><span class="ov-num">02</span><span class="ov-mask"><span class="ov-txt">Work</span></span></a>
     <a class="ov-item" href="../about.html"><span class="ov-num">03</span><span class="ov-mask"><span class="ov-txt">About</span></span></a>
-    <a class="ov-item" href="../freelance.html"><span class="ov-num">04</span><span class="ov-mask"><span class="ov-txt studio-brand">Studio</span></span></a>
   </nav>
   <div class="wrap ov-foot">
     <a href="mailto:jake.rayner.96@gmail.com">jake.rayner.96@gmail.com</a>
     <a href="tel:+447733361372">07733 361372</a>
+    <a href="https://www.linkedin.com/in/jake-rayner-09666084/" target="_blank" rel="noopener">LinkedIn</a>
     <span>Manchester, UK</span>
   </div>
 </div>
@@ -88,6 +87,15 @@
         <div class="meta"><span class="k">Scope</span><span class="v">A multi-brand design system for 21 brands across app, mobile web and desktop, plus CRO, accessibility and new features</span></div>
         <div class="meta"><span class="k">Outcome</span><span class="v">Feature delivery cut from months to days, 100+ A/B tests, and conversion wins of up to +11.7%</span></div>
       </div>
+      <nav aria-label="On this page"><ul class="case-toc">
+        <li><a href="#challenge"><b>01</b>The challenge</a></li>
+        <li><a href="#brand"><b>02</b>Starting from the brand</a></li>
+        <li><a href="#clickable"><b>03</b>Making clickable mean one thing</a></li>
+        <li><a href="#system"><b>04</b>One system, every brand</a></li>
+        <li><a href="#test"><b>05</b>Test and learn</a></li>
+        <li><a href="#business"><b>06</b>Working with the business</a></li>
+        <li><a href="#outcome"><b>07</b>Outcome</a></li>
+      </ul></nav>
       <figure class="case-media art">
         <picture>
           <source media="(max-width:760px)" srcset="../assets/images/case/dg/debenhams-group-design-system-4x3.jpg" width="1600" height="1200">
@@ -98,54 +106,64 @@
     </div>
   </section>
 
-  <section class="case-section">
+  <section class="cs" id="challenge">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">The challenge</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>After the acquisition, the business ran like a startup. The website had been built quickly by a single front-end developer and the app from a reference template. There was no design structure, no shared components and no rigour: teams were simply shipping.</p>
-        <p>Then the brief grew. Our Debenhams team moved to report directly to the CTO, with a mandate to take the system we'd built for Debenhams across the whole portfolio, from boohoo and PrettyLittleThing to Karen Millen and The Brand Room. And the business wanted to ship fast, which meant there was little appetite for up-front user testing.</p>
-        <p>So the real challenge was building rigour into speed: one system every brand could ship from quickly, without losing what makes each brand distinct.</p>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">01</span><h2>The challenge</h2></div>
+        <div class="cs-body">
+          <p class="cs-lede">After the acquisition, the business ran like a startup.</p>
+          <p>The website had been built quickly by a single front-end developer and the app from a reference template. There was no design structure, no shared components and no rigour: teams were simply shipping.</p>
+          <p>Then the brief grew. Our Debenhams team moved to report directly to the CTO, with a mandate to take the system we'd built for Debenhams across the whole portfolio, from boohoo and PrettyLittleThing to Karen Millen and The Brand Room. And the business wanted to ship fast, which meant there was little appetite for up-front user testing.</p>
+          <p>So the real challenge was building rigour into speed: one system every brand could ship from quickly, without losing what makes each brand distinct.</p>
+        </div>
       </div>
     </div>
   </section>
-
-  <section class="case-section">
+  <section class="cs" id="brand">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Starting from the brand</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>I started with the creative team. We worked through the brand guidelines, set up the core foundations of the design system, then worked component by component through the website. All of this happened while delivering a steady stream of new features, so the system had to be built in flight.</p>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">02</span><h2>Starting from the brand</h2></div>
+        <div class="cs-body">
+          <p>I started with the creative team. We worked through the brand guidelines, set up the core foundations of the design system, then worked component by component through the website. All of this happened while delivering a steady stream of new features, so the system had to be built in flight.</p>
+        </div>
       </div>
     </div>
   </section>
-
-  <section class="case-section">
+  <section class="cs" id="clickable">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Making clickable mean one thing</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>Mapping the estate exposed a lot of inconsistency in how calls to action looked and how colour signalled what was clickable. We wanted to move away from underlined hyperlinks and make colour do that job reliably.</p>
-        <p>We mapped each brand's primary colour one to one, and derived a CTA colour from it. That CTA colour, and its shades, became the single signal for anything you could tap or click, on every brand.</p>
-        <p>There was pushback from parts of the business that didn't want everything clickable to carry colour. To settle it with evidence rather than opinion, we surveyed around 30 employees from outside digital and technology, to avoid internal bias. The results validated the approach, and the colour alignment rolled out across the brands.</p>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">03</span><h2>Making clickable mean one thing</h2></div>
+        <div class="cs-body">
+          <p class="cs-lede">Mapping the estate exposed a lot of inconsistency in how calls to action looked and how colour signalled what was clickable.</p>
+          <p>We wanted to move away from underlined hyperlinks and make colour do that job reliably.</p>
+          <p>We mapped each brand's primary colour one to one, and derived a CTA colour from it. That CTA colour, and its shades, became the single signal for anything you could tap or click, on every brand.</p>
+          <p>There was pushback from parts of the business that didn't want everything clickable to carry colour. To settle it with evidence rather than opinion, we surveyed around 30 employees from outside digital and technology, to avoid internal bias. The results validated the approach, and the colour alignment rolled out across the brands.</p>
+        </div>
       </div>
+      <figure class="cs-full dg-ctas">
+        <div class="dg-cta-row" aria-hidden="true"><div class="dg-stage mini" data-brand="debenhams"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div><div class="dg-stage mini" data-brand="boohoo"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div><div class="dg-stage mini" data-brand="boohooman"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div><div class="dg-stage mini" data-brand="plt"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div><div class="dg-stage mini" data-brand="karenmillen"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div><div class="dg-stage mini" data-brand="burton"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div><div class="dg-stage mini" data-brand="brandroom"><span class="dg-logo"></span><span class="bd pri">Add to bag</span></div></div>
+        <figcaption>One CTA colour per brand, derived from its primary colour: Debenhams, boohoo, boohooMAN, PrettyLittleThing, Karen Millen, Burton and The Brand Room. Rendered live from the design system's tokens.</figcaption>
+      </figure>
     </div>
   </section>
-
-  <section class="case-section">
+  <section class="cs" id="system">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">One system, every brand</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>The system is built code-first, with Figma downstream:</p>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">04</span><h2>One system, every brand</h2></div>
+        <div class="cs-body">
+          <p class="cs-lede">The system is built code-first, with Figma downstream:</p>
+          <ul class="case-ul case-ul-prose">
+            <li><strong>Two layers of tokens.</strong> Primitives are named for what they are; semantic tokens are named for their role. Components only ever use semantic tokens.</li>
+            <li><strong>One switch per brand.</strong> A single brand attribute on the page resolves every token to that brand's colours, fonts, weights, corner radius and text case. All 21 brands are modes of the same system, with no per-brand stylesheets and no forked components.</li>
+            <li><strong>Brand differences as configuration.</strong> Square corners, for example, are a brand option rather than a separate component: PrettyLittleThing and The Brand Room switch them on with one token.</li>
+            <li><strong>Accessibility as the floor.</strong> Every component targets WCAG 2.1 AA, with 4.5:1 text contrast, 44px touch targets, visible focus states and reduced-motion support built into the tokens. Status is never shown by colour alone.</li>
+            <li><strong>A shared library.</strong> 18 component families, including buttons, product cards, PLP, PDP, bag and checkout kits, plus a 136-icon library, all rendered live in every brand.</li>
+            <li><strong>Aligned with engineering.</strong> I mapped the system component by component against the front-end team's Storybook, 79 components and 178 stories, so design and build converge on one target.</li>
+            <li><strong>Master prototypes.</strong> Each core page has a canonical version built from system components. New briefs branch from it, explore options, and merge the chosen route back, so nothing gets rebuilt from memory.</li>
+          </ul>
+        </div>
       </div>
-      <ul class="case-ul case-ul-prose" data-anim="rise">
-        <li><strong>Two layers of tokens.</strong> Primitives are named for what they are; semantic tokens are named for their role. Components only ever use semantic tokens.</li>
-        <li><strong>One switch per brand.</strong> A single brand attribute on the page resolves every token to that brand's colours, fonts, weights, corner radius and text case. All 21 brands are modes of the same system, with no per-brand stylesheets and no forked components.</li>
-        <li><strong>Brand differences as configuration.</strong> Square corners, for example, are a brand option rather than a separate component: PrettyLittleThing and The Brand Room switch them on with one token.</li>
-        <li><strong>Accessibility as the floor.</strong> Every component targets WCAG 2.1 AA, with 4.5:1 text contrast, 44px touch targets, visible focus states and reduced-motion support built into the tokens. Status is never shown by colour alone.</li>
-        <li><strong>A shared library.</strong> 18 component families, including buttons, product cards, PLP, PDP, bag and checkout kits, plus a 136-icon library, all rendered live in every brand.</li>
-        <li><strong>Aligned with engineering.</strong> I mapped the system component by component against the front-end team's Storybook, 79 components and 178 stories, so design and build converge on one target.</li>
-        <li><strong>Master prototypes.</strong> Each core page has a canonical version built from system components. New briefs branch from it, explore options, and merge the chosen route back, so nothing gets rebuilt from memory.</li>
-      </ul>
-
-      <figure class="case-fig flow">
+      <figure class="case-fig flow cs-full">
         <ol class="flow-steps" aria-label="How a value reaches a brand site, in five steps">
           <li class="flow-step">
             <span class="flow-n">01</span>
@@ -179,9 +197,7 @@
           </li>
         </ol>
         <figcaption>Token architecture. Raw values become role-named tokens, one brand attribute picks the values for that brand, and every component and brand site reads only the role names. Diagram drawn for this page.</figcaption>
-      </figure>
-
-      <figure class="case-fig dg-demo" data-anim="rise">
+      </figure>      <figure class="case-fig dg-demo cs-full" data-anim="rise">
         <div class="dg-demo-in">
           <div class="dg-panel">
             <div>
@@ -229,16 +245,17 @@
           </div>
         </div>
         <figcaption>Live demo: one product card and three actions, re-themed by switching the brand. Token values and component rules come from the Debenhams Group design system; the product is a placeholder.</figcaption>
-      </figure>
-    </div>
+      </figure>    </div>
   </section>
-
-  <section class="case-section">
+  <section class="cs" id="test">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Test and learn</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>With little room for pre-launch research, we made live performance the research. Rather than one big release, we put variants live with clear hypotheses, measured them, kept the winner and kept improving. There's no start or end, just continuous improvement.</p>
-        <p>Over three years, that's meant 100+ A/B tests across the group's brands, measured on conversion, average order value, revenue per user and checkout completion. Wins include:</p>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">05</span><h2>Test and learn</h2></div>
+        <div class="cs-body">
+          <p class="cs-lede">With little room for pre-launch research, we made live performance the research.</p>
+          <p>Rather than one big release, we put variants live with clear hypotheses, measured them, kept the winner and kept improving. There's no start or end, just continuous improvement.</p>
+          <p>Over three years, that's meant 100+ A/B tests across the group's brands, measured on conversion, average order value, revenue per user and checkout completion. Wins include:</p>
+        </div>
       </div>
       <div class="values" data-anim="rise">
         <div class="value"><span class="num">+11.7%</span><h3>Shop By Fit</h3><p>Conversion on Karen Millen.</p></div>
@@ -249,29 +266,31 @@
       </div>
     </div>
   </section>
-
-  <section class="case-section">
+  <section class="cs" id="business">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Working with the business</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>I run a bi-weekly alignment forum with the e-commerce and creative leads from every brand, covering design reviews, feedback and sign-off, plus a monthly session for longer-term ideas. It's how 21 brands' priorities become one roadmap.</p>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">06</span><h2>Working with the business</h2></div>
+        <div class="cs-body">
+          <p>I run a bi-weekly alignment forum with the e-commerce and creative leads from every brand, covering design reviews, feedback and sign-off, plus a monthly session for longer-term ideas. It's how 21 brands' priorities become one roadmap.</p>
+        </div>
       </div>
     </div>
   </section>
-
-  <section class="case-section">
+  <section class="cs" id="outcome">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Outcome</h2>
+      <div class="cs-grid">
+        <div class="cs-head"><span class="cs-num">07</span><h2>Outcome</h2></div>
+        <div class="cs-body">
+          <p class="cs-lede">Accessibility audits and fixes helped the business avoid payouts from attempted US accessibility litigation.</p>
+        </div>
+      </div>
       <div class="values four" data-anim="rise">
         <div class="value"><span class="num">Days</span><p>New features designed and delivered across every brand in days rather than months, with better quality and a lean team.</p></div>
         <div class="value"><span class="num">21</span><p>Brands as modes of one design system, with more of them migrated onto a single tech stack.</p></div>
         <div class="value"><span class="num">100+</span><p>A/B tests across the group's brands.</p></div>
         <div class="value"><span class="num">+11.7%</span><p>The biggest conversion win, from Shop By Fit on Karen Millen.</p></div>
       </div>
-      <div class="case-prose" data-anim="rise" style="margin-top:34px">
-        <p>Accessibility audits and fixes also helped the business avoid payouts from attempted US accessibility litigation.</p>
-      </div>
-      <div class="case-prose"><div class="case-tags"><span>Multi-brand design system</span><span>Design tokens</span><span>E-commerce</span><span>CRO and A/B testing</span><span>Accessibility</span><span>UX leadership</span></div></div>
+      <div class="case-prose" style="margin-top:44px"><div class="case-tags"><span>Multi-brand design system</span><span>Design tokens</span><span>E-commerce</span><span>CRO and A/B testing</span><span>Accessibility</span><span>UX leadership</span></div></div>
     </div>
   </section>
 
@@ -288,19 +307,19 @@
           <figcaption>The component library switched to PrettyLittleThing: the same 49 components, re-themed by one attribute. Debenhams Group design system site.</figcaption>
         </figure>
         <figure class="wide">
-          <img src="../assets/my-work/PLT/Mockups.png" width="8542" height="5694" alt="A tilted grid of PrettyLittleThing app screens: search, a sale landing page, swimwear product listings, a product page and the wishlist." loading="lazy" decoding="async">
+          <img src="../assets/images/case/dg/plt-app-screens.jpg" width="2400" height="1600" alt="A tilted grid of PrettyLittleThing app screens: search, a sale landing page, swimwear product listings, a product page and the wishlist." loading="lazy" decoding="async">
           <figcaption>PrettyLittleThing app: search, sale, product listing, product page and wishlist. App screens in device mockups.</figcaption>
         </figure>
         <figure>
-          <img src="../assets/my-work/PLT/PLT.jpeg" width="4000" height="3000" alt="A phone on a wooden shelf showing a PrettyLittleThing product page on mobile web, with size options and an Add to bag button." loading="lazy" decoding="async">
+          <img src="../assets/images/case/dg/plt-product-page-mobile.jpg" width="1600" height="1200" alt="A phone on a wooden shelf showing a PrettyLittleThing product page on mobile web, with size options and an Add to bag button." loading="lazy" decoding="async">
           <figcaption>PrettyLittleThing product page on mobile web, prettylittlething.com. Device mockup.</figcaption>
         </figure>
         <figure>
-          <img src="../assets/my-work/BOOHOO/boohoo-1.jpg" width="1600" height="1200" alt="A hand lifting a phone from a jacket pocket, showing the boohoo women's T-shirts listing page on mobile web." loading="lazy" decoding="async">
+          <img src="../assets/images/case/dg/boohoo-listing-mobile.jpg" width="1600" height="1200" alt="A hand lifting a phone from a jacket pocket, showing the boohoo women's T-shirts listing page on mobile web." loading="lazy" decoding="async">
           <figcaption>boohoo women's T-shirts listing on mobile web, boohoo.com. Device mockup.</figcaption>
         </figure>
         <figure class="wide">
-          <img src="../assets/my-work/BOOHOOMAN/boohooman-mobile-1600.jpg" width="1600" height="1200" alt="A phone standing on a rock showing a boohooMAN product page on mobile web, with an out of stock size and a form to be notified when it is back in stock." loading="lazy" decoding="async">
+          <img src="../assets/images/case/dg/boohooman-product-page-mobile.jpg" width="1600" height="1200" alt="A phone standing on a rock showing a boohooMAN product page on mobile web, with an out of stock size and a form to be notified when it is back in stock." loading="lazy" decoding="async">
           <figcaption>boohooMAN product page with a back-in-stock alert, boohooman.com. Device mockup.</figcaption>
         </figure>
       </div>
@@ -318,9 +337,9 @@
 
 <footer>
   <div class="wrap foot">
-    <span>Jake Rayner, Product Design &amp; Studio</span>
-    <span>Manchester, UK</span>
-    <span>© 2026</span>
+    <span>Jake Rayner, UX &amp; Product Design Lead</span>
+    <span class="foot-links"><a href="mailto:jake.rayner.96@gmail.com">Email</a><a href="https://www.linkedin.com/in/jake-rayner-09666084/" target="_blank" rel="noopener">LinkedIn</a><a href="../assets/Jake_Rayner_CV.pdf">Download CV (PDF)</a></span>
+    <span>Manchester, UK · © 2026</span>
   </div>
 </footer>
 

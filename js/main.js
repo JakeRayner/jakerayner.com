@@ -1389,23 +1389,40 @@
   }
 
   /* ---------- 9. Case diagrams ----------
-     The steps of a .flow diagram rise in one after another the first time
-     it scrolls into view. The hidden starting state is only set here, so
+     The parts of a diagram rise in one after another the first time it
+     scrolls into view: the steps of a .flow, or anything marked .d-part
+     inside a .diagram. The hidden starting state is only set here, so
      without the script, without IntersectionObserver or with reduced
-     motion the steps are simply there. */
-  var flows = document.querySelectorAll('.flow');
-  if (flows.length && !reduceMotion && 'IntersectionObserver' in window) {
-    var flowIO = new IntersectionObserver(function (entries) {
+     motion everything is simply there. */
+  var diagrams = document.querySelectorAll('.flow, .diagram');
+  if (diagrams.length && !reduceMotion && 'IntersectionObserver' in window) {
+    var diagramIO = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-in');
-        flowIO.unobserve(e.target);
+        diagramIO.unobserve(e.target);
       });
     }, { rootMargin: '0px 0px -12% 0px' });
-    Array.prototype.forEach.call(flows, function (f) {
-      Array.prototype.forEach.call(f.querySelectorAll('.flow-step'), function (s, i) { s.style.setProperty('--i', i); });
+    Array.prototype.forEach.call(diagrams, function (f) {
+      Array.prototype.forEach.call(f.querySelectorAll('.flow-step, .d-part'), function (s, i) { s.style.setProperty('--i', i); });
       f.classList.add('is-anim');
-      flowIO.observe(f);
+      diagramIO.observe(f);
     });
   }
+
+  /* ---------- 10. Videos ----------
+     A .video holds a poster button carrying a YouTube id. Pressing it
+     swaps in the player (privacy-enhanced domain), muted with its controls
+     showing, so nothing loads or plays until someone asks for it. */
+  Array.prototype.forEach.call(document.querySelectorAll('.video-btn[data-yt]'), function (btn) {
+    btn.addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + btn.getAttribute('data-yt') + '?autoplay=1&mute=1&controls=1&rel=0&playsinline=1';
+      f.title = btn.getAttribute('data-title') || 'Video';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      btn.parentNode.replaceChild(f, btn);
+      f.focus();
+    });
+  });
 })();

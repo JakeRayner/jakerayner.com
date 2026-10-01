@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 /*
-  build-work.mjs: writes the "My Work" tiles on index.html and the "Studio
-  Work" tiles on freelance.html (the Studio page) from the folders in
-  assets/my-work/. Studio work lives only on the Studio page, so Home is
-  the portfolio alone (September 2026).
+  build-work.mjs: writes the "Studio Work" tiles on freelance.html (the
+  Studio page) from the folders in assets/my-work/.
+
+  Home no longer comes from here. Since October 2026 its work section is
+  six hand-written project cards in index.html (three featured, three
+  earlier), and each case study keeps its own images under
+  assets/images/case/. Only The Loose Lead folder is left in my-work.
 
   One folder per company. Drop any jpg / jpeg / png / webp / avif into a folder and
   run:
@@ -16,9 +19,8 @@
   page grows as images load while you scroll, and anything measured against
   the page beforehand, the pinned studio pitch above all, lands in the wrong
   place on a phone.
-  Everything between the <!-- work:start --> / <!-- work:end --> markers in
-  index.html, and the <!-- studio:start --> / <!-- studio:end --> markers in
-  freelance.html, is regenerated; nothing outside them is touched. Folders with "do not use" in
+  Everything between the <!-- studio:start --> / <!-- studio:end --> markers
+  in freelance.html is regenerated; nothing outside them is touched. Folders with "do not use" in
   the name are ignored. No dependencies.
 */
 import { readFileSync, writeFileSync, readdirSync, statSync, openSync, readSync, closeSync } from 'node:fs';
@@ -27,7 +29,6 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WORK_DIR = join(ROOT, 'assets', 'my-work');
-const INDEX = join(ROOT, 'index.html');
 const STUDIO_PAGE = join(ROOT, 'freelance.html');
 
 /* Folder name (case-insensitive) -> project. Add a line here when a new
@@ -336,13 +337,9 @@ function replaceBetween(html, startMark, endMark, body, file) {
 }
 
 const groups = readGroups();
-const work = groups.filter(g => !g.studio);
 const studio = groups.filter(g => g.studio);
-let html = readFileSync(INDEX, 'utf8');
-html = replaceBetween(html, '<!-- work:start -->', '<!-- work:end -->', clusters(work).map((c, i) => group(c, i)).join(''), 'index.html');
-writeFileSync(INDEX, html);
 let studioHtml = readFileSync(STUDIO_PAGE, 'utf8');
 studioHtml = replaceBetween(studioHtml, '<!-- studio:start -->', '<!-- studio:end -->', clusters(studio).map((c, i) => group(c, i)).join(''), 'freelance.html');
 writeFileSync(STUDIO_PAGE, studioHtml);
 
-for (const g of groups) console.log(`${g.studio ? 'studio' : 'work  '}  ${g.name.padEnd(22)} ${g.images.length} image${g.images.length === 1 ? '' : 's'}${PROJECTS[g.key] ? '' : '   (folder not in PROJECTS, no logo or link)'}`);
+for (const g of studio) console.log(`studio  ${g.name.padEnd(22)} ${g.images.length} image${g.images.length === 1 ? '' : 's'}${PROJECTS[g.key] ? '' : '   (folder not in PROJECTS, no logo or link)'}`);
