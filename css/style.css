@@ -1488,3 +1488,22 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .press-h{font-size:13.5px; font-weight:500; color:var(--ink-dim); margin:clamp(56px,6vw,88px) 0 16px;}
 .press-h + .press{margin-top:0;}
 .cs-tags{margin-top:clamp(40px,4.5vw,56px);}
+
+/* Centred reading column (1 October 2026): text keeps a comfortable
+   measure but sits in the middle of the page, so the space either side
+   is even rather than one empty slab on the right. Pictures, diagrams,
+   stats and quotes still run the full width. */
+:root{--read:740px;}
+.cs-grid, .outcome-list, .press-h, .cs-tags{max-width:var(--read); margin-left:auto; margin-right:auto;}
+.cs-body{max-width:none;}
+.cs-head h2{max-width:none;}
+.cs-body p{font-size:18px;}
+.case-hero .wrap > .case-back, .case-hero .wrap > .case-kicker, .case-hero h1, .case-sum, .facts{max-width:var(--read); margin-left:auto; margin-right:auto;}
+.case-hero h1{font-size:clamp(44px,6vw,84px);}
+.case-sum{max-width:var(--read);}
+.facts{grid-template-columns:1fr 1fr 1fr;}
+.facts div:last-child{grid-column:1 / -1;}
+.case-back{display:block;}
+/* the earlier work pages' text follows the same centred column */
+.case-sub, .case-prose, .case-ul-prose, .case-note{max-width:var(--read); margin-left:auto; margin-right:auto;}
+.case-prose p{max-width:none; font-size:18px;}
