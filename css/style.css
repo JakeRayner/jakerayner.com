@@ -1582,3 +1582,5 @@ html.glb-open{overflow:hidden;}
 .hmi-mode{height:87px;}
 .hmi-ctrl{min-height:87px;}
 .hmi-ctrl svg{stroke:var(--ink);}
+/* Scope gets a double-width column so it wraps onto fewer lines */
+@media (min-width:901px){ .facts{max-width:none; grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,2fr);} }
