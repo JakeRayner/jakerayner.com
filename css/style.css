@@ -1266,7 +1266,6 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    full width underneath. A strip of chapter links sits under the hero. */
 .cs{padding:clamp(80px,8.5vw,140px) 0 0; scroll-margin-top:80px;}
 .cs:last-of-type{padding-bottom:clamp(80px,8vw,120px);}
-.cs-body{max-width:70ch;}
 .cs-body p{font-size:17px; line-height:1.72; margin:0 0 18px;}
 .cs-body p.cs-lede{font-size:clamp(19px,1.6vw,22px); line-height:1.55; letter-spacing:-.01em;}
 .cs-body h3{font-size:clamp(19px,1.6vw,22px); font-weight:500; letter-spacing:-.02em; margin:42px 0 12px;}
@@ -1286,7 +1285,7 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 /* pictures in a case study: two or three side by side at one height */
 .pics{display:grid; grid-template-columns:repeat(var(--n,2), minmax(0,1fr)); gap:16px; margin:0;}
 .pics img{width:100%; height:100%; aspect-ratio:var(--ar,3/2); object-fit:cover;}
-.pics figcaption, .cs-full figcaption{grid-column:1 / -1; font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:2px; max-width:75ch;}
+.pics figcaption, .cs-full figcaption{grid-column:1 / -1; font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:2px;}
 .cs-full > img{width:100%; height:auto;}
 .cs-full > figcaption{margin-top:10px;}
 @media (max-width:700px){ .pics{grid-template-columns:1fr;} .pics.keep{grid-template-columns:repeat(var(--n,2), minmax(0,1fr)); gap:8px;} }
@@ -1315,7 +1314,7 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    Boxes are glass tiles like every other surface. Arrows are a short line
    with a chevron head, drawn in the dim ink, and point with .r .l .u .d. */
 .diagram{margin:clamp(40px,4.5vw,64px) 0 0;}
-.diagram figcaption{font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:12px; max-width:75ch;}
+.diagram figcaption{font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:12px;}
 .d-box{background:var(--glass); padding:18px 18px 20px; min-width:0;}
 .d-box b{display:block; font-size:16px; font-weight:500; letter-spacing:-.01em; line-height:1.3;}
 .d-box span{display:block; font-size:13px; line-height:1.5; color:var(--ink-dim); margin-top:6px;}
@@ -1409,7 +1408,7 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .bento{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.5fr); grid-template-rows:1fr 1fr; gap:16px; margin:0;}
 .bento img{width:100%; height:100%; object-fit:cover; min-height:0;}
 .bento img:first-child{grid-row:span 2;}
-.bento figcaption{grid-column:1 / -1; font-size:12.5px; line-height:1.5; color:var(--ink-dim); max-width:75ch;}
+.bento figcaption{grid-column:1 / -1; font-size:12.5px; line-height:1.5; color:var(--ink-dim);}
 @media (max-width:700px){ .bento{grid-template-columns:1fr; grid-template-rows:none;} .bento img:first-child{grid-row:auto;} }
 
 /* "Earlier work" over the title on the older case studies */
@@ -1457,11 +1456,11 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    place of the six glass tiles. Stats are plain numbers with short labels.
    ============================================================ */
 .case-hero h1{margin-bottom:0;}
-.case-sum{font-size:clamp(20px,1.9vw,28px); line-height:1.35; letter-spacing:-.015em; max-width:40ch; margin:22px 0 0; text-wrap:pretty;}
+.case-sum{font-size:clamp(20px,1.9vw,28px); line-height:1.35; letter-spacing:-.015em; margin:22px 0 0; text-wrap:pretty;}
 .facts{display:grid; grid-template-columns:repeat(3,max-content) minmax(0,1fr); gap:18px clamp(28px,3.5vw,56px); margin:clamp(32px,3.5vw,48px) 0 0;}
 .facts div{min-width:0;}
 .facts dt{font-size:12px; font-weight:500; color:var(--ink-dim); margin:0 0 6px;}
-.facts dd{margin:0; font-size:14.5px; line-height:1.5; max-width:44ch;}
+.facts dd{margin:0; font-size:14.5px; line-height:1.5;}
 .case-hero .case-media{margin-top:clamp(40px,4.5vw,64px);}
 @media (max-width:900px){
   .facts{grid-template-columns:1fr 1fr;}
@@ -1471,8 +1470,7 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .cs{padding-top:clamp(72px,7.5vw,128px);}
 .cs-grid{display:block;}
 .cs-head{position:static; margin:0 0 20px;}
-.cs-head h2{font-size:clamp(26px,2.6vw,38px); line-height:1.08; max-width:26ch; text-wrap:balance;}
-.cs-body{max-width:68ch;}
+.cs-head h2{font-size:clamp(26px,2.6vw,38px); line-height:1.08; text-wrap:balance;}
 .cs-body h3{margin-top:36px;}
 /* text that carries on after a picture or diagram gets the same gap back */
 .cs .wrap > * + .cs-grid{margin-top:clamp(40px,4.5vw,64px);}
@@ -1481,29 +1479,24 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .stats{list-style:none; padding:0; margin:clamp(40px,4.5vw,64px) 0 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:28px clamp(24px,3vw,48px);}
 .cs-body + .stats, .cs-grid + .stats{margin-top:clamp(32px,3.5vw,48px);}
 .stats b{display:block; font-size:clamp(30px,3.2vw,46px); font-weight:500; letter-spacing:-.035em; line-height:1; font-variant-numeric:tabular-nums;}
-.stats span{display:block; font-size:13.5px; line-height:1.45; color:var(--ink-dim); margin-top:10px; max-width:26ch;}
+.stats span{display:block; font-size:13.5px; line-height:1.45; color:var(--ink-dim); margin-top:10px;}
 
-.outcome-list{max-width:68ch;}
 .outcome-list li{font-size:16.5px; line-height:1.7;}
 .press-h{font-size:13.5px; font-weight:500; color:var(--ink-dim); margin:clamp(56px,6vw,88px) 0 16px;}
 .press-h + .press{margin-top:0;}
 .cs-tags{margin-top:clamp(40px,4.5vw,56px);}
 
-/* Centred reading column (1 October 2026): text keeps a comfortable
-   measure but sits in the middle of the page, so the space either side
-   is even rather than one empty slab on the right. Pictures, diagrams,
-   stats and quotes still run the full width. */
-:root{--read:740px;}
-.cs-grid, .outcome-list, .press-h, .cs-tags{max-width:var(--read); margin-left:auto; margin-right:auto;}
-.cs-body{max-width:none;}
-.cs-head h2{max-width:none;}
-.cs-body p{font-size:18px;}
-.case-hero .wrap > .case-back, .case-hero .wrap > .case-kicker, .case-hero h1, .case-sum, .facts{max-width:var(--read); margin-left:auto; margin-right:auto;}
-.case-hero h1{font-size:clamp(44px,6vw,84px);}
+/* Case study text width (1 October 2026, asked for): left aligned and
+   full width, stopping 20% short of the right edge. No character caps.
+   Pictures, diagrams, stats and quotes still run the full width; phones
+   use the whole width. */
+:root{--read:80%;}
+.cs-grid, .outcome-list, .press-h, .cs-tags,
+.case-sub, .case-prose, .case-ul-prose, .case-note{max-width:var(--read); margin-left:0; margin-right:0;}
+.case-prose p{max-width:none;}
 .case-sum{max-width:var(--read);}
-.facts{grid-template-columns:1fr 1fr 1fr;}
-.facts div:last-child{grid-column:1 / -1;}
-.case-back{display:block;}
-/* the earlier work pages' text follows the same centred column */
-.case-sub, .case-prose, .case-ul-prose, .case-note{max-width:var(--read); margin-left:auto; margin-right:auto;}
-.case-prose p{max-width:none; font-size:18px;}
+.cs-body p, .case-prose p{font-size:18px;}
+@media (max-width:900px){ :root{--read:100%;} }
+.facts{grid-template-columns:repeat(4,minmax(0,1fr)); max-width:var(--read);}
+@media (max-width:900px){ .facts{grid-template-columns:1fr 1fr;} }
+@media (min-width:901px){ .facts div:nth-child(3):last-child{grid-column:3 / -1;} }
