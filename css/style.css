@@ -1586,3 +1586,4 @@ html.glb-open{overflow:hidden;}
 @media (min-width:901px){ .facts{max-width:none; grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,2fr);} }
 /* a full-width film opening a section, then its text below */
 .cs .app-film{margin-top:0;}
+.cs-body p.cs-lede + p.cs-lede{margin-top:18px;}
