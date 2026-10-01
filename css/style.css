@@ -1138,7 +1138,7 @@ footer{
    dots into a flat wash, which is what made the cells look like they filled
    in once the blur composited. They take the fill alone (--glass-soft), so
    the page still reads through them, and they cost nothing to scroll. */
-.case-full, .meta, .value, .offer, .stat, .soon, .chip, .case-tags span,
+.case-full, .meta, .value, .value-item, .offer, .stat, .soon, .chip, .case-tags span,
 .work-feature, .btn.ghost, .help-card, .svc, .step{
   background:var(--glass);
   backdrop-filter:blur(16px) saturate(1.35);
@@ -1608,12 +1608,14 @@ html.glb-open{overflow:hidden;}
 .nowrap{white-space:nowrap;}
 
 /* About: the intro runs the reading width (80%, full on smaller screens)
-   in one column, under a smaller title; My Values stacks one value under
-   another, heading then text */
+   in one column, under a smaller title; My Values stacks one glass block
+   per value, heading then text */
 .about-hero h1{font-size:clamp(40px,6vw,88px);}
 .about-grid{grid-template-columns:1fr;}
 .about-grid .lead{max-width:var(--read);}
-.value-list{display:grid; gap:clamp(40px,4.5vw,64px); max-width:var(--read);}
+.value-list{display:grid; gap:16px;}
+.value-item{padding:clamp(24px,3vw,44px);}
+.value-item p{max-width:var(--read);}
 .value-item h3{font-weight:500; font-size:clamp(22px,2vw,28px); letter-spacing:-.02em; line-height:1.15; margin:0 0 14px;}
 .value-item p{font-size:16px; line-height:1.65; margin:0;}
 .value-item p + p{margin-top:14px;}
