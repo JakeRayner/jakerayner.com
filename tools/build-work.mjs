@@ -41,7 +41,9 @@ const STUDIO_PAGE = join(ROOT, 'freelance.html');
    card above a project shows on phones, so it has to cover all of its
    work. On a desktop each photo's hover caption says what that photo
    shows instead (CAPTIONS below). Wording follows Jake's CV. */
-const DEB = { order: 3, name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'Debenhams', ls: 1.0, sector: '21-brand retail group', scope: 'Multi-brand design system, e-commerce, CRO, AI features, accessibility' };
+/* the Debenhams Group lockup has GROUP set small under the wordmark, so it
+   runs taller (ls 1.45) to keep "Debenhams" the size the old mark was */
+const DEB = { order: 3, name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, sector: '21-brand retail group', scope: 'Multi-brand design system, e-commerce, CRO, AI features, accessibility' };
 const PROJECTS = {
   'aston martin':    { order: 1, name: 'Aston Martin',          href: 'work/aston-martin.html',      logo: 'AstonMartin',      ls: 1.45, sector: 'Luxury automotive', scope: 'Infotainment and HMI, switchgear, connected car app, website, configurator' },
   'bentley':         { order: 2, name: 'Bentley Motors',        href: 'work/bentley-motors.html',    logo: 'Bentley',          ls: 1.45, sector: 'Luxury automotive', scope: 'Owner apps, design systems, infotainment and HMI concepts, enterprise apps' },
@@ -79,7 +81,7 @@ const CAPTIONS = {
   '06-bentley-discover':                'Owner app · Discover and recommendations',
   '07-bentley-2':                       'My Bentley app · Connected car',
   // Debenhams Group
-  'debenhams-group-1':                  'Group design system · One system, every brand',
+  'debenhams-group-1':                  'Group design system · 21 brands, one system',
   'Mockups.png':                        'PrettyLittleThing · App and e-commerce screens',
   'PLT.jpeg':                           'PrettyLittleThing · Product page',
   'boohoo-1':                           'boohoo · Mobile shopping',

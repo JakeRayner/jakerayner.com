@@ -7,7 +7,7 @@
      paint a mismatched band behind its toolbar; kept in sync by applyTheme -->
 <meta name="theme-color" content="#0b0b0c">
 <title>Debenhams Group · Work · Jake Rayner</title>
-<meta name="description" content="Debenhams Group case study. Setting up the UX function after the Debenhams acquisition and scaling it across all 21 brands: one design system and token set for every brand, AI-powered features, accessibility, and a CRO programme of 100+ A/B tests." />
+<meta name="description" content="Debenhams Group case study. A multi-brand design system for 21 brands across app, mobile web and desktop, plus CRO, accessibility and new features. Feature delivery cut from months to days, 100+ A/B tests, and conversion wins of up to +11.7%." />
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,10 @@
 <!-- display faces cycled on the wordmark and hero name, plus Chivo Black Italic for the STUDIO lockup -->
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Bungee&family=Chivo:ital,wght@1,900&family=Cormorant+Garamond:wght@600&family=Kanit:wght@700&family=Lexend+Deca:wght@600&family=Playfair+Display:wght@700&family=Righteous&display=swap" rel="stylesheet">
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,701&display=swap" rel="stylesheet">
+<!-- the brand faces the design system demo switches between -->
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Jost:wght@400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/dg-demo.css">
 <script>
 /* re-apply the saved vibe before first paint so page loads don't flash the default theme */
 (function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t||t.mode==='colour')return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
@@ -76,107 +79,230 @@
     <div class="wrap">
       <a class="case-back" href="../index.html#work">← All work</a>
       <h1 class="line"><span style="animation-delay:.1s">Debenhams Group</span></h1>
-      <div class="case-role">UX Designer · Debenhams Group · Aug 2023 to present</div>
-      <div class="meta-grid" data-anim="rise">
-        <div class="meta"><span class="k">Role</span><span class="v">UX Designer, leading UX across the group</span></div>
+      <div class="case-role">UX Designer · Debenhams Group · August 2023 to present</div>
+      <div class="meta-grid six" data-anim="rise">
+        <div class="meta"><span class="k">Role</span><span class="v">UX Designer, with a Head of UX-level remit, reporting to the CTO</span></div>
+        <div class="meta"><span class="k">Timeline</span><span class="v">August 2023 to present</span></div>
+        <div class="meta"><span class="k">Team</span><span class="v">2 designers supporting 50+ developers</span></div>
         <div class="meta"><span class="k">Sector</span><span class="v">Retail, e-commerce</span></div>
-        <div class="meta"><span class="k">Focus</span><span class="v">Multi-brand design system, e-commerce, CRO, AI features, accessibility</span></div>
-        <div class="meta"><span class="k">Outcome</span><span class="v">One design system across 21 brands · 100+ A/B tests</span></div>
+        <div class="meta"><span class="k">Scope</span><span class="v">A multi-brand design system for 21 brands across app, mobile web and desktop, plus CRO, accessibility and new features</span></div>
+        <div class="meta"><span class="k">Outcome</span><span class="v">Feature delivery cut from months to days, 100+ A/B tests, and conversion wins of up to +11.7%</span></div>
       </div>
-      <div class="case-media">
-        <img src="../assets/my-work/Debenhams%20Group/debenhams-group-1.jpg" alt="The Debenhams Group design system across its brands">
+      <figure class="case-media art">
+        <picture>
+          <source media="(max-width:760px)" srcset="../assets/images/case/dg/debenhams-group-design-system-4x3.jpg" width="1600" height="1200">
+          <img src="../assets/images/case/dg/debenhams-group-design-system.jpg" width="2560" height="1440" alt="Five white panels side by side, one each for Debenhams, boohoo, boohooMAN, PrettyLittleThing and Karen Millen. Each holds the same product card and Add to bag button in that brand's font, colours, corners and button case, under the headline 21 brands. One system.">
+        </picture>
+        <figcaption>The same product card and button in five brand modes, rendered from the design system's own tokens and components. Debenhams Group design system.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="wrap">
+      <h2 class="case-sub" data-anim="rise">The challenge</h2>
+      <div class="case-prose" data-anim="rise">
+        <p>After the acquisition, the business ran like a startup. The website had been built quickly by a single front-end developer and the app from a reference template. There was no design structure, no shared components and no rigour: teams were simply shipping.</p>
+        <p>Then the brief grew. Our Debenhams team moved to report directly to the CTO, with a mandate to take the system we'd built for Debenhams across the whole portfolio, from boohoo and PrettyLittleThing to Karen Millen and The Brand Room. And the business wanted to ship fast, which meant there was little appetite for up-front user testing.</p>
+        <p>So the real challenge was building rigour into speed: one system every brand could ship from quickly, without losing what makes each brand distinct.</p>
       </div>
     </div>
   </section>
 
   <section class="case-section">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Overview</h2>
+      <h2 class="case-sub" data-anim="rise">Starting from the brand</h2>
       <div class="case-prose" data-anim="rise">
-        <p>For the past three years I've led UX at Debenhams Group, setting up the UX function after the Debenhams acquisition and scaling it across all 21 brands in the group, designing industry-leading experiences while optimising for technical synergies and high-velocity delivery.</p>
-        <p>I was originally hired to work on Debenhams alone. The brief was a British institution being rebuilt as a digital department store, and the proposition was breadth: somewhere you could buy a fridge, some garden furniture and a pair of jeans in the same basket. Closer to Amazon than to a fashion retailer.</p>
-        <p>Once that worked, we scaled the framework and the tech stack across the group. Every brand now sits on a shared platform, but they sell to genuinely different people: a sell-everything department store, youth fashion brands competing on speed, and premium labels, none of which could be flattened into the same experience.</p>
-      </div>
-      <p class="case-note">The brands include Debenhams, boohoo, boohooMAN, PrettyLittleThing, Karen Millen, Nasty Gal, Coast, Oasis, Warehouse, Dorothy Perkins, Burton and more.</p>
-    </div>
-  </section>
-  <section class="case-section">
-    <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Building the UX function</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>I defined and launched a new Debenhams UX function after the acquisition, establishing design processes, principles and a cross-functional operating model for the digital product and technology team, then grew it from a single brand into a group-wide UX function covering all 21 brands.</p>
-        <p>I'm the single most senior point of contact for UX/UI across the business: setting UX direction, representing UX cross-functionally, and coordinating priorities and requirements from the brands and departments across the group to define the UX roadmap and deliverables.</p>
-        <p>I set up a bi-weekly alignment forum with the e-commerce and creative leads from every brand in the group, covering design reviews, feedback and feature sign-off, alongside a monthly collaboration and innovation session focused on longer-term ideation.</p>
+        <p>I started with the creative team. We worked through the brand guidelines, set up the core foundations of the design system, then worked component by component through the website. All of this happened while delivering a steady stream of new features, so the system had to be built in flight.</p>
       </div>
     </div>
   </section>
+
   <section class="case-section">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">One design system, 21 brands</h2>
+      <h2 class="case-sub" data-anim="rise">Making clickable mean one thing</h2>
       <div class="case-prose" data-anim="rise">
-        <p>I built and scaled a unified design system for all 21 brands that keeps each brand's own identity. It's maintained by a team of two designers and adopted by 50+ developers across multiple locations.</p>
-        <p>Underneath it is a layered token system (colour, typography, spacing, border radius and motion) that themes every brand through a single brand toggle attribute on the front end. Shared component families, including buttons, inputs, product cards and PLP, PDP, bag and checkout kits, plus a 130+ icon library, are skinned per brand from one source, with no manual overrides in design or in front end development.</p>
-        <p>It cut design and delivery timelines for new features across all brands from months to days, while more brands migrated onto a single unified tech stack, improving output quality and operational efficiency with small, lean design and development teams.</p>
-      </div>
-      <div class="values four" data-anim="rise">
-        <div class="value"><span class="num">21</span><p>brands themed from one design system, each keeping its own identity.</p></div>
-        <div class="value"><span class="num">130+</span><p>icons in a shared library, skinned per brand from one source.</p></div>
-        <div class="value"><span class="num">50+</span><p>developers across multiple locations building with the system.</p></div>
-        <div class="value"><span class="num">Days</span><p>to design and deliver a new feature across brands, down from months.</p></div>
+        <p>Mapping the estate exposed a lot of inconsistency in how calls to action looked and how colour signalled what was clickable. We wanted to move away from underlined hyperlinks and make colour do that job reliably.</p>
+        <p>We mapped each brand's primary colour one to one, and derived a CTA colour from it. That CTA colour, and its shades, became the single signal for anything you could tap or click, on every brand.</p>
+        <p>There was pushback from parts of the business that didn't want everything clickable to carry colour. To settle it with evidence rather than opinion, we surveyed around 30 employees from outside digital and technology, to avoid internal bias. The results validated the approach, and the colour alignment rolled out across the brands.</p>
       </div>
     </div>
   </section>
+
   <section class="case-section">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Features</h2>
+      <h2 class="case-sub" data-anim="rise">One system, every brand</h2>
       <div class="case-prose" data-anim="rise">
-        <p>I led the rapid design, prototyping and development of industry-leading features, including virtual try-on, visual search, AI-powered e-commerce agents and recommendation capabilities, social-integrated shopping experiences and a new streamlined checkout.</p>
-        <p>I also supported the design and delivery of third party ancillary purchase and delivery services, such as product personalisation, product insurance, In-Post and Evri click and collect, SEEL delivery protection and extended returns.</p>
+        <p>The system is built code-first, with Figma downstream:</p>
       </div>
+      <ul class="case-ul case-ul-prose" data-anim="rise">
+        <li><strong>Two layers of tokens.</strong> Primitives are named for what they are; semantic tokens are named for their role. Components only ever use semantic tokens.</li>
+        <li><strong>One switch per brand.</strong> A single brand attribute on the page resolves every token to that brand's colours, fonts, weights, corner radius and text case. All 21 brands are modes of the same system, with no per-brand stylesheets and no forked components.</li>
+        <li><strong>Brand differences as configuration.</strong> Square corners, for example, are a brand option rather than a separate component: PrettyLittleThing and The Brand Room switch them on with one token.</li>
+        <li><strong>Accessibility as the floor.</strong> Every component targets WCAG 2.1 AA, with 4.5:1 text contrast, 44px touch targets, visible focus states and reduced-motion support built into the tokens. Status is never shown by colour alone.</li>
+        <li><strong>A shared library.</strong> 18 component families, including buttons, product cards, PLP, PDP, bag and checkout kits, plus a 136-icon library, all rendered live in every brand.</li>
+        <li><strong>Aligned with engineering.</strong> I mapped the system component by component against the front-end team's Storybook, 79 components and 178 stories, so design and build converge on one target.</li>
+        <li><strong>Master prototypes.</strong> Each core page has a canonical version built from system components. New briefs branch from it, explore options, and merge the chosen route back, so nothing gets rebuilt from memory.</li>
+      </ul>
+
+      <figure class="case-fig flow">
+        <ol class="flow-steps" aria-label="How a value reaches a brand site, in five steps">
+          <li class="flow-step">
+            <span class="flow-n">01</span>
+            <span class="flow-h">Primitives</span>
+            <p class="flow-p">Raw values: colour, type, spacing</p>
+            <div class="flow-viz" aria-hidden="true"><span class="sw" style="--c:#7BE7D8"></span><span class="sw" style="--c:#F8B5CC"></span><span class="sw" style="--c:#550503"></span><span class="sw" style="--c:#D24508"></span><code>16px</code></div>
+          </li>
+          <li class="flow-step">
+            <span class="flow-n">02</span>
+            <span class="flow-h">Semantic tokens</span>
+            <p class="flow-p">Named by role</p>
+            <div class="flow-viz" aria-hidden="true"><code>surface-action</code><code>text-on-action</code><code>radius-default</code></div>
+          </li>
+          <li class="flow-step">
+            <span class="flow-n">03</span>
+            <span class="flow-h">Brand mode</span>
+            <p class="flow-p">One attribute, 21 brands</p>
+            <div class="flow-viz" aria-hidden="true"><span class="stack"><span class="sw" style="--c:#7BE7D8"></span><span class="sw" style="--c:#000"></span><span class="sw" style="--c:#550503"></span><span class="sw" style="--c:#D24508"></span><span class="sw" style="--c:#284D7B"></span></span><code>data-brand</code></div>
+          </li>
+          <li class="flow-step">
+            <span class="flow-n">04</span>
+            <span class="flow-h">Components</span>
+            <p class="flow-p">18 families, 136 icons</p>
+            <div class="flow-viz" aria-hidden="true"><span class="card-mini"></span><span class="line-mini"><span class="btn-mini"></span><i></i><i></i></span></div>
+          </li>
+          <li class="flow-step">
+            <span class="flow-n">05</span>
+            <span class="flow-h">Brand sites</span>
+            <p class="flow-p">App, mobile web, desktop</p>
+            <div class="flow-viz" aria-hidden="true"><span class="dev phone"></span><span class="dev web"></span><span class="dev desk"></span></div>
+          </li>
+        </ol>
+        <figcaption>Token architecture. Raw values become role-named tokens, one brand attribute picks the values for that brand, and every component and brand site reads only the role names. Diagram drawn for this page.</figcaption>
+      </figure>
+
+      <figure class="case-fig dg-demo" data-anim="rise">
+        <div class="dg-demo-in">
+          <div class="dg-panel">
+            <div>
+              <p class="dg-label" id="dgPick">Pick a brand</p>
+              <div class="dg-switch" role="group" aria-labelledby="dgPick">
+                <button type="button" data-brand="debenhams" aria-pressed="true">Debenhams</button>
+                <button type="button" data-brand="boohoo" aria-pressed="false">boohoo</button>
+                <button type="button" data-brand="boohooman" aria-pressed="false">boohooMAN</button>
+                <button type="button" data-brand="plt" aria-pressed="false">PrettyLittleThing</button>
+                <button type="button" data-brand="karenmillen" aria-pressed="false">Karen Millen</button>
+                <button type="button" data-brand="burton" aria-pressed="false">Burton</button>
+                <button type="button" data-brand="brandroom" aria-pressed="false">The Brand Room</button>
+              </div>
+            </div>
+            <dl class="dg-read">
+              <div><dt>Font</dt><dd data-read="font">Geologica</dd></div>
+              <div><dt>Action colour</dt><dd data-read="action"><span class="sw" style="--sw:#7BE7D8"></span><span class="v">#7BE7D8</span></dd></div>
+              <div><dt>Corners</dt><dd data-read="corners">4px radius</dd></div>
+              <div><dt>Button case</dt><dd data-read="case">Uppercase</dd></div>
+            </dl>
+            <p class="dg-note">The only thing that changes is one data-brand attribute. The card and buttons are the same markup every time.</p>
+            <p class="dg-live sr-only" aria-live="polite"></p>
+          </div>
+          <div class="dg-stage" data-brand="debenhams" inert aria-hidden="true">
+            <span class="dg-logo"></span>
+            <div class="dg-body">
+              <article class="pc">
+                <div class="pc-img"><span class="ph"></span>
+                  <div class="pc-actions"><span class="pc-iconbtn"><img src="../assets/images/case/dg/icons/heart-16.svg" alt="" width="16" height="16"></span></div>
+                  <div class="pc-badges"><span class="badge">New in</span></div>
+                </div>
+                <div class="pc-info">
+                  <div class="pc-name">Relaxed linen shirt</div>
+                  <div class="pc-price"><span class="now">£24.50</span><span class="was">£35.00</span><span class="pct">-30%</span></div>
+                  <div class="pc-swatches"><span class="set"><span class="pc-swatch on"><i style="background:#E9E2D4"></i></span><span class="pc-swatch"><i style="background:#2B2B2B"></i></span><span class="pc-swatch"><i style="background:#8FA3B8"></i></span></span><span class="pc-more">+2</span></div>
+                  <div class="pc-stars"><span class="set"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-half.svg" alt="" width="12" height="12"></span><span>(42)</span></div>
+                </div>
+              </article>
+              <div class="dg-side">
+                <span class="bd pri">Add to bag</span>
+                <span class="bd sec">Save for later</span>
+                <span class="dg-link">Size guide</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption>Live demo: one product card and three actions, re-themed by switching the brand. Token values and component rules come from the Debenhams Group design system; the product is a placeholder.</figcaption>
+      </figure>
     </div>
   </section>
+
   <section class="case-section">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">CRO programme</h2>
+      <h2 class="case-sub" data-anim="rise">Test and learn</h2>
       <div class="case-prose" data-anim="rise">
-        <p>I drove a continuous, group-wide CRO programme of 100+ A/B tests over three years, run per project across the group's brands and measuring conversion rate, AOV, revenue per user and checkout completion to statistical confidence. Some examples:</p>
+        <p>With little room for pre-launch research, we made live performance the research. Rather than one big release, we put variants live with clear hypotheses, measured them, kept the winner and kept improving. There's no start or end, just continuous improvement.</p>
+        <p>Over three years, that's meant 100+ A/B tests across the group's brands, measured on conversion, average order value, revenue per user and checkout completion. Wins include:</p>
       </div>
       <div class="values" data-anim="rise">
-        <div class="value"><span class="num">+11.7%</span><h4>Shop By Fit</h4><p>Conversion on Karen Millen from new Shop By Fit functionality.</p></div>
-        <div class="value"><span class="num">+2.3%</span><h4>AI review summaries</h4><p>Conversion from AI-generated review summaries on the PDP, with +1.5% revenue per user.</p></div>
-        <div class="value"><span class="num">+2.2%</span><h4>Bag recommendations</h4><p>Conversion on Debenhams from optimised product recommendations in the bag.</p></div>
-        <div class="value"><span class="num">+1.8%</span><h4>Checkout address CTA</h4><p>Conversion from a redesigned checkout address CTA.</p></div>
-        <div class="value"><span class="num">3.5% to 4.1%</span><h4>Click and collect</h4><p>Collect conversion after checkout optimisations, reducing supply chain costs.</p></div>
+        <div class="value"><span class="num">+11.7%</span><h3>Shop By Fit</h3><p>Conversion on Karen Millen.</p></div>
+        <div class="value"><span class="num">+2.3%</span><h3>AI-generated review summaries</h3><p>Conversion, and +1.5% revenue per user.</p></div>
+        <div class="value"><span class="num">+2.2%</span><h3>Bag product recommendations</h3><p>Conversion on Debenhams.</p></div>
+        <div class="value"><span class="num">+1.8%</span><h3>Checkout address CTA redesign</h3><p>Conversion.</p></div>
+        <div class="value"><span class="num">3.5% to 4.1%</span><h3>Click and collect optimisation</h3><p>Collect conversion.</p></div>
       </div>
     </div>
   </section>
+
   <section class="case-section">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">Accessibility</h2>
+      <h2 class="case-sub" data-anim="rise">Working with the business</h2>
       <div class="case-prose" data-anim="rise">
-        <p>I led WCAG and ADA accessibility audits and remediation across the group's brands, working with the legal department and helping the business avoid payouts from attempted US accessibility litigation.</p>
+        <p>I run a bi-weekly alignment forum with the e-commerce and creative leads from every brand, covering design reviews, feedback and sign-off, plus a monthly session for longer-term ideas. It's how 21 brands' priorities become one roadmap.</p>
       </div>
     </div>
   </section>
+
   <section class="case-section">
     <div class="wrap">
-      <h2 class="case-sub" data-anim="rise">An AI-assisted design workflow</h2>
-      <div class="case-prose" data-anim="rise">
-        <p>I developed an AI-assisted workflow for the end-to-end design process (discovery, benchmarking, prototyping and validation) using Claude, Claude Code and Figma MCP connections for rapid, high-fidelity prototyping. Design variants and iterations are built and tested in hours rather than weeks, as real, tangible experiences rather than flat designs.</p>
-        <p>Because the prototypes are built on the same technologies as the live product (HTML, CSS, JavaScript, React and React Native), they also validate technical feasibility, speeding up delivery across design and engineering.</p>
+      <h2 class="case-sub" data-anim="rise">Outcome</h2>
+      <div class="values four" data-anim="rise">
+        <div class="value"><span class="num">Days</span><p>New features designed and delivered across every brand in days rather than months, with better quality and a lean team.</p></div>
+        <div class="value"><span class="num">21</span><p>Brands as modes of one design system, with more of them migrated onto a single tech stack.</p></div>
+        <div class="value"><span class="num">100+</span><p>A/B tests across the group's brands.</p></div>
+        <div class="value"><span class="num">+11.7%</span><p>The biggest conversion win, from Shop By Fit on Karen Millen.</p></div>
       </div>
-      <div class="case-prose"><div class="case-tags"><span>Multi-brand design system</span><span>Design tokens</span><span>E-commerce</span><span>CRO</span><span>AI features</span><span>Accessibility</span><span>UX leadership</span></div></div>
+      <div class="case-prose" data-anim="rise" style="margin-top:34px">
+        <p>Accessibility audits and fixes also helped the business avoid payouts from attempted US accessibility litigation.</p>
+      </div>
+      <div class="case-prose"><div class="case-tags"><span>Multi-brand design system</span><span>Design tokens</span><span>E-commerce</span><span>CRO and A/B testing</span><span>Accessibility</span><span>UX leadership</span></div></div>
     </div>
   </section>
+
   <section class="case-section">
     <div class="wrap">
       <h2 class="case-sub" data-anim="rise">Gallery</h2>
       <div class="case-gallery" data-anim="rise">
-        <img src="../assets/my-work/Debenhams%20Group/debenhams-group-1.jpg" width="1600" height="1200" alt="Debenhams Group work, image 1 of 5" loading="lazy" decoding="async">
-        <img src="../assets/my-work/PLT/Mockups.png" width="8542" height="5694" alt="Debenhams Group work, image 2 of 5" loading="lazy" decoding="async">
-        <img src="../assets/my-work/PLT/PLT.jpeg" width="4000" height="3000" alt="Debenhams Group work, image 3 of 5" loading="lazy" decoding="async">
-        <img src="../assets/my-work/BOOHOO/boohoo-1.jpg" width="1600" height="1200" alt="Debenhams Group work, image 4 of 5" loading="lazy" decoding="async">
-        <img src="../assets/my-work/BOOHOOMAN/boohooman-mobile-1600.jpg" width="1600" height="1200" alt="Debenhams Group work, image 5 of 5" loading="lazy" decoding="async" class="wide">
+        <figure class="wide">
+          <img src="../assets/images/case/dg/design-system-brand-centre.jpg" width="2000" height="823" alt="The design system's brand centre, titled The estate: 21 tiles in three rows of seven, one per brand in the group, from Debenhams, boohoo, boohooMAN and PrettyLittleThing to Training Dept, most showing the brand's logo." loading="lazy" decoding="async">
+          <figcaption>The brand centre: all 21 brands in the group, each a mode of the same system. Debenhams Group design system site, which I built.</figcaption>
+        </figure>
+        <figure class="wide">
+          <img src="../assets/images/case/dg/design-system-components-plt.jpg" width="1600" height="783" alt="The design system's component library switched to PrettyLittleThing: filter chips for 49 components in ten groups, a Button card with oxblood Buy it now and Add to bag buttons, and a Payment buttons card." loading="lazy" decoding="async">
+          <figcaption>The component library switched to PrettyLittleThing: the same 49 components, re-themed by one attribute. Debenhams Group design system site.</figcaption>
+        </figure>
+        <figure class="wide">
+          <img src="../assets/my-work/PLT/Mockups.png" width="8542" height="5694" alt="A tilted grid of PrettyLittleThing app screens: search, a sale landing page, swimwear product listings, a product page and the wishlist." loading="lazy" decoding="async">
+          <figcaption>PrettyLittleThing app: search, sale, product listing, product page and wishlist. App screens in device mockups.</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/my-work/PLT/PLT.jpeg" width="4000" height="3000" alt="A phone on a wooden shelf showing a PrettyLittleThing product page on mobile web, with size options and an Add to bag button." loading="lazy" decoding="async">
+          <figcaption>PrettyLittleThing product page on mobile web, prettylittlething.com. Device mockup.</figcaption>
+        </figure>
+        <figure>
+          <img src="../assets/my-work/BOOHOO/boohoo-1.jpg" width="1600" height="1200" alt="A hand lifting a phone from a jacket pocket, showing the boohoo women's T-shirts listing page on mobile web." loading="lazy" decoding="async">
+          <figcaption>boohoo women's T-shirts listing on mobile web, boohoo.com. Device mockup.</figcaption>
+        </figure>
+        <figure class="wide">
+          <img src="../assets/my-work/BOOHOOMAN/boohooman-mobile-1600.jpg" width="1600" height="1200" alt="A phone standing on a rock showing a boohooMAN product page on mobile web, with an out of stock size and a form to be notified when it is back in stock." loading="lazy" decoding="async">
+          <figcaption>boohooMAN product page with a back-in-stock alert, boohooman.com. Device mockup.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -201,5 +327,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <script src="../js/main.js"></script>
+<script src="../js/dg-demo.js"></script>
 </body>
 </html>

@@ -1,0 +1,103 @@
+/* ============================================================
+   Debenhams Group case study: the brand switcher demo.
+
+   One product card and one set of buttons, themed by a single
+   data-brand attribute on .dg-stage, the way the group design system
+   themes every brand. Token values are the resolved values from the
+   design system's tokens for these seven modes; component rules are its
+   button and product card, scoped to .dg-stage so nothing here can reach
+   the rest of the site. Loaded on work/debenhams.html only.
+   ============================================================ */
+
+/* ---------- brand modes (Debenhams is the default) ---------- */
+.dg-stage{
+  --font-family-base:'Geologica',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:300;--w-mid:400;--w-strong:600;--w-btn:600;--case-btn1:uppercase;--case-btn2:none;--cta-case:none;--surface-action:#7BE7D8;--surface-action-hover:#9DEDE2;--surface-action-pressed:#76DECF;--text-on-action:#000;--btn-outline:#70BEB3;--border-focus:#00787D;--text-link:#00787D;--radius-default:4px;--radius-pill:9999px;--brand-light-1:#9DEDE2;--brand-light-3:#D6FFF9;--surface-page:#FFF;--surface-raised:#FFF;--surface-media:#F2F2F2;--badge-bg:rgba(255,255,255,.9);--badge-fg:#0F0F0F;--badge-border:#E7E7E7;--price-sale:#D33F3F;--text-primary:#0F0F0F;--text-secondary:#6B6B6B;--border-subtle:#E7E7E7;
+  --icon-primary:#0F0F0F;--border-w:1px;--border-w-focus:2px;--dur-fast:100ms;--ease-standard:cubic-bezier(.2,0,0,1);
+  --logo:url('../assets/images/case/dg/brands/debenhams.svg');
+}
+.dg-stage[data-brand="boohoo"]{--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:500;--w-strong:700;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;--text-on-action:#FFF;--btn-outline:#000;--border-focus:#000;--text-link:#000;--brand-light-1:#FBC7D8;--brand-light-3:#FEE0EA;--logo:url('../assets/images/case/dg/brands/boohoo.svg')}
+.dg-stage[data-brand="boohooman"]{--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:500;--w-strong:700;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;--text-on-action:#FFF;--btn-outline:#000;--border-focus:#000;--text-link:#000;--brand-light-1:#B5B5B5;--brand-light-3:#E7E7E7;--badge-bg:rgba(255,255,255,.85);--badge-border:transparent;--logo:url('../assets/images/case/dg/brands/boohooman.svg')}
+.dg-stage[data-brand="plt"]{--font-family-base:'Roboto',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-strong:700;--cta-case:uppercase;--surface-action:#550503;--surface-action-hover:#360502;--surface-action-pressed:#360502;--text-on-action:#FFF;--btn-outline:#360502;--border-focus:#360502;--text-link:#550503;--radius-default:0px;--radius-pill:0px;--brand-light-1:#C77E75;--brand-light-3:#FFD5CD;--surface-page:#FFFDF7;--surface-raised:#FFFDF7;--surface-media:#FAF5E7;--badge-bg:rgba(250,245,231,.85);--badge-fg:#333;--badge-border:transparent;--price-sale:#C90000;--logo:url('../assets/images/case/dg/brands/plt.svg')}
+.dg-stage[data-brand="karenmillen"]{--font-family-base:'Jost',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-btn:400;--case-btn1:none;--surface-action:#D24508;--surface-action-hover:#892D05;--surface-action-pressed:#892D05;--text-on-action:#FFF;--btn-outline:#000;--border-focus:#892D05;--text-link:#892D05;--brand-light-1:#E88A5B;--brand-light-3:#F3C1A7;--logo:url('../assets/images/case/dg/brands/karenmillen.svg')}
+.dg-stage[data-brand="burton"]{--font-family-base:'Montserrat',ui-sans-serif,-apple-system,system-ui,sans-serif;--w-regular:400;--w-mid:500;--w-strong:500;--w-btn:500;--surface-action:#284D7B;--surface-action-hover:#284D7B;--surface-action-pressed:#284D7B;--text-on-action:#FFF;--btn-outline:#284D7B;--border-focus:#284D7B;--text-link:#284D7B;--brand-light-1:#284D7B;--brand-light-3:#E2EAF4;--logo:url('../assets/images/case/dg/brands/burton.svg')}
+.dg-stage[data-brand="brandroom"]{--font-family-base:'Helvetica Neue',Helvetica,Arial,ui-sans-serif,sans-serif;--w-regular:400;--w-strong:700;--cta-case:uppercase;--surface-action:#000;--surface-action-hover:#242424;--surface-action-pressed:#242424;--text-on-action:#FFF;--btn-outline:#000;--border-focus:#000;--text-link:#000;--radius-default:0px;--radius-pill:0px;--brand-light-1:#B5B5B5;--brand-light-3:#E7E7E7;--logo:url('../assets/images/case/dg/brands/brandroom.svg')}
+
+/* ---------- the demo frame (site styles) ---------- */
+.dg-demo-in{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.6fr); gap:16px; align-items:stretch;}
+.dg-panel{background:var(--glass); padding:28px; display:flex; flex-direction:column; gap:28px;}
+.dg-label{font-size:12.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 14px;}
+.dg-switch{display:flex; flex-wrap:wrap; gap:8px;}
+.dg-switch button{
+  font:inherit; font-size:14px; font-weight:500; color:var(--ink); background:transparent;
+  border:1px solid var(--line); padding:9px 14px; cursor:pointer; min-height:44px;
+  transition:background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.dg-switch button:hover{border-color:var(--ink-dim);}
+.dg-switch button[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+.dg-read{display:grid; grid-template-columns:1fr 1fr; gap:18px 16px; margin:0;}
+.dg-read div{min-width:0;}
+.dg-read dt{font-size:11px; font-weight:500; color:var(--ink-dim); margin-bottom:6px;}
+.dg-read dd{margin:0; font-size:14.5px; line-height:1.4; display:flex; align-items:center; gap:8px; overflow-wrap:anywhere;}
+.dg-read .sw{width:14px; height:14px; flex:none; background:var(--sw,#000); outline:1px solid var(--line);}
+.dg-note{font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin:auto 0 0;}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;}
+
+/* ---------- the brand stage ---------- */
+.dg-stage{
+  background:var(--surface-page); color:var(--text-primary); font-family:var(--font-family-base);
+  padding:28px; display:flex; flex-direction:column; gap:22px; min-width:0;
+  transition:background-color .25s ease;
+}
+.dg-logo{height:22px; width:100%; background:#0F0F0F;
+  -webkit-mask:var(--logo) no-repeat left center / contain; mask:var(--logo) no-repeat left center / contain;}
+.dg-body{display:grid; grid-template-columns:minmax(0,220px) minmax(0,1fr); gap:28px; align-items:start;}
+.dg-side{display:flex; flex-direction:column; gap:12px; padding-top:4px;}
+.dg-side .bd{width:100%;}
+.dg-stage .dg-link{font-size:14px; font-weight:var(--w-strong); color:var(--text-link); text-decoration:underline; text-underline-offset:3px; align-self:flex-start; margin-top:4px;}
+
+/* ---------- design system components: C-01 button ---------- */
+.dg-stage .bd{display:block;text-align:center;font-family:var(--font-family-base);font-weight:var(--w-btn,var(--w-strong));font-size:16px;line-height:24px;padding:12px 24px;border-radius:var(--radius-default);text-transform:var(--case-btn1,uppercase);letter-spacing:.02em;border:1px solid transparent;cursor:pointer;transition:background var(--dur-fast) var(--ease-standard)}
+.dg-stage .bd.pri{background:var(--surface-action);color:var(--text-on-action)}
+.dg-stage .bd.sec{background:var(--surface-page,#FFF);color:#000;border-color:var(--btn-outline);text-transform:var(--case-btn2,none)}
+
+/* ---------- design system components: C-02 product card ---------- */
+.dg-stage .pc{display:flex;flex-direction:column;gap:12px;font-family:var(--font-family-base);color:var(--text-primary);position:relative;min-width:0}
+.dg-stage .pc-img{aspect-ratio:2/3;background:var(--surface-media);position:relative;overflow:hidden;width:100%}
+.dg-stage .pc-img .ph{position:absolute;inset:0;background:linear-gradient(165deg,var(--brand-light-3),var(--brand-light-1));transition:opacity .25s ease}
+.dg-stage .pc-actions{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.dg-stage .pc-iconbtn{width:32px;height:32px;min-width:32px;border-radius:var(--radius-pill);background:var(--surface-raised);border:none;display:grid;place-items:center;box-shadow:0 2px 8px rgba(15,15,15,.14);padding:0}
+.dg-stage .pc-iconbtn img{width:16px;height:16px;display:block;object-fit:contain}
+.dg-stage .pc-badges{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.dg-stage .badge{display:inline-flex;align-items:center;height:28px;padding:4px 8px;background:var(--badge-bg);border:var(--border-w) solid var(--badge-border);border-radius:var(--radius-default);font-family:var(--font-family-base);font-size:12px;font-weight:var(--w-regular);color:var(--badge-fg);white-space:nowrap;text-transform:var(--cta-case)}
+.dg-stage .pc-info{display:flex;flex-direction:column;gap:8px;font-size:14px;min-width:0}
+.dg-stage .pc-name{font-weight:var(--w-strong)}
+.dg-stage .pc-price{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+.dg-stage .pc-price .now{font-weight:var(--w-strong);color:var(--price-sale)}
+.dg-stage .pc-price .was{font-weight:var(--w-mid);text-decoration:line-through}
+.dg-stage .pc-price .pct{font-weight:var(--w-regular);color:var(--price-sale)}
+.dg-stage .pc-swatches{display:flex;gap:8px;align-items:center;height:20px}
+.dg-stage .pc-swatches .set{display:flex;gap:4px}
+.dg-stage .pc-swatch{width:20px;height:20px;border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-default);padding:0;background:var(--surface-raised);overflow:hidden}
+.dg-stage .pc-swatch i{display:block;width:100%;height:100%;border-radius:calc(var(--radius-default)*.75)}
+.dg-stage .pc-swatch.on{border-color:var(--icon-primary)}
+.dg-stage .pc-swatch.on i{border:1px solid #FFF}
+.dg-stage .pc-more{font-weight:var(--w-regular);font-size:14px}
+.dg-stage .pc-stars{display:flex;gap:8px;align-items:center}
+.dg-stage .pc-stars .set{display:flex;gap:2px}
+.dg-stage .pc-stars img{width:12px;height:12px;display:block;object-fit:contain}
+.dg-stage .pc-stars span{font-weight:var(--w-regular)}
+
+@media (max-width:980px){
+  .dg-demo-in{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+  .dg-panel, .dg-stage{padding:20px;}
+  .dg-body{grid-template-columns:1fr 1fr; gap:16px;}
+  .dg-stage .bd{padding:10px 12px; font-size:14px;}
+}
+@media (max-width:380px){
+  .dg-body{grid-template-columns:1fr;}
+}
+@media (prefers-reduced-motion: reduce){
+  .dg-stage, .dg-stage .pc-img .ph, .dg-switch button{transition:none;}
+}

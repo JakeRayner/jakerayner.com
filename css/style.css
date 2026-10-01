@@ -856,10 +856,62 @@ img.case-thumb{width:100%; object-fit:cover; display:block;}
 }
 .meta .k{font-size:11px; font-weight:500; color:var(--ink-dim); display:block; margin-bottom:8px;}
 .meta .v{font-size:14.5px; line-height:1.5;}
-@media (max-width:860px){ .meta-grid{grid-template-columns:1fr 1fr;} }
-.case-media{margin-top:26px;}
+/* featured case header: Role, Timeline, Team, Sector, Scope, Outcome in two rows of three */
+.meta-grid.six{grid-template-columns:repeat(3,1fr);}
+@media (max-width:860px){ .meta-grid, .meta-grid.six{grid-template-columns:1fr 1fr;} }
+@media (max-width:520px){ .meta-grid.six{grid-template-columns:1fr;} }
+.case-media{margin:26px 0 0;}
 .case-media .ph{aspect-ratio:16/9;}
-.case-media img{width:100%; aspect-ratio:16/9; object-fit:cover; display:block;}
+.case-media img{width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; display:block;}
+/* artwork heroes are drawn to their own shape (16:9, or 4:3 on phones), so they are never cropped */
+.case-media.art img{aspect-ratio:auto;}
+.case-media figcaption, .case-gallery figcaption{font-size:12.5px; line-height:1.5; color:var(--ink-dim); margin-top:10px; max-width:75%;}
+.case-gallery figure{margin:0;}
+.case-gallery figcaption{max-width:none;}
+
+/* ---------- case diagrams: a run of steps, left to right ----------
+   Each step is a tile with a number, a name, one line and a small picture
+   of what it holds; a chevron in the gap points at the next step. Phones
+   stack the steps and the chevrons turn to point down. The steps rise in
+   one after another when the figure scrolls into view (main.js adds
+   .is-anim, then .is-in); without the script, or with reduced motion,
+   they simply show. */
+.flow-steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(var(--n,5), minmax(0,1fr)); gap:28px;}
+.flow-step{position:relative; background:var(--glass); padding:22px 20px 24px; display:flex; flex-direction:column; gap:8px; min-width:0;}
+.flow-step:not(:last-child)::after{
+  content:""; position:absolute; top:50%; right:-19px; width:10px; height:10px;
+  border-top:1.5px solid var(--ink-dim); border-right:1.5px solid var(--ink-dim);
+  transform:translateY(-50%) rotate(45deg);
+}
+.flow-n{font-size:11px; font-weight:500; letter-spacing:.08em; color:var(--ink-dim);}
+.flow-h{font-size:17px; font-weight:500; letter-spacing:-.01em; line-height:1.25;}
+.flow-p{font-size:13.5px; line-height:1.5; color:var(--ink-dim); margin:0;}
+.flow-viz{margin-top:auto; padding-top:14px; min-height:58px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px;}
+.flow-viz code{font-family:ui-monospace, 'SF Mono', Menlo, monospace; font-size:11px; padding:4px 7px; background:var(--glass-strong); color:var(--ink); white-space:nowrap;}
+.flow-viz .sw{width:22px; height:22px; background:var(--c);}
+.flow-viz .stack{display:flex; align-items:flex-end;}
+.flow-viz .stack .sw{width:30px; height:30px; outline:2px solid var(--bg2);}
+.flow-viz .stack .sw + .sw{margin-left:-12px;}
+.flow-viz .btn-mini{width:100%; height:16px; background:var(--ink); opacity:.85;}
+.flow-viz .card-mini{width:30px; height:42px; border:1.5px solid var(--ink-dim);}
+.flow-viz .line-mini{flex:1; display:flex; flex-direction:column; gap:6px; align-self:center;}
+.flow-viz .line-mini i{display:block; height:5px; background:var(--ink-dim); opacity:.6;}
+.flow-viz .line-mini i:last-child{width:60%;}
+.flow-viz .dev{border:1.5px solid var(--ink-dim);}
+.flow-viz .dev.phone{width:20px; height:36px;}
+.flow-viz .dev.web{width:20px; height:36px; border-top-width:5px;}
+.flow-viz .dev.desk{width:54px; height:34px; border-top-width:5px;}
+.flow figcaption{max-width:75%;}
+.flow.is-anim .flow-step{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1); transition-delay:calc(var(--i,0) * 110ms);}
+.flow.is-anim.is-in .flow-step{opacity:1; transform:none;}
+@media (max-width:980px){
+  .flow-steps{grid-template-columns:1fr; gap:26px;}
+  .flow-step:not(:last-child)::after{top:auto; right:auto; bottom:-17px; left:28px; transform:rotate(135deg);}
+  .flow-viz{min-height:0;}
+}
+@media (prefers-reduced-motion: reduce){
+  .flow.is-anim .flow-step{opacity:1; transform:none; transition:none;}
+}
 .proc-row{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:36px;}
 .proc-row img{width:100%; aspect-ratio:3/2; object-fit:cover; object-position:left top; display:block;}
 @media (max-width:700px){ .proc-row{grid-template-columns:1fr;} }
@@ -883,6 +935,11 @@ img.case-thumb{width:100%; object-fit:cover; display:block;}
 .case-ul{list-style:none; margin:0; padding:0; display:grid; gap:9px;}
 .case-ul li{position:relative; padding-left:18px; font-size:14.5px; line-height:1.55; color:var(--ink);}
 .case-ul li::before{content:""; position:absolute; left:0; top:.62em; width:6px; height:6px; background:var(--accent);}
+/* a list that sits in the running text: prose size and measure */
+.case-ul-prose{max-width:75%; gap:12px; margin-top:4px;}
+.case-ul-prose li{font-size:16.5px; line-height:1.7;}
+.case-ul-prose li::before{top:.72em;}
+.case-ul-prose strong{font-weight:500;}
 ol.case-ul{counter-reset:cs;}
 ol.case-ul li{padding-left:26px; counter-increment:cs;}
 ol.case-ul li::before{content:counter(cs); width:auto; height:auto; background:none; top:0; font-size:12px; font-weight:500; color:var(--ink-dim);}
@@ -920,7 +977,7 @@ ol.case-ul li::before{content:counter(cs); width:auto; height:auto; background:n
 }
 @media (max-width:760px){
   .case-lists, .values.two, .case-fig.pair, .case-fig.trio, .case-more, .case-gallery{grid-template-columns:1fr;}
-  .case-fig figcaption{max-width:none;}
+  .case-fig figcaption, .case-media figcaption, .case-ul-prose{max-width:none;}
 }
 a.case-next{display:block; text-decoration:none; color:inherit;}
 .case-next-in{padding-top:40px; padding-bottom:110px;}
@@ -947,7 +1004,7 @@ a.career-row:hover{background:var(--glass-strong);}
 .career-note{font-size:14.5px; line-height:1.6; color:var(--ink); margin-top:4px;}
 @media (max-width:700px){ a.career-row{grid-template-columns:1fr; gap:8px;} }
 .value{background:var(--glass); padding:28px;}
-.value h4{font-weight:500; font-size:17px; letter-spacing:-.01em; margin:0 0 10px;}
+.value h3, .value h4{font-weight:500; font-size:17px; letter-spacing:-.01em; margin:0 0 10px;}
 .value p{color:var(--ink); font-size:14px; line-height:1.6; margin:0;}
 @media (max-width:820px){ .about-grid{grid-template-columns:1fr;} .values{grid-template-columns:1fr;} }
 

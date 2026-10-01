@@ -1387,4 +1387,25 @@
       document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
     }
   }
+
+  /* ---------- 9. Case diagrams ----------
+     The steps of a .flow diagram rise in one after another the first time
+     it scrolls into view. The hidden starting state is only set here, so
+     without the script, without IntersectionObserver or with reduced
+     motion the steps are simply there. */
+  var flows = document.querySelectorAll('.flow');
+  if (flows.length && !reduceMotion && 'IntersectionObserver' in window) {
+    var flowIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        flowIO.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    Array.prototype.forEach.call(flows, function (f) {
+      Array.prototype.forEach.call(f.querySelectorAll('.flow-step'), function (s, i) { s.style.setProperty('--i', i); });
+      f.classList.add('is-anim');
+      flowIO.observe(f);
+    });
+  }
 })();
