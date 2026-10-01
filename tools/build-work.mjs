@@ -68,7 +68,7 @@ const HOME = [
       ['case/bentley/owners-app-discover.webp', 'The Bentley Network App · Discover', { span: 5, crop: '662.67 / 365.56' }],
       ['case/bentley/owners-app-news-feed.jpg', 'The Bentley Network App · News feed', { span: 7, crop: '937.33 / 365.56' }],
     ] },
-  { name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present', cta: 'View case study',
+  { hideName: true, name: 'Debenhams Group', href: 'work/debenhams.html', logo: 'DebenhamsGroup', ls: 1.45, when: 'August 2023 to present', cta: 'View case study',
     tags: ['Multi-Brand Design System', 'App', 'Responsive Web'],
     images: [
       ['case/dg/design-system-laptop.jpg', 'Debenhams Group Design System · Home Page', { span: 12 }],
