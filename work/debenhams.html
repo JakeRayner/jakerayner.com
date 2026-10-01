@@ -16,10 +16,7 @@
 <!-- display faces cycled on the wordmark and hero name, plus Chivo Black Italic for the STUDIO lockup -->
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Bungee&family=Chivo:ital,wght@1,900&family=Cormorant+Garamond:wght@600&family=Kanit:wght@700&family=Lexend+Deca:wght@600&family=Playfair+Display:wght@700&family=Righteous&display=swap" rel="stylesheet">
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,701&display=swap" rel="stylesheet">
-<!-- the brand faces the design system demo switches between -->
-<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600&family=Jost:wght@400;600&family=Montserrat:wght@400;500;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/dg-demo.css">
 <script>
 /* re-apply the saved vibe before first paint so page loads don't flash the default theme */
 (function(){try{var t=JSON.parse(localStorage.getItem('jr-theme'));if(!t||t.mode==='colour')return;var r=document.documentElement.style;if(t.face){r.setProperty('--display',t.face);r.setProperty('--display-weight',t.faceWeight||500);r.setProperty('--display-scale',t.faceScale||1);}r.setProperty('--bg',t.bg);r.setProperty('--bg2',t.bg2);r.setProperty('--ink',t.ink);r.setProperty('--accent',t.accent);r.setProperty('--accent-2',t.accent2||t.accent);r.setProperty('--accent-ink',t.accentInk);r.setProperty('--line','color-mix(in srgb, '+t.ink+' 14%, transparent)');r.setProperty('--ink-dim','color-mix(in srgb, '+t.ink+' 62%, transparent)');}catch(e){}})();
@@ -101,12 +98,6 @@
             <p>So the real challenge was building rigour into speed: one system we could build and ship from quickly, without losing what makes each brand distinct.</p>
           </div>
         </div>
-        <div class="cs-grid" id="business">
-          <div class="cs-head"><h2>Aligning 21 Brands to a Single Roadmap</h2></div>
-          <div class="cs-body">
-          <p>I run a bi-weekly UX alignment forum with the e-commerce and creative leads from every brand, covering design reviews, feedback and sign-off, plus a monthly UX ideation workshop for longer-term ideas.</p>
-        </div>
-        </div>
         </div>
         <div class="split-media">
           <figure><img loading="lazy" decoding="async" src="../assets/images/case/dg/boohoo-listing-mobile.jpg" width="1600" height="1200" alt="A hand lifting a phone from a jacket pocket, showing the boohoo women's T-shirts listing page on mobile web."></figure>
@@ -163,96 +154,18 @@
             <div class="flow-viz" aria-hidden="true"><span class="dev phone"></span><span class="dev web"></span><span class="dev desk"></span></div>
           </li>
         </ol>
-      </figure>      <figure class="case-fig dg-demo cs-full" data-anim="rise">
-        <div class="dg-board">
-          <div class="dg-bar">
-            <p class="dg-bar-label" id="dgPick">Pick a brand</p>
-            <div class="dg-switch" role="group" aria-labelledby="dgPick">
-              <button type="button" data-brand="debenhams" aria-pressed="true">Debenhams</button>
-              <button type="button" data-brand="boohoo" aria-pressed="false">boohoo</button>
-              <button type="button" data-brand="boohooman" aria-pressed="false">boohooMAN</button>
-              <button type="button" data-brand="plt" aria-pressed="false">PrettyLittleThing</button>
-              <button type="button" data-brand="karenmillen" aria-pressed="false">Karen Millen</button>
-              <button type="button" data-brand="burton" aria-pressed="false">Burton</button>
-              <button type="button" data-brand="brandroom" aria-pressed="false">The Brand Room</button>
-            </div>
-          </div>
-          <div class="dg-stage" data-brand="debenhams" inert aria-hidden="true">
-            <div class="dg-hd">
-              <span class="dg-logo"></span>
-              <span class="dg-hd-icons"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg><span class="dg-bagic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><b>2</b></span></span>
-            </div>
-            <div class="dg-cats"><span class="catpill on">New in</span><span class="catpill">Dresses</span><span class="catpill">Tops</span><span class="catpill">Jeans</span><span class="catpill">Shoes</span><span class="catpill">Sale</span></div>
-            <div class="dg-canvas">
-              <div class="dg-cell dg-c-card"><article class="pc">
-              <div class="pc-img"><span class="ph"></span>
-                <div class="pc-actions"><span class="pc-iconbtn"><img src="../assets/images/case/dg/icons/heart-16.svg" alt="" width="16" height="16"></span></div>
-                <div class="pc-badges"><span class="badge">Sale</span></div>
-              </div>
-              <div class="pc-info">
-                <div class="pc-name">Relaxed linen shirt</div>
-                <div class="pc-price"><span class="now">£24.50</span><span class="was">£35.00</span><span class="pct">-30%</span></div>
-                <div class="pc-swatches"><span class="set"><span class="pc-swatch on"><i style="background:#E9E2D4"></i></span><span class="pc-swatch"><i style="background:#2B2B2B"></i></span><span class="pc-swatch"><i style="background:#8FA3B8"></i></span></span><span class="pc-more">+2</span></div>
-                <div class="pc-stars"><span class="set"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-half.svg" alt="" width="12" height="12"></span><span>(42)</span></div>
-              </div>
-            </article></div>
-              <div class="dg-cell dg-c-card"><article class="pc">
-              <div class="pc-img"><span class="ph"></span>
-                <div class="pc-actions"><span class="pc-iconbtn"><img src="../assets/images/case/dg/icons/heart-16.svg" alt="" width="16" height="16"></span></div>
-                <div class="pc-badges"><span class="badge">New in</span></div>
-              </div>
-              <div class="pc-info">
-                <div class="pc-name">Wide leg tailored trouser</div>
-                <div class="pc-price"><span class="now reg">£38.00</span></div>
-                <div class="pc-swatches"><span class="set"><span class="pc-swatch on"><i style="background:#1F2A3A"></i></span><span class="pc-swatch"><i style="background:#C9B79C"></i></span><span class="pc-swatch"><i style="background:#6E6E6E"></i></span></span><span class="pc-more">+2</span></div>
-                <div class="pc-stars"><span class="set"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-fill.svg" alt="" width="12" height="12"><img src="../assets/images/case/dg/icons/star-half.svg" alt="" width="12" height="12"></span><span>(42)</span></div>
-              </div>
-            </article></div>
-              <div class="dg-cell dg-c-buy">
-                <div class="price"><span class="now">£24.50</span><span class="was">£35.00</span></div>
-                <div class="sizes">
-                  <div class="sizes-head">Size: <b>M</b><span class="dg-link">Size guide</span></div>
-                  <div class="set"><span class="sz">XS</span><span class="sz">S</span><span class="sz on">M</span><span class="sz">L</span><span class="sz oos">XL</span></div>
-                </div>
-                <span class="bd pri">Add to bag</span>
-                <span class="bd sec">Save for later</span>
-                <div class="thresh"><span>You're <b>£12.50</b> away from free delivery</span><span class="track"><i></i></span></div>
-              </div>
-              <div class="dg-cell dg-c-form">
-                <label class="fld"><span class="lbl">Email address</span><span class="val">jake@example.com</span></label>
-                <div class="chk-row"><span class="chk on"></span>Keep me signed in</div>
-                <div class="rad-row"><span class="rad on"><i></i></span>Standard delivery <em>Free</em></div>
-                <div class="rad-row"><span class="rad"><i></i></span>Next day delivery <em>£4.99</em></div>
-                <div class="tog-row">Email me offers<span class="tog on"><i></i></span></div>
-                <div class="msg"><i></i><span>Added to your bag</span></div>
-              </div>
-              <div class="dg-cell dg-c-bag">
-                <div class="bag-item">
-                  <span class="bag-img"><span class="ph"></span></span>
-                  <div class="info">
-                    <span class="n">Relaxed linen shirt</span>
-                    <span class="p"><span class="now">£24.50</span> <s>£35.00</s></span>
-                    <span class="m">Colour: Stone · Size: M</span>
-                    <span class="qty"><span>−</span><b>1</b><span>+</span></span>
-                  </div>
-                </div>
-              </div>
-              <div class="dg-cell dg-c-chips">
-                <div class="chips"><span class="dchip on">Linen</span><span class="dchip">Cotton</span><span class="dchip">Under £30</span><span class="dchip">Next day</span><span class="dchip">Size M</span></div>
-                <div class="badges"><span class="badge">New in</span><span class="badge">Sale</span><span class="badge">Online exclusive</span></div>
-              </div>
-            </div>
-            <dl class="dg-read">
-              <div><dt>Font</dt><dd data-read="font">Geologica</dd></div>
-              <div><dt>Action colour</dt><dd data-read="action"><span class="sw" style="--sw:#7BE7D8"></span><span class="v">#7BE7D8</span></dd></div>
-              <div><dt>Corners</dt><dd data-read="corners">4px radius</dd></div>
-              <div><dt>Button case</dt><dd data-read="case">Uppercase</dd></div>
-            </dl>
-          </div>
-          <p class="dg-live sr-only" aria-live="polite"></p>
+      </figure>      
+      <figure class="case-fig cs-full" data-anim="rise"><img loading="lazy" decoding="async" src="../assets/images/case/dg/design-system-component-library.webp" width="3248" height="2128" alt="A grid of pages from the Debenhams Group design system site: the component library, colour, status and typography foundations, and component pages for buttons, text fields, sort and filter, chips, icons, header, size selector, price, empty state, account row, badges and the free-delivery threshold."></figure>    </div>
+  </section>
+  <section class="cs" id="business">
+    <div class="wrap">
+      <div class="cs-grid">
+        <div class="cs-head"><h2>Aligning 21 Brands to a Single Roadmap</h2></div>
+        <div class="cs-body">
+          <p class="cs-lede">I run a bi-weekly UX alignment forum with the e-commerce and creative leads from every brand, covering design reviews, feedback and sign-off, plus a monthly UX ideation workshop for longer-term ideas.</p>
         </div>
-        <figcaption>The same components, re-skinned for each brand by one data-brand attribute. Pick a brand above.</figcaption>
-      </figure>    </div>
+      </div>
+    </div>
   </section>
   <section class="cs" id="test">
     <div class="wrap">
@@ -295,8 +208,8 @@
       <ul class="thumbs">
         <li><a class="thumb is-video" href="../assets/video/dg-showreel.mp4" data-kind="video"><img src="../assets/images/thumbs/film-debenhams.webp" width="480" height="270" alt="Film: Debenhams Group design system showreel" loading="lazy" decoding="async"><span class="play" aria-hidden="true"></span></a></li>
         <li><a class="thumb" href="../assets/images/case/dg/boohoo-listing-mobile.jpg" data-kind="image"><img src="../assets/images/thumbs/case-dg-boohoo-listing-mobile.webp" width="480" height="360" alt="A hand lifting a phone from a jacket pocket, showing the boohoo women&#x27;s T-shirts listing page on mobile web." loading="lazy" decoding="async"></a></li>
+        <li><a class="thumb" href="../assets/images/case/dg/design-system-component-library.webp" data-kind="image"><img src="../assets/images/thumbs/case-dg-design-system-component-library.webp" width="480" height="360" alt="The Debenhams Group component library: product cards, buttons, forms, bag and checkout components shown across the group&#x27;s brands." loading="lazy" decoding="async"></a></li>
         <li><a class="thumb" href="../assets/images/case/dg/design-system-laptop.jpg" data-kind="image"><img src="../assets/images/thumbs/case-dg-design-system-laptop.webp" width="480" height="360" alt="Debenhams Group: Debenhams Group Design System · Home Page" loading="lazy" decoding="async"></a></li>
-        <li><a class="thumb" href="../assets/images/case/dg/design-system-component-library.webp" data-kind="image"><img src="../assets/images/thumbs/case-dg-design-system-component-library.webp" width="480" height="360" alt="Debenhams Group: Debenhams Group Design System · Component Library" loading="lazy" decoding="async"></a></li>
         <li><a class="thumb" href="../assets/images/case/dg/boohooman-product-page-mobile.jpg" data-kind="image"><img src="../assets/images/thumbs/case-dg-boohooman-product-page-mobile.webp" width="480" height="360" alt="Debenhams Group: boohooMAN · Notify When Back In Stock" loading="lazy" decoding="async"></a></li>
         <li><a class="thumb" href="../assets/images/case/dg/plt-app-screens.jpg" data-kind="image"><img src="../assets/images/thumbs/case-dg-plt-app-screens.webp" width="480" height="360" alt="Debenhams Group: PrettyLittleThing · App" loading="lazy" decoding="async"></a></li>
         <li><a class="thumb" href="../assets/images/case/dg/plt-product-page-mobile.jpg" data-kind="image"><img src="../assets/images/thumbs/case-dg-plt-product-page-mobile.webp" width="480" height="360" alt="Debenhams Group: PrettyLittleThing · Virtual Try On" loading="lazy" decoding="async"></a></li>
@@ -326,6 +239,5 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <script src="../js/main.js"></script>
-<script src="../js/dg-demo.js"></script>
 </body>
 </html>
