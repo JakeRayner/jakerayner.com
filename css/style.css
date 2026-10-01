@@ -1434,8 +1434,7 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    saver (main.js). */
 .hv{position:relative; aspect-ratio:16/9; overflow:hidden; background:#000;}
 .case-media .hv > img, .hv video{position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; object-fit:cover;}
-.hv iframe{position:absolute; inset:0; width:100%; height:100%; border:0; opacity:0; transition:opacity .8s ease;}
-.hv.is-playing iframe{opacity:1;}
+.hv iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
 @media (max-width:760px){ .hv.r43-small{aspect-ratio:4/3;} }
 
 /* D1 on wider screens: four linked loops, numbered, handing on to each
@@ -1444,8 +1443,8 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    Phones keep the boxed loop (.cycle.sait-small), which reads at that size. */
 .sait{display:block; width:100%; height:auto; font-family:var(--sans); overflow:visible;}
 .sait .sait-line{fill:none; stroke:var(--ink-dim); stroke-width:1.6;}
-.sait .sait-line.is-dash{stroke-dasharray:5 7;}
-.sait .sait-arrow{fill:none; stroke:var(--ink); stroke-width:2; stroke-linecap:square;}
+.sait .sait-line.is-dash{stroke-dasharray:6 7;}
+.sait .sait-head{fill:none; stroke:var(--ink-dim); stroke-width:1.6; stroke-linejoin:miter;}
 .sait .sait-ico{fill:none; stroke:var(--ink-dim); stroke-width:1.5; stroke-linecap:square;}
 .sait .sait-h{fill:var(--ink); font-size:26px; font-weight:500; letter-spacing:-.02em;}
 .sait .sait-p{fill:var(--ink-dim); font-size:15px;}
@@ -1453,7 +1452,6 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .sait .sait-n{fill:var(--bg); font-size:15px; font-weight:500;}
 .sait .sait-box{fill:var(--ink);}
 .sait .sait-boxt{fill:var(--bg); font-size:15px; font-weight:500;}
-.sait .sait-tagbg{fill:var(--bg);}
 .sait .sait-tag{fill:var(--ink-dim); font-size:14px; font-weight:500;}
 .cycle.sait-small{display:none;}
 @media (max-width:760px){

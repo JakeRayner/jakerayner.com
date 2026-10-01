@@ -1431,8 +1431,9 @@
   /* ---------- 11. Case study hero videos ----------
      .hv holds a looping film with the player's own controls: a <video>
      (file in data-src, data-src-small for phones) or a YouTube id in
-     data-yt. While on screen it plays, muted, and it stops off screen;
-     under reduced motion or data saver it waits for its own play button. */
+     data-yt. It starts muted as the page loads, stops while scrolled off
+     screen and picks up again on return; under reduced motion or data
+     saver it waits for its own play button. */
   var heroes = document.querySelectorAll('.hv');
   if (heroes.length) {
     var saveData = !!(navigator.connection && navigator.connection.saveData);
@@ -1460,15 +1461,9 @@
       var player = null, ready = false, onScreen = false;
 
       if (video) {
-        /* the file is set straight away (preload none: nothing downloads
-           until it plays) so the browser's own play button always works */
-        video.src = hv.getAttribute(small && hv.getAttribute('data-src-small') ? 'data-src-small' : 'data-src');
-        var smallPoster = hv.getAttribute('data-poster-small');
-        if (small && smallPoster) video.poster = smallPoster;
         video.muted = true;
-      } else {
-        /* without autoplay the player shows at once, with its own play button */
-        if (!autoplay) hv.classList.add('is-playing');
+        if (!autoplay) { video.removeAttribute('autoplay'); video.preload = 'metadata'; }
+        video.src = hv.getAttribute(small && hv.getAttribute('data-src-small') ? 'data-src-small' : 'data-src');
       }
 
       function start() {
@@ -1487,9 +1482,7 @@
                 e.target.mute();
                 if (autoplay && onScreen) e.target.playVideo();
               },
-              onStateChange: function (e) {
-                if (e.data === 1) hv.classList.add('is-playing');
-              }
+              onStateChange: function () {}
             }
           });
         });
@@ -1499,17 +1492,19 @@
         else if (player && ready) player.pauseVideo();
       }
 
+      /* straight away on load; the player's own button covers reduced motion */
+      onScreen = true;
+      start();
       if ('IntersectionObserver' in window) {
+        var seen = false;
         new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
             onScreen = e.isIntersecting;
-            if (onScreen && (autoplay || !video)) start();
+            if (!seen) { seen = true; return; }
+            if (onScreen && autoplay) start();
             else if (!onScreen) stop();
           });
         }, { threshold: 0.05 }).observe(hv);
-      } else if (autoplay) {
-        onScreen = true;
-        start();
       }
     });
   }
