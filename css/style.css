@@ -1577,3 +1577,8 @@ html.glb-open{overflow:hidden;}
 .hmi-modes .hmi-row.three{grid-template-columns:repeat(3,minmax(0,1fr));}
 .hmi-mode.sportplus{background:linear-gradient(120deg,#2a0b0b,#d0142c);}
 .split-media.pair{grid-template-columns:1fr 1fr; align-items:start;}
+/* HMI diagram, matched to the Figma frame (289:9931): drive mode tiles
+   as tall as the control tiles beside them, icons in full ink */
+.hmi-mode{height:87px;}
+.hmi-ctrl{min-height:87px;}
+.hmi-ctrl svg{stroke:var(--ink);}
