@@ -338,7 +338,7 @@ function tile(g, t, idx, total, endAlone) {
   // on Home the project header carries the bare id, so every tile is numbered
   const base = g.href ? g.href.replace(/^.*\//, '').replace(/\.html$/, '') : slug(g.name);
   const id = idx === 0 && !g.headed ? `work-${base}` : `work-${base}-${idx + 1}`;
-  const cls = ['col-item', `span-${t.span}`, t.start ? `c${t.start}` : '', t.centre ? 'centre' : '', t.drop ? 'drop' : '', (t.end || endAlone) ? 'end' : ''].filter(Boolean).join(' ');
+  const cls = ['col-item', g.headed ? 'is-headed' : '', `span-${t.span}`, t.start ? `c${t.start}` : '', t.centre ? 'centre' : '', t.drop ? 'drop' : '', (t.end || endAlone) ? 'end' : ''].filter(Boolean).join(' ');
   const speed = t.span <= 5 ? '1.0' : '0.55';
   const cap = t.img.cap || captionFor(t.img.file);
   const alt = cap ? `${g.name}: ${cap}` : `${g.name} work, image ${idx + 1} of ${total}`;
@@ -357,7 +357,10 @@ function tile(g, t, idx, total, endAlone) {
 }
 
 function caption(g, line) {
-  const logo = g.logo
+  /* Home tiles sit under a project header, so their hover caption is the
+     picture's own line alone: no logo, and the name stays only for the
+     full-screen gallery (hidden on the tile by .is-headed) */
+  const logo = g.logo && !g.headed
     ? `\n              <span class="col-logo" aria-hidden="true" style="--ls:${g.ls}; -webkit-mask-image:url('assets/logos/${g.logo}.svg'); mask-image:url('assets/logos/${g.logo}.svg')"></span>`
     : '';
   const meta = line || [g.sector, g.scope].filter(Boolean).join(' · ');
@@ -423,8 +426,10 @@ function projectHead(p) {
               <h4 class="proj-name">${esc(p.name)}</h4>
               <span class="proj-when">${esc(p.when)}</span>
             </a>
-            <ul class="proj-tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-            <a class="go proj-go" href="${p.href}" data-gated>View case study <i aria-hidden="true">→</i></a>
+            <div class="proj-meta">
+              <ul class="proj-tags">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+              <a class="proj-go" href="${p.href}" data-gated>View case study <i aria-hidden="true">→</i></a>
+            </div>
           </div>
 `;
 }

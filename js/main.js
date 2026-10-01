@@ -1429,13 +1429,15 @@
   });
 
   /* ---------- 11. Case study hero videos ----------
-     .hv holds a muted, looping film over its poster: a <video> whose file
-     waits in data-src (data-src-small for phones), or a YouTube id in
-     data-yt. It plays while on screen and stops off screen. Under reduced
-     motion or data saver it waits for the corner button. */
+     .hv holds a looping film with the player's own controls: a <video>
+     (file in data-src, data-src-small for phones) or a YouTube id in
+     data-yt. While on screen it plays, muted, and it stops off screen;
+     under reduced motion or data saver it waits for its own play button. */
   var heroes = document.querySelectorAll('.hv');
   if (heroes.length) {
     var saveData = !!(navigator.connection && navigator.connection.saveData);
+    var autoplay = !reduceMotion && !saveData;
+    var small = window.matchMedia('(max-width:760px)').matches;
     var ytQueue = [];
     var loadYT = function (cb) {
       if (window.YT && window.YT.Player) { cb(); return; }
@@ -1453,106 +1455,61 @@
     };
 
     Array.prototype.forEach.call(heroes, function (hv) {
-      var btn = hv.querySelector('.hv-toggle');
-      var snd = hv.querySelector('.hv-sound');
       var video = hv.querySelector('video');
       var yt = hv.getAttribute('data-yt');
-      var auto = !reduceMotion && !saveData;
-      var userPaused = false, onScreen = false, player = null, ready = false, soundOn = false;
+      var player = null, ready = false, onScreen = false;
 
-      function setBtn(playing) {
-        if (!btn) return;
-        btn.classList.toggle('is-paused', !playing);
-        btn.setAttribute('aria-label', playing ? 'Pause the video' : 'Play the video');
+      if (video) {
+        /* the file is set straight away (preload none: nothing downloads
+           until it plays) so the browser's own play button always works */
+        video.src = hv.getAttribute(small && hv.getAttribute('data-src-small') ? 'data-src-small' : 'data-src');
+        var smallPoster = hv.getAttribute('data-poster-small');
+        if (small && smallPoster) video.poster = smallPoster;
+        video.muted = true;
+      } else {
+        /* without autoplay the player shows at once, with its own play button */
+        if (!autoplay) hv.classList.add('is-playing');
       }
-      function playing(on) { hv.classList.toggle('is-playing', on); setBtn(on); }
 
-      function play() {
-        if (video) {
-          if (!video.getAttribute('src')) {
-            var small = hv.getAttribute('data-src-small') && window.matchMedia('(max-width:760px)').matches;
-            video.src = hv.getAttribute(small ? 'data-src-small' : 'data-src');
-          }
-          var pr = video.play();
-          if (pr && pr.catch) pr.catch(function () {});
-          return;
-        }
-        if (player && ready) { player.playVideo(); return; }
-        if (player) return;
+      function start() {
+        if (video) { var pr = video.play(); if (pr && pr.catch) pr.catch(function () {}); return; }
+        if (player) { if (ready && autoplay) player.playVideo(); return; }
         loadYT(function () {
           var slot = document.createElement('div');
-          hv.insertBefore(slot, btn);
+          hv.appendChild(slot);
           player = new YT.Player(slot, {
             host: 'https://www.youtube-nocookie.com',
             videoId: yt,
-            playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: yt, playsinline: 1, rel: 0, iv_load_policy: 3, disablekb: 1, fs: 0 },
+            playerVars: { autoplay: autoplay ? 1 : 0, mute: 1, controls: 1, loop: 1, playlist: yt, playsinline: 1, rel: 0, iv_load_policy: 3 },
             events: {
               onReady: function (e) {
                 ready = true;
-                var f = e.target.getIframe();
-                f.setAttribute('tabindex', '-1');
-                f.setAttribute('aria-hidden', 'true');
-                if (soundOn) { e.target.unMute(); e.target.setVolume(100); } else e.target.mute();
-                if (userPaused || !onScreen) e.target.pauseVideo(); else e.target.playVideo();
+                e.target.mute();
+                if (autoplay && onScreen) e.target.playVideo();
               },
               onStateChange: function (e) {
-                if (e.data === 1) playing(true);
-                else if (e.data === 2) playing(false);
-                else if (e.data === 0) { e.target.seekTo(0); e.target.playVideo(); }
+                if (e.data === 1) hv.classList.add('is-playing');
               }
             }
           });
         });
       }
-      function pause() {
+      function stop() {
         if (video) video.pause();
         else if (player && ready) player.pauseVideo();
       }
 
-      if (video) {
-        video.muted = true;
-        video.addEventListener('playing', function () { playing(true); });
-        video.addEventListener('pause', function () { playing(false); });
-        /* phones get the 4:3 poster to match the 4:3 file */
-        var smallPoster = hv.getAttribute('data-poster-small');
-        if (smallPoster && window.matchMedia('(max-width:760px)').matches) video.poster = smallPoster;
-      }
-      /* sound starts off (browsers only autoplay muted); the speaker button
-         turns it on and off, and turning it on also starts a paused film */
-      if (snd) {
-        snd.hidden = false;
-        var setSnd = function () {
-          snd.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-          snd.setAttribute('aria-label', soundOn ? 'Turn the sound off' : 'Turn the sound on');
-        };
-        setSnd();
-        snd.addEventListener('click', function () {
-          soundOn = !soundOn;
-          setSnd();
-          if (video) video.muted = !soundOn;
-          else if (player && ready) { if (soundOn) { player.unMute(); player.setVolume(100); } else player.mute(); }
-          if (soundOn && !hv.classList.contains('is-playing')) { userPaused = false; play(); }
-        });
-      }
-      if (btn) {
-        btn.hidden = false;
-        setBtn(false);
-        btn.addEventListener('click', function () {
-          if (hv.classList.contains('is-playing')) { userPaused = true; pause(); }
-          else { userPaused = false; play(); }
-        });
-      }
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
             onScreen = e.isIntersecting;
-            if (onScreen && auto && !userPaused) play();
-            else if (!onScreen) pause();
+            if (onScreen && (autoplay || !video)) start();
+            else if (!onScreen) stop();
           });
         }, { threshold: 0.05 }).observe(hv);
-      } else if (auto) {
+      } else if (autoplay) {
         onScreen = true;
-        play();
+        start();
       }
     });
   }
