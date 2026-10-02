@@ -1453,15 +1453,11 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    ============================================================ */
 .case-hero h1{margin-bottom:0;}
 .case-sum{font-size:clamp(20px,1.9vw,28px); line-height:1.35; letter-spacing:-.015em; margin:22px 0 0; text-wrap:pretty;}
-.facts{display:grid; grid-template-columns:repeat(3,max-content) minmax(0,1fr); gap:18px clamp(28px,3.5vw,56px); margin:clamp(32px,3.5vw,48px) 0 0;}
+.facts{display:grid; grid-template-columns:repeat(2,minmax(0,max-content)); gap:18px clamp(28px,3.5vw,56px); margin:clamp(32px,3.5vw,48px) 0 0;}
 .facts div{min-width:0;}
 .facts dt{font-size:12px; font-weight:500; color:var(--ink-dim); margin:0 0 6px;}
 .facts dd{margin:0; font-size:14.5px; line-height:1.5;}
 .case-hero .case-media{margin-top:clamp(40px,4.5vw,64px);}
-@media (max-width:900px){
-  .facts{grid-template-columns:1fr 1fr;}
-  .facts div:last-child{grid-column:1 / -1;}
-}
 
 .cs{padding-top:clamp(72px,7.5vw,128px);}
 .cs-grid{display:block;}
@@ -1493,9 +1489,6 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
 .case-sum{max-width:var(--read);}
 .cs-body p, .case-prose p{font-size:18px;}
 @media (max-width:900px){ :root{--read:100%;} }
-.facts{grid-template-columns:repeat(4,minmax(0,1fr)); max-width:var(--read);}
-@media (max-width:900px){ .facts{grid-template-columns:1fr 1fr;} }
-@media (min-width:901px){ .facts div:nth-child(3):last-child{grid-column:3 / -1;} }
 
 /* ---------- side by side (1 October 2026) ----------
    .split: a section's text beside its pictures or stats, alternating
@@ -1580,8 +1573,6 @@ html.glb-open{overflow:hidden;}
 .hmi-mode{height:87px;}
 .hmi-ctrl{min-height:87px;}
 .hmi-ctrl svg{stroke:var(--ink);}
-/* Scope gets a double-width column so it wraps onto fewer lines */
-@media (min-width:901px){ .facts{max-width:none; grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,2fr);} }
 /* a full-width film opening a section, then its text below */
 .cs .app-film{margin-top:0;}
 .cs-body p.cs-lede + p.cs-lede{margin-top:18px;}
