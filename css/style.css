@@ -889,10 +889,8 @@ img.case-thumb{width:100%; object-fit:cover; display:block;}
 .flow-viz{margin-top:auto; padding-top:14px; min-height:58px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px;}
 .flow-viz code{font-family:ui-monospace, 'SF Mono', Menlo, monospace; font-size:11px; padding:4px 7px; background:var(--glass-strong); color:var(--ink); white-space:nowrap;}
 .flow-viz .sw{width:22px; height:22px; background:var(--c);}
-.flow-viz .stack{display:flex; align-items:flex-end;}
-.flow-viz .stack .sw{width:30px; height:30px; outline:1px solid var(--bg2);}
 .flow-viz code.wrap{white-space:normal;}
-.flow-viz .stack .sw + .sw{margin-left:-12px;}
+.flow-viz .ico{width:26px; height:26px; fill:none; stroke:var(--ink-dim); stroke-width:1.5; stroke-linecap:square; stroke-linejoin:round;}
 .flow-viz .btn-mini{width:100%; height:16px; background:var(--ink); opacity:.85;}
 .flow-viz .card-mini{width:30px; height:42px; border:1.5px solid var(--ink-dim);}
 .flow-viz .line-mini{flex:1; display:flex; flex-direction:column; gap:6px; align-self:center;}
