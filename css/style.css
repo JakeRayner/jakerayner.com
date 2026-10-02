@@ -1429,7 +1429,7 @@ a:hover .go i, a.go:hover i{transform:translateX(4px);}
    other, with the way out to the owning department and the dashed return
    to Scout. Drawn in the theme's ink so it follows day, night and colour.
    Phones keep the boxed loop (.cycle.sait-small), which reads at that size. */
-.sait{display:block; width:100%; height:auto; font-family:var(--sans); overflow:visible;}
+.sait{display:block; width:75%; height:auto; font-family:var(--sans); overflow:visible;}
 .sait .sait-line{fill:none; stroke:var(--ink-dim); stroke-width:1.6;}
 .sait .sait-line.is-dash{stroke-dasharray:6 7;}
 .sait .sait-head{fill:none; stroke:var(--ink-dim); stroke-width:1.6; stroke-linejoin:miter;}
