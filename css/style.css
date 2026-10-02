@@ -1624,8 +1624,7 @@ html.glb-open{overflow:hidden;}
 .ds-points .value{padding:clamp(24px,2.4vw,34px);}
 .ds-points .value h3{font-size:clamp(17px,1.4vw,20px);}
 .ds-points .value p{font-size:15px; color:var(--ink);}
-@media (min-width:1101px){ .ds-points .value:last-child:nth-child(3n+2){grid-column:span 2;} }
-@media (min-width:821px) and (max-width:1100px){ .ds-points{grid-template-columns:repeat(2,1fr);} .ds-points .value:last-child:nth-child(odd){grid-column:span 2;} }
+@media (min-width:821px){ .ds-points{grid-template-columns:repeat(2,1fr);} }
 /* Debenhams test wins: five across, full width, under the full-width text */
 .stats.band.five{grid-template-columns:repeat(5,minmax(0,1fr));}
 .stats.band.five b{font-size:clamp(32px,3.4vw,56px);}
