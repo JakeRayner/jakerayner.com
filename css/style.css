@@ -889,7 +889,7 @@ img.case-thumb{width:100%; object-fit:cover; display:block;}
 .flow-viz{margin-top:auto; padding-top:14px; min-height:58px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px;}
 .flow-viz code{font-family:ui-monospace, 'SF Mono', Menlo, monospace; font-size:11px; padding:4px 7px; background:var(--glass-strong); color:var(--ink); white-space:nowrap;}
 .flow-viz .sw{width:22px; height:22px; background:var(--c);}
-.flow-viz .btn-mini{width:100%; height:16px; background:var(--ink); opacity:.85;}
+.flow-viz .btn-mini{width:100%; height:5px; background:var(--ink-dim); opacity:.6;}
 .flow-viz .card-mini{width:30px; height:42px; border:1.5px solid var(--ink-dim);}
 .flow-viz .line-mini{flex:1; display:flex; flex-direction:column; gap:6px; align-self:center;}
 .flow-viz .line-mini i{display:block; height:5px; background:var(--ink-dim); opacity:.6;}
