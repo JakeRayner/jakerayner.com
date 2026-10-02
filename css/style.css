@@ -1624,7 +1624,7 @@ html.glb-open{overflow:hidden;}
 .ds-points{margin-bottom:clamp(40px,4.5vw,64px);}
 .ds-points .value{padding:clamp(24px,2.4vw,34px);}
 .ds-points .value h3{font-size:clamp(17px,1.4vw,20px);}
-.ds-points .value p{font-size:15px; color:var(--ink-dim);}
+.ds-points .value p{font-size:15px; color:var(--ink);}
 @media (min-width:821px) and (max-width:1100px){ .ds-points{grid-template-columns:repeat(2,1fr);} }
 /* Debenhams test wins: five across, full width, under the full-width text */
 .stats.band.five{grid-template-columns:repeat(5,minmax(0,1fr));}
